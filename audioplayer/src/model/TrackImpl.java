@@ -14,8 +14,13 @@ public class TrackImpl implements Track, Serializable{
 
 	private File trackFile;
 	private String trackName;
-	private Image trackPic;
+//	private Optional<Image> trackPic;
 	private Long duration;
+	
+	public TrackImpl(File trackFile, String trackName){
+		
+		
+	}
 	
 	@Override
 	public String getName() {
@@ -27,17 +32,15 @@ public class TrackImpl implements Track, Serializable{
 		this.trackName = name;
 	}
 
-	@Override
-	public Optional<Image> getPic() {
-
-		return Optional.of(this.trackPic);
-	}
-
-	@Override
-	public void setPic(Image image) {
-		
-		this.trackPic = image;
-	}
+//	@Override
+//	public Optional<Image> getPic() {
+//	}
+//
+//	@Override
+//	public void setPic(Image image) {
+//		
+//		this.trackPic = image;
+//	}
 
 	@Override
 	public String getFilePath() {

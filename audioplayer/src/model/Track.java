@@ -17,17 +17,17 @@ public interface Track {
 	 */
 	void setName(String name);
 	
-	/**
-	 * 
-	 * @return the track picture (if present)
-	 */
-	Optional<Image> getPic();
-	/**
-	 * 
-	 * @param image
-	 * Sets the input image as track picture
-	 */
-	void setPic(Image image);
+//	/**
+//	 * 
+//	 * @return the track picture (if present)
+//	 */
+//	Optional<Image> getPic();
+//	/**
+//	 * 
+//	 * @param image
+//	 * Sets the input image as track picture
+//	 */
+//	void setPic(Image image);
 	
 	/**
 	 * 

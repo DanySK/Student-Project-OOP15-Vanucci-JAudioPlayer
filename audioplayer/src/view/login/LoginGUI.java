@@ -18,7 +18,7 @@ import java.awt.Font;
 import javax.swing.border.EmptyBorder;
 
 import controller.user.UserHandler;
-import view.ContentPane;
+import view.AudioPlayerImpl;
 import java.awt.Color;
 
 public class LoginGUI extends JFrame{
@@ -91,7 +91,7 @@ public class LoginGUI extends JFrame{
 		login.addActionListener(e-> {
 			try {
 				UserHandler.setUserAndPswd(nameIn.getText(), pswdIn.getText());
-				new ContentPane().initialize();
+				new AudioPlayerImpl().initialize();
 				this.dispose();
 			} catch (Exception e1) {
 

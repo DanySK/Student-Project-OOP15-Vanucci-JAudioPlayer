@@ -22,7 +22,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
-public class ContentPane extends JFrame implements AudioPlayerGUI{
+public class AudioPlayerImpl extends JFrame implements AudioPlayerGUI{
 
 	/**
 	 * 
@@ -32,7 +32,7 @@ public class ContentPane extends JFrame implements AudioPlayerGUI{
 	private JTable tracksTable;
 	private JPanel optionsPanel;
 	
-	public ContentPane(){
+	public AudioPlayerImpl(){
 		this.setTitle("AUDIO PLAYER APP");
 		this.getContentPane().add(new Player(), BorderLayout.SOUTH);
 		optionsPanel = new JPanel();
@@ -41,9 +41,10 @@ public class ContentPane extends JFrame implements AudioPlayerGUI{
 		optionsPanel.setLayout(new BoxLayout(optionsPanel, BoxLayout.Y_AXIS));
 		
 		JButton tracksBtn = new JButton("Tracce");
-		tracksBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
+		tracksBtn.addActionListener(e->{
+			String name = UserHandler.getUsername();
+			String password = UserHandler.getPassword();
+			System.out.println("Using the user named "+name+" and password "+password);
 		});
 		optionsPanel.add(tracksBtn);
 		
@@ -53,6 +54,13 @@ public class ContentPane extends JFrame implements AudioPlayerGUI{
 			}
 		});
 		optionsPanel.add(playlistBtn);
+		
+		JButton addBtn = new JButton("Aggiungi brano");
+		addBtn.addActionListener(e-> {
+			
+			
+		});
+		optionsPanel.add(addBtn);
 		
 		JButton createBtn = new JButton("Crea playlist");
 		optionsPanel.add(createBtn);
@@ -68,9 +76,6 @@ public class ContentPane extends JFrame implements AudioPlayerGUI{
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
-		String name = UserHandler.getUsername();
-		String password = UserHandler.getPassword();
-		System.out.println("Using the user named "+name+" and password "+password);
 		pack();
 	}
 

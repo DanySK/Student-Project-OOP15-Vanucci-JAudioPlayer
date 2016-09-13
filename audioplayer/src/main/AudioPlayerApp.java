@@ -7,7 +7,7 @@ import javax.swing.UIManager;
 
 import controller.user.UserHandler;
 import model.FileHandler;
-import view.ContentPane;
+import view.AudioPlayerImpl;
 import view.login.LoginGUI;
 
 public class AudioPlayerApp {

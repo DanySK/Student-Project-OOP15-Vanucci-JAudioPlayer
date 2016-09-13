@@ -293,7 +293,7 @@ public class Player extends JPanel implements ActionListener {
 		timer.interrupt();
 
 		buttonPlay.setText("Play");
-		buttonPlay.setIcon(iconPlay);
+//		buttonPlay.setIcon(iconPlay);
 		
 		buttonPause.setEnabled(false);
 		
