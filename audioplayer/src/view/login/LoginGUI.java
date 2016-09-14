@@ -91,11 +91,12 @@ public class LoginGUI extends JFrame{
 		login.addActionListener(e-> {
 			try {
 				UserHandler.setUserAndPswd(nameIn.getText(), pswdIn.getText());
-				new AudioPlayerImpl().initialize();
 				this.dispose();
+				new AudioPlayerImpl().initialize();
 			} catch (Exception e1) {
 
 				JOptionPane.showMessageDialog(this, "Username o password errati", "Login failed", JOptionPane.ERROR_MESSAGE);
+				e1.printStackTrace();
 			}
 		});
 		footer.add(login, BorderLayout.WEST);

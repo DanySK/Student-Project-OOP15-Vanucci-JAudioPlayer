@@ -1,11 +1,13 @@
 package view;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.BoxLayout;
 
+import controller.OptionsManager;
 import controller.user.UserHandler;
 import view.player.Player;
-import view.tables.TableView;
+import view.tables.TablesPane;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -16,6 +18,9 @@ import java.awt.Component;
 
 import javax.swing.JTable;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.NotSerializableException;
 import java.util.Arrays;
 import java.util.List;
 import java.awt.event.ActionEvent;
@@ -31,6 +36,8 @@ public class AudioPlayerImpl extends JFrame implements AudioPlayerGUI{
 	
 	private JTable tracksTable;
 	private JPanel optionsPanel;
+	
+	private OptionsManager manager;
 	
 	public AudioPlayerImpl(){
 		this.setTitle("AUDIO PLAYER APP");
@@ -58,7 +65,15 @@ public class AudioPlayerImpl extends JFrame implements AudioPlayerGUI{
 		JButton addBtn = new JButton("Aggiungi brano");
 		addBtn.addActionListener(e-> {
 			
-			
+			manager = new OptionsManager(UserHandler.getUsername());
+			try {
+				manager.addTrack(System.getProperty("user.home")+System.getProperty("file.separator")+"bird.wav", "Bird");
+			} catch(IllegalArgumentException se){
+				JOptionPane.showMessageDialog(this, "Esiste già un brano con questo nome", "Aggiunta brano fallita", JOptionPane.ERROR_MESSAGE);
+			}catch (Exception e1) {
+				JOptionPane.showMessageDialog(null, "Ops, something went wrong", "Error", JOptionPane.ERROR_MESSAGE);
+				e1.printStackTrace();
+			}
 		});
 		optionsPanel.add(addBtn);
 		
@@ -70,13 +85,25 @@ public class AudioPlayerImpl extends JFrame implements AudioPlayerGUI{
 		panel.setLayout(new CardLayout(0, 0));
 		
 		tracksTable = new JTable();
-		JScrollPane scrollPane = new TableView(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		TablesPane scrollPane = new TablesPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED, manager);
+		try {
+			scrollPane.showTracks();
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		panel.add(scrollPane);
 		
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setLocationRelativeTo(null);
 		pack();
+		setLocationRelativeTo(null);
 	}
 
 	@Override

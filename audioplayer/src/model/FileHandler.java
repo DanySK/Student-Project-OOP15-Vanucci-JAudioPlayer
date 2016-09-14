@@ -5,6 +5,9 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -20,9 +23,9 @@ public class FileHandler {
 	
 	private File target;
 	
-	public FileHandler(String fileAbsPath){
+	public FileHandler(String userPath){
 		
-		this.target = new File(fileAbsPath);
+		this.target = new File(userPath);
 	}
 
 	/**
@@ -32,17 +35,33 @@ public class FileHandler {
 	 * @return An InputStream for the required file
 	 * @throws FileNotFoundException
 	 */
-	public InputStream getFile() throws FileNotFoundException{
-		return new BufferedInputStream(new FileInputStream(this.target));
+	public InputStream getFile(String fileName) throws FileNotFoundException{
+		return new BufferedInputStream(new FileInputStream(this.target+SEPARATOR+fileName));
 	}
 	
-	public OutputStream toFile() throws FileNotFoundException{
-		return new FileOutputStream(this.target);
+	public OutputStream toFile(String fileName) throws FileNotFoundException{
+		return new FileOutputStream(this.target+SEPARATOR+fileName);
 	}
 	
-	public boolean exists(){
+	public boolean userExists(){
 		
 		return this.target.exists();
+	}
+	
+	public boolean trackExists(String name){
+		
+		for(final File track: getFiles()){
+			System.out.println(track.getName());
+			if(track.getName().equals(name))
+				return true;
+		}
+		
+		return false;
+	}
+	
+	public List<File> getFiles(){
+		
+		return new ArrayList<>(Arrays.asList(target.listFiles()));
 	}
 	/**
 	 * Creates the main directory for the app

@@ -2,8 +2,14 @@ package model;
 
 import java.awt.Image;
 import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Optional;
+
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class TrackImpl implements Track, Serializable{
 
@@ -14,12 +20,12 @@ public class TrackImpl implements Track, Serializable{
 
 	private File trackFile;
 	private String trackName;
-//	private Optional<Image> trackPic;
-	private Long duration;
+	private Float duration;
 	
-	public TrackImpl(File trackFile, String trackName){
-		
-		
+	public TrackImpl(File trackFile, String trackName) throws UnsupportedAudioFileException, IOException{
+		this.trackFile = trackFile;
+		this.trackName = trackName;
+		setDuration();
 	}
 	
 	@Override
@@ -32,24 +38,15 @@ public class TrackImpl implements Track, Serializable{
 		this.trackName = name;
 	}
 
-//	@Override
-//	public Optional<Image> getPic() {
-//	}
-//
-//	@Override
-//	public void setPic(Image image) {
-//		
-//		this.trackPic = image;
-//	}
-
 	@Override
 	public String getFilePath() {
 		return this.trackFile.getAbsolutePath();
 	}
 
 	@Override
-	public void setFile(String path) {
+	public void setFile(String path) throws UnsupportedAudioFileException, IOException {
 		this.trackFile = new File(path);
+		setDuration();
 	}
 
 	public String toString(){
@@ -58,8 +55,17 @@ public class TrackImpl implements Track, Serializable{
 	}
 
 	@Override
-	public Long getDuration() {
-		// TODO Auto-generated method stub
-		return null;
+	public Float getDuration() {
+		return new Float(this.duration);
 	}
+	
+	public void setDuration() throws UnsupportedAudioFileException, IOException{
+		AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(this.trackFile);
+		AudioFormat format = audioInputStream.getFormat();
+	    long audioFileLength = this.trackFile.length();
+	    int frameSize = format.getFrameSize();
+	    float frameRate = format.getFrameRate();
+	    this.duration = (audioFileLength / (frameSize * frameRate));
+	}
+    
 }

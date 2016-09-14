@@ -1,7 +1,10 @@
 package model;
 
 import java.awt.Image;
+import java.io.IOException;
 import java.util.Optional;
+
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 public interface Track {
 
@@ -38,11 +41,13 @@ public interface Track {
 	 * 
 	 * @param path
 	 * Sets the file for the track
+	 * @throws IOException 
+	 * @throws UnsupportedAudioFileException 
 	 * 
 	 */
-	void setFile(String path);
+	void setFile(String path) throws UnsupportedAudioFileException, IOException;
 	
-	Long getDuration();
+	Float getDuration();
 	
 	String toString();
 }
