@@ -119,7 +119,7 @@ public class PlayerController implements LineListener {
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException ex) {
-				ex.printStackTrace();
+//				ex.printStackTrace();
 				if (isStopped) {
 					audioClip.stop();
 					break;
@@ -127,7 +127,7 @@ public class PlayerController implements LineListener {
 				if (isPaused) {
 					audioClip.stop();
 				} else {
-					System.out.println("!!!!");
+					System.out.println("Resuming");
 					audioClip.start();
 				}
 			}
@@ -159,7 +159,7 @@ public class PlayerController implements LineListener {
 	public void update(LineEvent event) {
 		LineEvent.Type type = event.getType();
 		if (type == LineEvent.Type.STOP) {
-			System.out.println("STOP EVENT");
+			System.out.println("Paused");
 			if (isStopped || !isPaused) {
 				playCompleted = true;
 			}

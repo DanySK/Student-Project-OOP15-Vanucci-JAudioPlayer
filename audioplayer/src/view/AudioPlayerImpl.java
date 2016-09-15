@@ -47,11 +47,19 @@ public class AudioPlayerImpl extends JFrame implements AudioPlayerGUI{
 		getContentPane().add(optionsPanel, BorderLayout.WEST);
 		optionsPanel.setLayout(new BoxLayout(optionsPanel, BoxLayout.Y_AXIS));
 		
+		manager = new OptionsManager(UserHandler.getUsername());
+		
+		tracksTable = new JTable();
+		TablesPane scrollPane = new TablesPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED, manager);
+		
 		JButton tracksBtn = new JButton("Tracce");
 		tracksBtn.addActionListener(e->{
-			String name = UserHandler.getUsername();
-			String password = UserHandler.getPassword();
-			System.out.println("Using the user named "+name+" and password "+password);
+			try {
+				scrollPane.showTracks();
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		});
 		optionsPanel.add(tracksBtn);
 		
@@ -64,10 +72,9 @@ public class AudioPlayerImpl extends JFrame implements AudioPlayerGUI{
 		
 		JButton addBtn = new JButton("Aggiungi brano");
 		addBtn.addActionListener(e-> {
-			
-			manager = new OptionsManager(UserHandler.getUsername());
 			try {
-				manager.addTrack(System.getProperty("user.home")+System.getProperty("file.separator")+"bird.wav", "Bird");
+				manager.addTrack(System.getProperty("user.home")+System.getProperty("file.separator")+"03 Smooth criminal.wav", "Smooth Criminal");
+				scrollPane.showTracks();
 			} catch(IllegalArgumentException se){
 				JOptionPane.showMessageDialog(this, "Esiste già un brano con questo nome", "Aggiunta brano fallita", JOptionPane.ERROR_MESSAGE);
 			}catch (Exception e1) {
@@ -84,8 +91,6 @@ public class AudioPlayerImpl extends JFrame implements AudioPlayerGUI{
 		getContentPane().add(panel, BorderLayout.CENTER);
 		panel.setLayout(new CardLayout(0, 0));
 		
-		tracksTable = new JTable();
-		TablesPane scrollPane = new TablesPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED, manager);
 		try {
 			scrollPane.showTracks();
 		} catch (FileNotFoundException e1) {

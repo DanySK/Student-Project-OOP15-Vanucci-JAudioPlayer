@@ -91,12 +91,14 @@ public class LoginGUI extends JFrame{
 		login.addActionListener(e-> {
 			try {
 				UserHandler.setUserAndPswd(nameIn.getText(), pswdIn.getText());
-				this.dispose();
 				new AudioPlayerImpl().initialize();
-			} catch (Exception e1) {
-
+				this.dispose();
+			} catch (IllegalArgumentException e1) {
 				JOptionPane.showMessageDialog(this, "Username o password errati", "Login failed", JOptionPane.ERROR_MESSAGE);
-				e1.printStackTrace();
+			} catch(Exception ex){
+				JOptionPane.showMessageDialog(this, "Qualcosa è andato storto...", "Login failed", JOptionPane.ERROR_MESSAGE);
+				ex.printStackTrace();
+				ex.getCause();
 			}
 		});
 		footer.add(login, BorderLayout.WEST);
