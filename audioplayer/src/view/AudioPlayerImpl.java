@@ -11,6 +11,8 @@ import view.tables.TablesPane;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Point;
+
 import javax.swing.JPanel;
 import javax.swing.JButton;
 import java.awt.CardLayout;
@@ -18,6 +20,8 @@ import java.awt.Component;
 
 import javax.swing.JTable;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.NotSerializableException;
@@ -34,14 +38,15 @@ public class AudioPlayerImpl extends JFrame implements AudioPlayerGUI{
 	 */
 	private static final long serialVersionUID = -659289932713557676L;
 	
-	private JTable tracksTable;
 	private JPanel optionsPanel;
 	
 	private OptionsManager manager;
+	private Player player;
 	
 	public AudioPlayerImpl(){
 		this.setTitle("AUDIO PLAYER APP");
-		this.getContentPane().add(new Player(), BorderLayout.SOUTH);
+		this.player = new Player();
+		this.getContentPane().add(player, BorderLayout.SOUTH);
 		optionsPanel = new JPanel();
 		optionsPanel.setBorder(new EmptyBorder(5, 2, 5, 2));
 		getContentPane().add(optionsPanel, BorderLayout.WEST);
@@ -49,9 +54,8 @@ public class AudioPlayerImpl extends JFrame implements AudioPlayerGUI{
 		
 		manager = new OptionsManager(UserHandler.getUsername());
 		
-		tracksTable = new JTable();
 		TablesPane scrollPane = new TablesPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED, manager);
-		
+		scrollPane.setAdapter(new DoubleClickAdapter());
 		JButton tracksBtn = new JButton("Tracce");
 		tracksBtn.addActionListener(e->{
 			try {
@@ -114,5 +118,19 @@ public class AudioPlayerImpl extends JFrame implements AudioPlayerGUI{
 	@Override
 	public void initialize() {
 		this.setVisible(true);
+	}
+	
+	private class DoubleClickAdapter extends MouseAdapter{
+		
+		@Override
+		public void mousePressed(MouseEvent me){
+			JTable table =(JTable) me.getSource();
+	        Point p = me.getPoint();
+	        int row = table.rowAtPoint(p);
+	        if (me.getClickCount() == 2) {
+	            String selected = (String) table.getValueAt(row, 0);
+	            player.openFile(selected, manager.getTrackPath(selected));
+	        }
+		}
 	}
 }

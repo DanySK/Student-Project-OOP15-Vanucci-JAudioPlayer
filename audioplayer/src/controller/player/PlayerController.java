@@ -13,11 +13,6 @@ import javax.sound.sampled.LineListener;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-/**
- * An utility class for playing back audio files using Java Sound API. 
- * @author www.codejava.net
- *
- */
 public class PlayerController implements LineListener {
 	private static final int SECONDS_IN_HOUR = 60 * 60;
 	private static final int SECONDS_IN_MINUTE = 60;
@@ -30,9 +25,9 @@ public class PlayerController implements LineListener {
 	/**
 	 * this flag indicates whether the playback is stopped or not.
 	 */
-	private boolean isStopped;
+	private boolean isStopped = true;
 
-	private boolean isPaused;
+	private boolean isPaused = false;
 
 	private Clip audioClip;
 
@@ -74,8 +69,6 @@ public class PlayerController implements LineListener {
 		long minute = 0;
 		long seconds = audioClip.getMicrosecondLength() / 1_000_000;
 		
-		System.out.println(seconds);
-		
 		if (seconds >= SECONDS_IN_HOUR) {
 			hour = seconds / SECONDS_IN_HOUR;
 			length = String.format("%02d:", hour);
@@ -108,7 +101,7 @@ public class PlayerController implements LineListener {
 	 * @throws LineUnavailableException
 	 */
 	public void play() throws IOException {
-
+		System.out.println("isStopped: "+isStopped+", isPaused: "+isPaused);
 		audioClip.start();
 
 		playCompleted = false;
@@ -159,7 +152,7 @@ public class PlayerController implements LineListener {
 	public void update(LineEvent event) {
 		LineEvent.Type type = event.getType();
 		if (type == LineEvent.Type.STOP) {
-			System.out.println("Paused");
+			System.out.println("Completed!");
 			if (isStopped || !isPaused) {
 				playCompleted = true;
 			}
@@ -168,5 +161,13 @@ public class PlayerController implements LineListener {
 	
 	public Clip getAudioClip() {
 		return audioClip;
-	}	
+	}
+	
+	public boolean isPaused(){
+		return isPaused;
+	}
+	
+	public boolean isStopped(){
+		return isStopped;
+	}
 }

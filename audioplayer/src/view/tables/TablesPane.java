@@ -36,8 +36,6 @@ public class TablesPane extends JScrollPane{
 	public TablesPane(int vsbPolicy, int hsbPolicy, OptionsManager manager){
 		super(vsbPolicy, hsbPolicy);
 		tracksTable.setModel(createModel("Nome", "Durata"));
-		tracksTable.addMouseListener(new DoubleClickAdapter());
-		playlistsTable.addMouseListener(new DoubleClickAdapter());
 		playlistsTable.setModel(createModel("Nome"));
 		playlistsTable.setEnabled(false);
 		this.manager = manager;
@@ -52,8 +50,10 @@ public class TablesPane extends JScrollPane{
 		entrySet.addAll(tracksData.entrySet());
 		
 		for(Entry<String, Float> entry: entrySet){
-			
-			String[] newRow = {entry.getKey(), entry.getValue().toString()};
+			Long duration = entry.getValue().longValue();
+			String strDuration = String.format("%d:%02d:%02d", duration / 3600,
+											(duration % 3600) / 60, (duration % 60));
+			String[] newRow = {entry.getKey(), strDuration};
 			model.addRow(newRow);
 		}
 		setViewPort(this.tracksTable);
@@ -82,16 +82,8 @@ public class TablesPane extends JScrollPane{
 		return model;
 	}
 	
-	private class DoubleClickAdapter extends MouseAdapter{
-		
-		@Override
-		public void mousePressed(MouseEvent me){
-			JTable table =(JTable) me.getSource();
-	        Point p = me.getPoint();
-	        int row = table.rowAtPoint(p);
-	        if (me.getClickCount() == 2) {
-	            System.out.println("Pressed row n. "+row);
-	        }
-		}
+	public void setAdapter(MouseAdapter adapter){
+		this.tracksTable.addMouseListener(adapter);
+		this.playlistsTable.addMouseListener(adapter);
 	}
 }
