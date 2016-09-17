@@ -43,7 +43,9 @@ public class UserHandler {
 		    for(String line; (line = br.readLine()) != null; ) {
 		    	String newLine = line.trim();
 		        if(newLine.startsWith("username: "+username) && newLine.endsWith("password: "+password)){
-		        	
+		        	if(!new File(MAIN_DIR+SEPARATOR+username).exists()){
+		        		new File(MAIN_DIR+SEPARATOR+username).mkdir();
+		        	}
 		        	return true;
 		        }
 		    }

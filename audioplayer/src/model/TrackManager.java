@@ -36,6 +36,13 @@ public class TrackManager {
 	
 	public List<Track> retrieveAll() throws FileNotFoundException, ClassNotFoundException, IOException{
 		List<Track> userTracks = new ArrayList<>();
+		File tracksDir = new File(tracksPath);
+		System.out.println("File: "+tracksDir.getPath()+", Path: "+tracksPath);
+		if(!tracksDir.exists()){
+			System.out.println("Non esiste");
+			boolean so = tracksDir.mkdir();
+			System.out.println(so);
+		}
 		for(File trackFile : handler.getFiles()){
 			userTracks.add(retrieve(trackFile.getName().replace(EXTENSION, "")));
 		}

@@ -6,6 +6,7 @@ import javax.swing.BoxLayout;
 
 import controller.OptionsManager;
 import controller.user.UserHandler;
+import view.login.AddTrack;
 import view.player.Player;
 import view.tables.TablesPane;
 
@@ -42,6 +43,7 @@ public class AudioPlayerImpl extends JFrame implements AudioPlayerGUI{
 	
 	private OptionsManager manager;
 	private Player player;
+	private AddTrack addWindow;
 	
 	public AudioPlayerImpl(){
 		this.setTitle("AUDIO PLAYER APP");
@@ -53,6 +55,7 @@ public class AudioPlayerImpl extends JFrame implements AudioPlayerGUI{
 		optionsPanel.setLayout(new BoxLayout(optionsPanel, BoxLayout.Y_AXIS));
 		
 		manager = new OptionsManager(UserHandler.getUsername());
+		addWindow = new AddTrack(manager);
 		
 		TablesPane scrollPane = new TablesPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED, manager);
 		scrollPane.setAdapter(new DoubleClickAdapter());
@@ -76,13 +79,12 @@ public class AudioPlayerImpl extends JFrame implements AudioPlayerGUI{
 		
 		JButton addBtn = new JButton("Aggiungi brano");
 		addBtn.addActionListener(e-> {
+			
+			addWindow.setVisible(true);
 			try {
-				manager.addTrack(System.getProperty("user.home")+System.getProperty("file.separator")+"03 Smooth criminal.wav", "Smooth Criminal");
 				scrollPane.showTracks();
-			} catch(IllegalArgumentException se){
-				JOptionPane.showMessageDialog(this, "Esiste già un brano con questo nome", "Aggiunta brano fallita", JOptionPane.ERROR_MESSAGE);
-			}catch (Exception e1) {
-				JOptionPane.showMessageDialog(null, "Ops, something went wrong", "Error", JOptionPane.ERROR_MESSAGE);
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 		});

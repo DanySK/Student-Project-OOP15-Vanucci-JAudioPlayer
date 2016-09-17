@@ -10,16 +10,13 @@ import javax.swing.JTextField;
 import java.awt.BorderLayout;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
-
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
 import java.awt.Font;
 import javax.swing.border.EmptyBorder;
 
 import controller.user.UserHandler;
 import view.AudioPlayerImpl;
-import java.awt.Color;
+import javax.swing.BoxLayout;
+import java.awt.GridLayout;
 
 public class LoginGUI extends JFrame{
 
@@ -37,53 +34,31 @@ public class LoginGUI extends JFrame{
 	
 	private JTextField nameIn = new JTextField();
 	private JTextField pswdIn = new JTextField();
+	private final JPanel upPanel = new JPanel();
+	private final JPanel downPanel = new JPanel();
 	
 	public LoginGUI(){
 		
 		super("AudioPlayer Login");
-		this.setSize(400, 230);
-		nameIn.setColumns(10);
 		body.setBorder(new EmptyBorder(10, 10, 10, 10));
 		
 		getContentPane().add(body, BorderLayout.CENTER);
-		GridBagLayout bodyLayout = new GridBagLayout();
-		bodyLayout.columnWidths = new int[]{0, 0};
-		bodyLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0};
-		bodyLayout.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-		bodyLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		body.setLayout(bodyLayout);
+		body.setLayout(new GridLayout(0, 1, 0, 20));
 		
-		GridBagConstraints gbc_nameLabel = new GridBagConstraints();
-		gbc_nameLabel.anchor = GridBagConstraints.WEST;
-		gbc_nameLabel.insets = new Insets(0, 0, 5, 0);
-		gbc_nameLabel.gridx = 0;
-		gbc_nameLabel.gridy = 1;
+		body.add(upPanel);
+		upPanel.setLayout(new BoxLayout(upPanel, BoxLayout.Y_AXIS));
+		upPanel.add(nameLabel);
 		nameLabel.setFont(new Font("Tahoma", Font.BOLD, 14));
-		body.add(nameLabel, gbc_nameLabel);
+		upPanel.add(nameIn);
+		nameIn.setColumns(10);
 		
-		GridBagConstraints gbc_nameIn = new GridBagConstraints();
-		gbc_nameIn.insets = new Insets(0, 0, 5, 0);
-		gbc_nameIn.fill = GridBagConstraints.HORIZONTAL;
-		gbc_nameIn.gridx = 0;
-		gbc_nameIn.gridy = 2;
-		body.add(nameIn, gbc_nameIn);
-		
-		GridBagConstraints gbc_pswdLabel = new GridBagConstraints();
-		gbc_pswdLabel.anchor = GridBagConstraints.WEST;
-		gbc_pswdLabel.insets = new Insets(0, 0, 5, 0);
-		gbc_pswdLabel.gridx = 0;
-		gbc_pswdLabel.gridy = 4;
+		body.add(downPanel);
+		downPanel.setLayout(new BoxLayout(downPanel, BoxLayout.Y_AXIS));
+		downPanel.add(pswdLabel);
 		pswdLabel.setFont(new Font("Tahoma", Font.BOLD, 14));
 		pswdLabel.setHorizontalAlignment(SwingConstants.LEFT);
-		body.add(pswdLabel, gbc_pswdLabel);
+		downPanel.add(pswdIn);
 		pswdIn.setColumns(10);
-		
-		GridBagConstraints gbc_pswdIn = new GridBagConstraints();
-		gbc_pswdIn.insets = new Insets(0, 0, 5, 0);
-		gbc_pswdIn.fill = GridBagConstraints.HORIZONTAL;
-		gbc_pswdIn.gridx = 0;
-		gbc_pswdIn.gridy = 5;
-		body.add(pswdIn, gbc_pswdIn);
 		footer.setBorder(new EmptyBorder(10, 40, 10, 40));
 		getContentPane().add(footer, BorderLayout.SOUTH);
 		footer.setLayout(new BorderLayout(0, 0));
@@ -104,10 +79,10 @@ public class LoginGUI extends JFrame{
 		footer.add(login, BorderLayout.WEST);
 		newUser.setFont(new Font("Tahoma", Font.BOLD, 14));
 		footer.add(newUser, BorderLayout.EAST);
-		this.setLocationRelativeTo(null);
 		JRootPane root = SwingUtilities.getRootPane(login);
 		root.setDefaultButton(login);
 		pack();
+		this.setLocationRelativeTo(null);
 	}
 	
 	public void initializeGUI(){

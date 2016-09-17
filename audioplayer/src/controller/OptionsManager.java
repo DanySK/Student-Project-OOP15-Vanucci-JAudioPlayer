@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 
 import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileFilter;
 
 import model.Track;
 import model.TrackImpl;
@@ -17,6 +19,8 @@ public class OptionsManager {
 
 	private TrackManager trackManager;
 	private List<Track> userTracks;
+	
+	private String lastPath;
 	
 	public OptionsManager(String username){
 		
@@ -43,5 +47,44 @@ public class OptionsManager {
 				retString = track.getFilePath();
 		}
 		return retString;
+	}
+	
+	public String chooser() {
+		JFileChooser fileChooser = null;
+		
+		if (lastPath != null && !lastPath.equals("")) {
+			fileChooser = new JFileChooser(lastPath);
+		} else {
+			fileChooser = new JFileChooser();
+		}
+		
+		FileFilter wavFilter = new FileFilter() {
+			@Override
+			public String getDescription() {
+				return "Sound file (*.WAV)";
+			}
+
+			@Override
+			public boolean accept(File file) {
+				if (file.isDirectory()) {
+					return true;
+				} else {
+					return file.getName().toLowerCase().endsWith(".wav");
+				}
+			}
+		};
+
+		
+		fileChooser.setFileFilter(wavFilter);
+		fileChooser.setDialogTitle("Seleziona il file da aggiungere");
+		fileChooser.setAcceptAllFileFilterUsed(false);
+
+		int result = fileChooser.showOpenDialog(null);
+		if (result == JFileChooser.APPROVE_OPTION) {
+			lastPath = fileChooser.getSelectedFile().getParent();
+			return fileChooser.getSelectedFile().getAbsolutePath();
+		}
+		
+		return null;
 	}
 }
