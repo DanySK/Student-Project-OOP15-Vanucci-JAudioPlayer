@@ -11,9 +11,6 @@ import model.user.User;
 import model.user.UserImpl;
 
 public class UserHandler {
-	
-	private static final String MAIN_DIR = FileHandler.getDir();
-	private static final String SEPARATOR = System.getProperty("file.separator");
 
 	private static User currentUser = new UserImpl();
 	private UserHandler(){
@@ -38,18 +35,6 @@ public class UserHandler {
 	}
 	
 	public static boolean checkUser(String username, String password) throws FileNotFoundException, IOException{
-		
-		try(BufferedReader br = new BufferedReader(new FileReader(new File(MAIN_DIR+SEPARATOR+"users.txt")))) {
-		    for(String line; (line = br.readLine()) != null; ) {
-		    	String newLine = line.trim();
-		        if(newLine.startsWith("username: "+username) && newLine.endsWith("password: "+password)){
-		        	if(!new File(MAIN_DIR+SEPARATOR+username).exists()){
-		        		new File(MAIN_DIR+SEPARATOR+username).mkdir();
-		        	}
-		        	return true;
-		        }
-		    }
-		    return false;
-		}
+		return FileHandler.userExists(username, password);
 	}
 }

@@ -6,9 +6,10 @@ import javax.swing.BoxLayout;
 
 import controller.OptionsManager;
 import controller.user.UserHandler;
-import view.login.AddTrack;
+import view.create.PlaylistAdder;
+import view.create.TrackAdder;
 import view.player.Player;
-import view.tables.TablesPane;
+import view.tables.DataPane;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -43,7 +44,8 @@ public class AudioPlayerImpl extends JFrame implements AudioPlayerGUI{
 	
 	private OptionsManager manager;
 	private Player player;
-	private AddTrack addWindow;
+	private TrackAdder addWindow;
+	private PlaylistAdder createWindow;
 	
 	public AudioPlayerImpl(){
 		this.setTitle("AUDIO PLAYER APP");
@@ -55,11 +57,12 @@ public class AudioPlayerImpl extends JFrame implements AudioPlayerGUI{
 		optionsPanel.setLayout(new BoxLayout(optionsPanel, BoxLayout.Y_AXIS));
 		
 		manager = new OptionsManager(UserHandler.getUsername());
-		addWindow = new AddTrack(manager);
+		addWindow = new TrackAdder(manager);
+		createWindow= new PlaylistAdder(manager);
 		
-		TablesPane scrollPane = new TablesPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED, manager);
+		DataPane scrollPane = new DataPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED, manager);
 		scrollPane.setAdapter(new DoubleClickAdapter());
-		JButton tracksBtn = new JButton("Tracce");
+		JButton tracksBtn = new JButton("Le mie Tracce");
 		tracksBtn.addActionListener(e->{
 			try {
 				scrollPane.showTracks();
@@ -73,6 +76,12 @@ public class AudioPlayerImpl extends JFrame implements AudioPlayerGUI{
 		JButton playlistBtn = new JButton("Le mie playlist");
 		playlistBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				try {
+					scrollPane.showPlaylists();
+				} catch (ClassNotFoundException | IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
 		optionsPanel.add(playlistBtn);
@@ -91,6 +100,15 @@ public class AudioPlayerImpl extends JFrame implements AudioPlayerGUI{
 		optionsPanel.add(addBtn);
 		
 		JButton createBtn = new JButton("Crea playlist");
+		createBtn.addActionListener(e->{
+			createWindow.setVisible(true);
+			try {
+				scrollPane.showPlaylists();
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		});
 		optionsPanel.add(createBtn);
 		
 		JPanel panel = new JPanel();

@@ -30,7 +30,6 @@ public class LoginGUI extends JFrame{
 	private final JLabel nameLabel = new JLabel("Username: ");
 	private final JLabel pswdLabel = new JLabel("Password: ");
 	private final JButton login = new JButton("ACCEDI");
-	private final JButton newUser = new JButton("Nuovo?");
 	
 	private JTextField nameIn = new JTextField();
 	private JTextField pswdIn = new JTextField();
@@ -39,7 +38,7 @@ public class LoginGUI extends JFrame{
 	
 	public LoginGUI(){
 		
-		super("AudioPlayer Login");
+		super("Login");
 		body.setBorder(new EmptyBorder(10, 10, 10, 10));
 		
 		getContentPane().add(body, BorderLayout.CENTER);
@@ -59,7 +58,7 @@ public class LoginGUI extends JFrame{
 		pswdLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		downPanel.add(pswdIn);
 		pswdIn.setColumns(10);
-		footer.setBorder(new EmptyBorder(10, 40, 10, 40));
+		footer.setBorder(new EmptyBorder(10, 60, 10, 60));
 		getContentPane().add(footer, BorderLayout.SOUTH);
 		footer.setLayout(new BorderLayout(0, 0));
 		login.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -76,9 +75,7 @@ public class LoginGUI extends JFrame{
 				ex.getCause();
 			}
 		});
-		footer.add(login, BorderLayout.WEST);
-		newUser.setFont(new Font("Tahoma", Font.BOLD, 14));
-		footer.add(newUser, BorderLayout.EAST);
+		footer.add(login, BorderLayout.CENTER);
 		JRootPane root = SwingUtilities.getRootPane(login);
 		root.setDefaultButton(login);
 		pack();

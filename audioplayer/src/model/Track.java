@@ -47,7 +47,19 @@ public interface Track {
 	 */
 	void setFile(String path) throws UnsupportedAudioFileException, IOException;
 	
+	/**
+	 * 
+	 * @return the track duration in float
+	 */
 	Float getDuration();
-	
+	/**
+	 * 
+	 * @return the track ID
+	 */
+	String getID();
+	/**
+	 * 
+	 * @return a string containing this track infos
+	 */
 	String toString();
 }

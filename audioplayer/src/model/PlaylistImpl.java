@@ -1,14 +1,23 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 
-public class PlaylistImpl implements Playlist{
+public class PlaylistImpl implements Playlist, Serializable{
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3620295728810350543L;
 	
 	private String name;
-	private Set<Track> tracks = new TreeSet<>((t1, t2)-> t1.getName().compareTo(t2.getName()));
+	private List<Track> tracks;
+	
+	public PlaylistImpl(String name, List<Track> tracks){
+		this.name = name;
+		this.tracks = tracks;
+	}
 
 	@Override
 	public void addTrack(final Track track) {
@@ -34,8 +43,8 @@ public class PlaylistImpl implements Playlist{
 
 	@Override
 	public Track getTrack(int index) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return tracks.get(index);
 	}
 
 }

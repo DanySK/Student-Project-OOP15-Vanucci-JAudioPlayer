@@ -9,10 +9,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class FileHandler {
 	
@@ -43,9 +46,19 @@ public class FileHandler {
 		return new FileOutputStream(this.target+SEPARATOR+fileName);
 	}
 	
-	public boolean userExists(){
+	public static boolean userExists(String username, String password) throws FileNotFoundException, IOException{
 		
-		return this.target.exists();
+		try(BufferedReader br = new BufferedReader(new FileReader(new File(MAIN_DIR+SEPARATOR+"users.txt")))) {
+		    for(String line; (line = br.readLine()) != null; ) {
+		        if(line.contains("username: "+username) && line.contains("password: "+password)){
+		        	if(!new File(MAIN_DIR+SEPARATOR+username).exists()){
+		        		new File(MAIN_DIR+SEPARATOR+username).mkdir();
+		        	}
+		        	return true;
+		        }
+		    }
+		    return false;
+		}
 	}
 	
 	public boolean trackExists(String name){
@@ -62,6 +75,11 @@ public class FileHandler {
 	public List<File> getFiles(){
 		
 		return new ArrayList<>(Arrays.asList(target.listFiles()));
+	}
+	
+	public void deleteFile(String trackFile){
+		
+		new File(trackFile).delete();
 	}
 	/**
 	 * Creates the main directory for the app

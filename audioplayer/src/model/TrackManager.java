@@ -63,4 +63,8 @@ public class TrackManager {
 		
 //		writer.writeObject(current);
 	}
+	
+	public void removeTrack(String trackName){
+		handler.deleteFile(trackName+EXTENSION);
+	}
 }

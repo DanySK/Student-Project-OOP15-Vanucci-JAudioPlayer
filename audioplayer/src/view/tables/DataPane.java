@@ -15,13 +15,15 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import controller.OptionsManager;
 
-public class TablesPane extends JScrollPane{
+public class DataPane extends JScrollPane{
 
 	/**
 	 * 
@@ -32,12 +34,12 @@ public class TablesPane extends JScrollPane{
 	private final JTable playlistsTable = new JTable();
 	private OptionsManager manager;
 	private Map<String, Float> tracksData = new HashMap<>();
+	private List<String> plData = new ArrayList<>();
 
-	public TablesPane(int vsbPolicy, int hsbPolicy, OptionsManager manager){
+	public DataPane(int vsbPolicy, int hsbPolicy, OptionsManager manager){
 		super(vsbPolicy, hsbPolicy);
 		tracksTable.setModel(createModel("Nome", "Durata"));
 		playlistsTable.setModel(createModel("Nome"));
-		playlistsTable.setEnabled(false);
 		this.manager = manager;
 	}
 	
@@ -50,13 +52,27 @@ public class TablesPane extends JScrollPane{
 		entrySet.addAll(tracksData.entrySet());
 		
 		for(Entry<String, Float> entry: entrySet){
-			Long duration = entry.getValue().longValue();
-			String strDuration = String.format("%d:%02d:%02d", duration / 3600,
-											(duration % 3600) / 60, (duration % 60));
-			String[] newRow = {entry.getKey(), strDuration};
+			String[] newRow = {entry.getKey(), formatDuration(entry.getValue())};
 			model.addRow(newRow);
 		}
 		setViewPort(this.tracksTable);
+	}
+	
+	public void showPlaylists() throws FileNotFoundException, ClassNotFoundException, IOException{
+		this.plData = this.manager.getPlaylists();
+		DefaultTableModel model = (DefaultTableModel) playlistsTable.getModel();
+		model.getDataVector().removeAllElements();
+		model.fireTableDataChanged();
+		for(String playlist: plData){
+			model.addRow(new String[]{playlist});
+		}
+		setViewPort(this.playlistsTable);
+	}
+	
+	private String formatDuration(Float duration){
+		Long lDuration = duration.longValue();
+		return String.format("%d:%02d:%02d", lDuration / 3600,
+										(lDuration % 3600) / 60, (lDuration % 60));
 	}
 	
 	private void setViewPort(JTable toView){

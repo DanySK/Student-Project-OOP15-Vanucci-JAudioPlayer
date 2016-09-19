@@ -1,4 +1,4 @@
-package view.login;
+package view.create;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -23,7 +23,7 @@ import java.awt.GridLayout;
 import java.io.File;
 import java.awt.FlowLayout;
 
-public class AddTrack extends JDialog{
+public class TrackAdder extends JDialog{
 
 	/**
 	 * 
@@ -43,7 +43,7 @@ public class AddTrack extends JDialog{
 	private final JButton add = new JButton("AGGIUNGI");
 	private final JButton chooser = new JButton("Scegli file");
 	
-	public AddTrack(OptionsManager manager){
+	public TrackAdder(OptionsManager manager){
 //		this.setDefaultCloseOperation(JDialog.EXIT_ON_CLOSE);
 		this.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
 		this.setSize(350, 224);
@@ -58,7 +58,6 @@ public class AddTrack extends JDialog{
 		nameLabel.setFont(new Font("Tahoma", Font.BOLD, 14));
 		upPanel.add(nameIn);
 		nameIn.setColumns(10);
-		
 		body.add(downPanel);
 		downPanel.setLayout(new BoxLayout(downPanel, BoxLayout.X_AXIS));
 		chooser.setHorizontalAlignment(SwingConstants.LEFT);
