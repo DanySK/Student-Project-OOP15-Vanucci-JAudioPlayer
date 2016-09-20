@@ -2,7 +2,6 @@ package view.create;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -16,19 +15,15 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import java.awt.Font;
 import javax.swing.border.EmptyBorder;
-import javax.swing.filechooser.FileFilter;
 
-import controller.OptionsManager;
-import javax.swing.BoxLayout;
+import controller.DataManager;
 import javax.swing.DefaultListModel;
 
 import java.awt.GridLayout;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.TreeSet;
-import java.awt.FlowLayout;
 import javax.swing.JScrollPane;
 
 public class PlaylistAdder extends JDialog{
@@ -50,7 +45,7 @@ public class PlaylistAdder extends JDialog{
 	
 	private final JButton add = new JButton("AGGIUNGI");
 	
-	public PlaylistAdder(OptionsManager manager){
+	public PlaylistAdder(DataManager manager){
 //		this.setDefaultCloseOperation(JDialog.EXIT_ON_CLOSE);
 		this.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
 		this.setSize(350, 224);

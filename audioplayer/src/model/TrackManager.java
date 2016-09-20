@@ -20,13 +20,13 @@ public class TrackManager {
 	private static final String SEPARATOR = System.getProperty("file.separator");
 	private static final String TRACKS_DIR = "Tracks";
 	private static final String EXTENSION = ".dat";
-	private FileHandler handler;
+	private FileHandlerImpl handler;
 	private String tracksPath;
 	
 	public TrackManager(String username){
 		
-		this.tracksPath = FileHandler.getDir()+SEPARATOR+username+SEPARATOR+TRACKS_DIR;
-		handler = new FileHandler(this.tracksPath);
+		this.tracksPath = FileHandlerImpl.getDir()+SEPARATOR+username+SEPARATOR+TRACKS_DIR;
+		handler = new FileHandlerImpl(this.tracksPath);
 	}
 	
 	public Track retrieve(String trackName) throws FileNotFoundException, IOException, ClassNotFoundException{

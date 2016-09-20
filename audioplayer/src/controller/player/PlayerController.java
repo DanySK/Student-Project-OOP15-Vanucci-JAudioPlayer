@@ -13,6 +13,9 @@ import javax.sound.sampled.LineListener;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
+import controller.DataManager;
+import model.Playlist;
+
 public class PlayerController implements LineListener {
 	private static final int SECONDS_IN_HOUR = 60 * 60;
 	private static final int SECONDS_IN_MINUTE = 60;
@@ -25,11 +28,11 @@ public class PlayerController implements LineListener {
 	/**
 	 * this flag indicates whether the playback is stopped or not.
 	 */
-	private boolean isStopped = true;
-
-	private boolean isPaused = false;
+	private boolean isStopped = true, isPaused = false;
 
 	private Clip audioClip;
+	private Playlist playing = null;
+	private int currentInPL = 0;
 
 	/**
 	 * Load audio file before playing back
@@ -57,6 +60,11 @@ public class PlayerController implements LineListener {
 		audioClip.addLineListener(this);
 
 		audioClip.open(audioStream);
+	}
+	
+	public void setupPlaylist(String plName, DataManager manager){
+		this.playing = manager.getPlaylist(plName);
+		this.currentInPL = 0;
 	}
 	
 	public long getClipSecondLength() {

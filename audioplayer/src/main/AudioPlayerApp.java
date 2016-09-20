@@ -1,20 +1,17 @@
 package main;
 
-import java.io.IOException;
-
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-import controller.user.UserHandler;
-import model.FileHandler;
-import view.AudioPlayerImpl;
-import view.login.LoginGUI;
+import controller.user.LoginControllerImpl;
+import model.FileHandlerImpl;
+import view.login.LoginImpl;
 
 public class AudioPlayerApp {
 
 	public static void main(String[] args){
 		
-		FileHandler.makeDir();
+		FileHandlerImpl.makeDir();
 		
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -26,7 +23,8 @@ public class AudioPlayerApp {
 			
 			@Override
 			public void run() {
-				new LoginGUI().initializeGUI();
+//				new LoginImpl().initializeGUI();
+				new LoginControllerImpl().initializeView();
 			}
 		});
 	}

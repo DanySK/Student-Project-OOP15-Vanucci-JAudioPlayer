@@ -1,6 +1,7 @@
 package model;
 
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
@@ -17,7 +18,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class FileHandler {
+public class FileHandlerImpl {
 	
 	private static final String HOME = System.getProperty("user.home");
 	private static final String SEPARATOR = System.getProperty("file.separator");
@@ -26,7 +27,7 @@ public class FileHandler {
 	
 	private File target;
 	
-	public FileHandler(String userPath){
+	public FileHandlerImpl(String userPath){
 		
 		this.target = new File(userPath);
 	}
@@ -46,9 +47,9 @@ public class FileHandler {
 		return new FileOutputStream(this.target+SEPARATOR+fileName);
 	}
 	
-	public static boolean userExists(String username, String password) throws FileNotFoundException, IOException{
+	public boolean userExists(String username, String password) throws FileNotFoundException, IOException{
 		
-		try(BufferedReader br = new BufferedReader(new FileReader(new File(MAIN_DIR+SEPARATOR+"users.txt")))) {
+		try(BufferedReader br = new BufferedReader(new InputStreamReader(getFile(MAIN_DIR+SEPARATOR+"users.txt")))) {
 		    for(String line; (line = br.readLine()) != null; ) {
 		        if(line.contains("username: "+username) && line.contains("password: "+password)){
 		        	if(!new File(MAIN_DIR+SEPARATOR+username).exists()){

@@ -7,21 +7,15 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeSet;
-import java.awt.Component;
-import java.awt.Point;
 import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-import controller.OptionsManager;
+import controller.DataManager;
 
 public class DataPane extends JScrollPane{
 
@@ -30,16 +24,22 @@ public class DataPane extends JScrollPane{
 	 */
 	private static final long serialVersionUID = 6812705252648054415L;
 	
+	private static final String[] TRACK_COLUMNS = {"Nome", "Durata"};
+	private static final String[] PLAYLIST_COLUMNS = {"Nome"};
+	private static final String TRACKSTABLE_ID = "Tracks";
+	private static final String PLTABLE_ID = "Playlists";
+	
 	private final JTable tracksTable = new JTable();
 	private final JTable playlistsTable = new JTable();
-	private OptionsManager manager;
+	private DataManager manager;
 	private Map<String, Float> tracksData = new HashMap<>();
 	private List<String> plData = new ArrayList<>();
+	private String currView;
 
-	public DataPane(int vsbPolicy, int hsbPolicy, OptionsManager manager){
+	public DataPane(int vsbPolicy, int hsbPolicy, DataManager manager){
 		super(vsbPolicy, hsbPolicy);
-		tracksTable.setModel(createModel("Nome", "Durata"));
-		playlistsTable.setModel(createModel("Nome"));
+		tracksTable.setModel(createModel(TRACK_COLUMNS));
+		playlistsTable.setModel(createModel(PLAYLIST_COLUMNS));
 		this.manager = manager;
 	}
 	
@@ -55,7 +55,8 @@ public class DataPane extends JScrollPane{
 			String[] newRow = {entry.getKey(), formatDuration(entry.getValue())};
 			model.addRow(newRow);
 		}
-		setViewPort(this.tracksTable);
+//		setViewPort(this.tracksTable);
+		setCurrentView(TRACKSTABLE_ID);
 	}
 	
 	public void showPlaylists() throws FileNotFoundException, ClassNotFoundException, IOException{
@@ -66,7 +67,8 @@ public class DataPane extends JScrollPane{
 		for(String playlist: plData){
 			model.addRow(new String[]{playlist});
 		}
-		setViewPort(this.playlistsTable);
+//		setViewPort(this.playlistsTable);
+		setCurrentView(PLTABLE_ID);
 	}
 	
 	private String formatDuration(Float duration){
@@ -75,9 +77,9 @@ public class DataPane extends JScrollPane{
 										(lDuration % 3600) / 60, (lDuration % 60));
 	}
 	
-	private void setViewPort(JTable toView){
-		this.setViewportView(toView);
-	}
+//	private void setViewPort(JTable toView){
+//		this.setViewportView(toView);
+//	}
 	
 	private DefaultTableModel createModel(String... strings){
 		DefaultTableModel model = new DefaultTableModel(){
@@ -96,6 +98,22 @@ public class DataPane extends JScrollPane{
 		columnList.forEach(e-> model.addColumn(e));
 		
 		return model;
+	}
+	
+	public String getCurrentView(){
+		return new String(this.currView);
+	}
+	
+	private void setCurrentView(String viewID){
+		this.currView = viewID;
+		switch (viewID){
+			case TRACKSTABLE_ID: 
+				this.setViewportView(this.tracksTable);
+				break;
+			case PLTABLE_ID:
+				this.setViewportView(this.playlistsTable);
+				break;
+		}
 	}
 	
 	public void setAdapter(MouseAdapter adapter){

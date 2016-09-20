@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.TimeZone;
 
 import javax.sound.sampled.Clip;
@@ -24,7 +25,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
-import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
 import controller.player.PlayerController;
@@ -55,6 +55,7 @@ public class Player extends JPanel implements ActionListener {
 	private JButton buttonNext = new JButton("");
 	
 	private JSlider sliderTime = new JSlider();
+	private List<String> plInfos;
 	
 	// Icons used for buttons
 	private ImageIcon iconPlay = new ImageIcon(getClass().getResource(
@@ -153,6 +154,10 @@ public class Player extends JPanel implements ActionListener {
 				}
 			}
 		}
+	}
+	
+	public void runPlaylist(String plName){
+		
 	}
 
 	public void openFile(String currentTrack, String filePath) {
@@ -298,7 +303,6 @@ public class Player extends JPanel implements ActionListener {
 						pauseTime += 100;
 					}
 				} catch (InterruptedException ex) {
-					ex.printStackTrace();
 					if (isReset) {
 						slider.setValue(0);
 						labelRecordTime.setText("00:00:00");

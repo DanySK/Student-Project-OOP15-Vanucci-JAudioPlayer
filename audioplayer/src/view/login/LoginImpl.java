@@ -13,12 +13,13 @@ import javax.swing.SwingUtilities;
 import java.awt.Font;
 import javax.swing.border.EmptyBorder;
 
-import controller.user.UserHandler;
+import controller.user.LoginControllerImpl;
 import view.AudioPlayerImpl;
 import javax.swing.BoxLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionListener;
 
-public class LoginGUI extends JFrame{
+public class LoginImpl extends JFrame implements LoginGUI{
 
 	/**
 	 * 
@@ -36,7 +37,7 @@ public class LoginGUI extends JFrame{
 	private final JPanel upPanel = new JPanel();
 	private final JPanel downPanel = new JPanel();
 	
-	public LoginGUI(){
+	public LoginImpl(){
 		
 		super("Login");
 		body.setBorder(new EmptyBorder(10, 10, 10, 10));
@@ -62,19 +63,6 @@ public class LoginGUI extends JFrame{
 		getContentPane().add(footer, BorderLayout.SOUTH);
 		footer.setLayout(new BorderLayout(0, 0));
 		login.setFont(new Font("Tahoma", Font.BOLD, 14));
-		login.addActionListener(e-> {
-			try {
-				UserHandler.setUserAndPswd(nameIn.getText(), pswdIn.getText());
-				new AudioPlayerImpl().initialize();
-				this.dispose();
-			} catch (IllegalArgumentException e1) {
-				JOptionPane.showMessageDialog(this, "Username o password errati", "Login failed", JOptionPane.ERROR_MESSAGE);
-			} catch(Exception ex){
-				JOptionPane.showMessageDialog(this, "Qualcosa è andato storto...", "Login failed", JOptionPane.ERROR_MESSAGE);
-				ex.printStackTrace();
-				ex.getCause();
-			}
-		});
 		footer.add(login, BorderLayout.CENTER);
 		JRootPane root = SwingUtilities.getRootPane(login);
 		root.setDefaultButton(login);
@@ -82,8 +70,34 @@ public class LoginGUI extends JFrame{
 		this.setLocationRelativeTo(null);
 	}
 	
+	@Override
 	public void initializeGUI(){
-		
 		this.setVisible(true);
+	}
+	
+	@Override
+	public void addActionListener(ActionListener buttonListener) {
+		login.addActionListener(buttonListener);
+		
+	}
+	
+	@Override
+	public String getLoginName(){
+		return new String(nameIn.getText());
+	}
+	
+	@Override
+	public String getLoginPswd(){
+		return new String(pswdIn.getText());
+	}
+	
+	@Override
+	public void close(){
+		this.dispose();
+	}
+	
+	@Override
+	public void showErrorMessage(String title, String content){
+		JOptionPane.showMessageDialog(this, content, title, JOptionPane.ERROR_MESSAGE);
 	}
 }

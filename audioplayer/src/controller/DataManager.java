@@ -18,7 +18,7 @@ import model.Track;
 import model.TrackImpl;
 import model.TrackManager;
 
-public class OptionsManager {
+public class DataManager {
 
 	private TrackManager trackManager;
 	private PlaylistManager plManager;
@@ -26,7 +26,7 @@ public class OptionsManager {
 	private List<Playlist> userPlaylists;
 	private String lastPath;
 	
-	public OptionsManager(String username){
+	public DataManager(String username){
 		
 		this.trackManager = new TrackManager(username);
 		this.plManager = new PlaylistManager(username);
@@ -40,10 +40,6 @@ public class OptionsManager {
 	
 	public void createPlaylist(String plName, List<String> trackNames) throws FileNotFoundException, ClassNotFoundException, IOException{
 		plManager.create(plName, trackNames);
-	}
-	
-	private Track getTrack(String trackName) throws FileNotFoundException, ClassNotFoundException, IOException{
-		return trackManager.retrieve(trackName);
 	}
 	
 	public Map<String, Float> getTracks() throws FileNotFoundException, ClassNotFoundException, IOException{
@@ -105,6 +101,15 @@ public class OptionsManager {
 			return fileChooser.getSelectedFile().getAbsolutePath();
 		}
 		
+		return null;
+	}
+	
+	public Playlist getPlaylist(String plName){
+		for(Playlist pl: userPlaylists){
+			if(pl.getName().equals(plName)){
+				return pl;
+			}
+		}
 		return null;
 	}
 }

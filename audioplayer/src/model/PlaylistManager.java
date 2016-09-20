@@ -16,14 +16,14 @@ public class PlaylistManager {
 	private static final String PLAYLISTS_DIR = "Playlists";
 	private static final String EXTENSION = ".dat";
 	private TrackManager trackManager;
-	private FileHandler handler;
+	private FileHandlerImpl handler;
 	private String plPath;
 	
 	public PlaylistManager(String username){
 		
-		this.plPath = FileHandler.getDir()+SEPARATOR+username+SEPARATOR+PLAYLISTS_DIR;
+		this.plPath = FileHandlerImpl.getDir()+SEPARATOR+username+SEPARATOR+PLAYLISTS_DIR;
 		trackManager = new TrackManager(username);
-		handler = new FileHandler(this.plPath);
+		handler = new FileHandlerImpl(this.plPath);
 	}
 	
 	public Playlist retrieve(String plName) throws FileNotFoundException, IOException, ClassNotFoundException{
