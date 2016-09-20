@@ -4,13 +4,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-
-import javax.swing.JOptionPane;
-
-import model.FileHandlerImpl;
 import model.user.User;
-import model.user.UserImpl;
-import view.AudioPlayerImpl;
+import model.user.UserManager;
+import model.user.UserManagerImpl;
 import view.login.LoginGUI;
 import view.login.LoginImpl;
 
@@ -18,32 +14,30 @@ public class LoginControllerImpl implements LoginController{
 
 	private LoginGUI loginView;
 	private User currentUser;
-	private FileHandlerImpl fileHandler;
+	private UserManager manager;
 	
 	public LoginControllerImpl(){
 		this.loginView = new LoginImpl();
-		this.currentUser = new UserImpl();
-		this.fileHandler = new FileHandlerImpl();
-		loginView.addActionListener(new LoginListener());
+		this.manager = new UserManagerImpl();
 	}
 	
 	@Override
 	public void initializeView(){
 		this.loginView.initializeGUI();
+		loginView.addActionListener(new LoginListener());
 	}
 	
 	@Override
 	public void setUserAndPswd(String username, String password) throws FileNotFoundException, IOException{
 		if(checkUser(username, password)){
-			currentUser.setUsername(username);
-			currentUser.setPassword(password);
+			this.currentUser = manager.setUser(username, password);
 		}else
 			throw new IllegalArgumentException();
 	}
 	
 	@Override
 	public boolean checkUser(String username, String password) throws FileNotFoundException, IOException{
-		return FileHandlerImpl.userExists(username, password);
+		return manager.userExists(username, password);
 	}
 	
 	private class LoginListener implements ActionListener{
@@ -58,6 +52,7 @@ public class LoginControllerImpl implements LoginController{
 				loginView.showErrorMessage("Login fallito", "Username o password errati");
 			} catch(Exception ex){
 				loginView.showErrorMessage("Login fallito", "Qualcosa è andato storto...");
+				ex.printStackTrace();
 			}
 		}
 	}

@@ -5,13 +5,12 @@ import javax.swing.UIManager;
 
 import controller.user.LoginControllerImpl;
 import model.FileHandlerImpl;
-import view.login.LoginImpl;
 
 public class AudioPlayerApp {
 
 	public static void main(String[] args){
 		
-		FileHandlerImpl.makeDir();
+		new FileHandlerImpl().makeMainDir();
 		
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
