@@ -1,5 +1,8 @@
 package controller.audioplayer;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import model.PlaylistManager;
 import model.TrackManager;
 import model.user.User;
@@ -22,7 +25,16 @@ public class APControllerImpl {
 		this.mainView.initialize();
 	}
 	
+	public void initializeButtons(){
+		
+	}
+	
 	private class OptionsListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			
+		}
 		
 	}
 }
