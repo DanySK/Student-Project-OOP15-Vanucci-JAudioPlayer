@@ -35,7 +35,7 @@ public class APControllerImpl {
 	
 	public void initializeView(){
 		ActionListener[] listeners = new ActionListener[]{new ShowTracksListener(), new ShowPLListener(),
-				new TrackAdderListener()};
+				new TrackAdderListener(), new PLAdderListener()};
 		this.mainView.addListeners(listeners);
 		resetTracks();
 		this.mainView.initialize();
@@ -78,6 +78,14 @@ public class APControllerImpl {
 				addCtrl.showTrackAdder();
 				System.out.println("Resetto le tracce");
 				resetTracks();
+		}
+	}
+	
+	private class PLAdderListener implements ActionListener{
+		
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+				addCtrl.showPLAdder();
 		}
 	}
 }

@@ -20,8 +20,10 @@ import controller.DataController;
 import javax.swing.DefaultListModel;
 
 import java.awt.GridLayout;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import javax.swing.JScrollPane;
@@ -40,13 +42,13 @@ public class PlaylistAdder extends JDialog{
 	
 	private final JLabel nameLabel = new JLabel("Nome Playlist: ");
 	
+	private DefaultListModel<String> listModel;
+	
 	private JTextField nameIn = new JTextField();
 	private JList<String> tracks;
-	
 	private final JButton add = new JButton("AGGIUNGI");
 	
 	public PlaylistAdder(){
-//		this.setDefaultCloseOperation(JDialog.EXIT_ON_CLOSE);
 		this.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
 		this.setSize(350, 224);
 		body.setBorder(new EmptyBorder(10, 10, 10, 10));
@@ -69,44 +71,23 @@ public class PlaylistAdder extends JDialog{
 		getContentPane().add(footer, BorderLayout.SOUTH);
 		footer.setLayout(new BorderLayout(0, 0));
 		add.setFont(new Font("Tahoma", Font.BOLD, 14));
-		DefaultListModel<String> listModel = new DefaultListModel<>();
-//		try {
-//			Set<String> trackNames = new TreeSet<>((s1, s2)-> s1.compareTo(s2));
-//			trackNames.addAll(manager.getTracks().keySet());
-//			for(String name: trackNames){
-//				System.out.println(name);
-//				listModel.addElement(name);
-//			}
-//		} catch (ClassNotFoundException | IOException e1) {
-//			// TODO Auto-generated catch block
-//			e1.printStackTrace();
-//		}
+		listModel = new DefaultListModel<>();
 		downPanel.setLayout(new BorderLayout());
 		tracks = new JList<String>(listModel);
 		downPanel.add(new JScrollPane(tracks));
-		
-//		add.addActionListener(e-> {
-//			if(nameIn.getText().trim().length() > 0){
-//				try {
-//					manager.createPlaylist(nameIn.getText(), new ArrayList<>(tracks.getSelectedValuesList()));
-//					JOptionPane.showMessageDialog(this, "La playlist è stata salvata correttamente", "Playlist salvata", JOptionPane.INFORMATION_MESSAGE);
-//					setVisible(false);
-//				} catch(IllegalArgumentException se){
-//					JOptionPane.showMessageDialog(this, "Esiste già una playlist con questo nome", "Creazione playlist fallita", JOptionPane.ERROR_MESSAGE);
-//				}catch (Exception e1) {
-//					JOptionPane.showMessageDialog(null, "Controlla i dati inseriti o riprova", "Qualcosa è andato storto", JOptionPane.ERROR_MESSAGE);
-//					e1.printStackTrace();
-//				}
-//			}
-//			else{
-//				JOptionPane.showMessageDialog(null, "Inserisci un nome per la playlist", "Dati non validi", JOptionPane.ERROR_MESSAGE);
-//			}
-//		});
 		footer.add(add, BorderLayout.WEST);
 		JRootPane root = SwingUtilities.getRootPane(add);
 		setFont(new Font("Tahoma", Font.BOLD, 14));
 		root.setDefaultButton(add);
 		this.setLocationRelativeTo(null);
+	}
+	
+	public String getInputName(){
+		return nameIn.getText();
+	}
+	
+	public List<String> getSelected(){
+		return new ArrayList<>(tracks.getSelectedValuesList());
 	}
 	
 	@Override
@@ -123,7 +104,22 @@ public class PlaylistAdder extends JDialog{
 	     return;
 	}
 	
+	public void refreshList(List<String> trackNames){
+		listModel.clear();
+		for(String name: trackNames){
+			listModel.addElement(name);
+		}
+	}
+	
+	public void setButtons(ActionListener add){
+		this.add.addActionListener(add);
+	}
+	
 	private void reset(){
 		this.nameIn.setText("");
+	}
+
+	public void showMessage(String title, String message) {
+		JOptionPane.showMessageDialog(this, message, title, JOptionPane.ERROR_MESSAGE);
 	}
 }

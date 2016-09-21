@@ -25,16 +25,15 @@ import model.Track;
 import model.TrackImpl;
 import model.TrackManager;
 import model.user.User;
+import view.tables.DataPane;
 
 public class DataController {
 
 	private TrackManager trackManager;
 	private PlaylistManager plManager;
-	private Set<Track> userTracks;
-	private Set<Playlist> userPlaylists;
-	private JScrollPane dataPane;
+	private DataPane dataPane;
 	
-	public DataController(TrackManager trackManager, PlaylistManager plManager, JScrollPane dataPane){
+	public DataController(TrackManager trackManager, PlaylistManager plManager, DataPane dataPane){
 		this.trackManager = trackManager;
 		this.plManager = plManager;
 		this.dataPane = dataPane;
@@ -49,42 +48,46 @@ public class DataController {
 //	public void createPlaylist(String plName, List<String> trackNames) throws FileNotFoundException, ClassNotFoundException, IOException{
 //		plManager.create(plName, trackNames);
 //	}
+//	
+//	public void showTracks(){
+//		
+//	}
 	
 	public Map<String, Float> getTracks() throws FileNotFoundException, ClassNotFoundException, IOException{
 		Set<Track> sorted = new TreeSet<>((t1, t2)->t1.getName().compareTo(t2.getName()));
 		System.out.println(sorted.toString());
 		sorted.addAll(trackManager.retrieveAll());
-		this.userTracks = sorted;
 		Map<String, Float> retMap = new HashMap<>();
-		userTracks.forEach(e-> retMap.put(e.getName(), e.getDuration()));
+		sorted.forEach(e-> retMap.put(e.getName(), e.getDuration()));
 		return retMap;
 	}
 	
 	public List<String> getPlaylists() throws FileNotFoundException, ClassNotFoundException, IOException{
 		Set<Playlist> sorted = new TreeSet<>((t1, t2)->t1.getName().compareTo(t2.getName()));
 		sorted.addAll(plManager.retrieveAll());
+		System.out.println(sorted.toString());
 		List<String> retList = new ArrayList<>();
-		userPlaylists.forEach(e->retList.add(e.getName()));
+		sorted.forEach(e->retList.add(e.getName()));
 		return retList;
 	}
 	
-	public String getTrackPath(String trackName){
-		String retString = null;
-		for(Track track: userTracks){
-			if(track.getName().equals(trackName))
-				retString = track.getFilePath();
-		}
-		return retString;
-	}
+//	public String getTrackPath(String trackName){
+//		String retString = null;
+//		for(Track track: userTracks){
+//			if(track.getName().equals(trackName))
+//				retString = track.getFilePath();
+//		}
+//		return retString;
+//	}
 	
-	public Playlist getPlaylist(String plName){
-		for(Playlist pl: userPlaylists){
-			if(pl.getName().equals(plName)){
-				return pl;
-			}
-		}
-		return null;
-	}
+//	public Playlist getPlaylist(String plName){
+//		for(Playlist pl: userPlaylists){
+//			if(pl.getName().equals(plName)){
+//				return pl;
+//			}
+//		}
+//		return null;
+//	}
 	
 	private class DoubleClickAdapter extends MouseAdapter{
 	
@@ -96,12 +99,12 @@ public class DataController {
 		    if (me.getClickCount() == 2) {
 		    	String current = dataPane.getCurrentView();
 		        String selected = (String) table.getValueAt(row, 0);
-		       if(current.equals("Playlists")){
-		           	
-		           }else{
-		            	player.openFile(selected, manager.getTrackPath(selected));
-		            }
-		            
+//		       if(current.equals("Playlists")){
+//		           	
+//		           }else{
+//		            	player.openFile(selected, manager.getTrackPath(selected));
+//		            }
+//		            
 		        }
 			}
 		}

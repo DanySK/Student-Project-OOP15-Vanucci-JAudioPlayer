@@ -17,7 +17,7 @@ import javax.swing.table.DefaultTableModel;
 
 import controller.DataController;
 
-public class DataPaneImpl extends JScrollPane{
+public class DataPaneImpl extends JScrollPane implements DataPane{
 
 	/**
 	 * 
@@ -31,8 +31,6 @@ public class DataPaneImpl extends JScrollPane{
 	
 	private final JTable tracksTable = new JTable();
 	private final JTable playlistsTable = new JTable();
-	private Map<String, Float> tracksData = new HashMap<>();
-	private List<String> plData = new ArrayList<>();
 	private String currView;
 
 	public DataPaneImpl(int vsbPolicy, int hsbPolicy){
@@ -41,15 +39,12 @@ public class DataPaneImpl extends JScrollPane{
 		playlistsTable.setModel(createModel(PLAYLIST_COLUMNS));
 	}
 	
+	@Override
 	public void showTracks(Map<String, Float> tracksInfos) throws FileNotFoundException, ClassNotFoundException, IOException{
-		this.tracksData = tracksInfos;
 		DefaultTableModel model = (DefaultTableModel) tracksTable.getModel();
 		model.getDataVector().removeAllElements();
 		model.fireTableDataChanged();
-		Set<Entry<String, Float>> entrySet = new TreeSet<>((e1, e2)-> e1.getKey().compareTo(e2.getKey()));
-		entrySet.addAll(tracksData.entrySet());
-		
-		for(Entry<String, Float> entry: entrySet){
+		for(Entry<String, Float> entry: tracksInfos.entrySet()){
 			String[] newRow = {entry.getKey(), formatDuration(entry.getValue())};
 			model.addRow(newRow);
 		}
@@ -57,12 +52,12 @@ public class DataPaneImpl extends JScrollPane{
 		setCurrentView(TRACKSTABLE_ID);
 	}
 	
+	@Override
 	public void showPlaylists(List<String> plInfos) throws FileNotFoundException, ClassNotFoundException, IOException{
-		this.plData = plInfos;
 		DefaultTableModel model = (DefaultTableModel) playlistsTable.getModel();
 		model.getDataVector().removeAllElements();
 		model.fireTableDataChanged();
-		for(String playlist: plData){
+		for(String playlist: plInfos){
 			model.addRow(new String[]{playlist});
 		}
 //		setViewPort(this.playlistsTable);
@@ -98,6 +93,7 @@ public class DataPaneImpl extends JScrollPane{
 		return model;
 	}
 	
+	@Override
 	public String getCurrentView(){
 		return new String(this.currView);
 	}
@@ -114,6 +110,7 @@ public class DataPaneImpl extends JScrollPane{
 		}
 	}
 	
+	@Override
 	public void setAdapter(MouseAdapter adapter){
 		this.tracksTable.addMouseListener(adapter);
 		this.playlistsTable.addMouseListener(adapter);

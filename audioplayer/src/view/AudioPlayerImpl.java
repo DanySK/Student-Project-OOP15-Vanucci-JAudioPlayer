@@ -9,6 +9,7 @@ import view.create.PlaylistAdder;
 import view.create.TrackAdder;
 import view.player.Player;
 import view.tables.DataPane;
+import view.tables.DataPaneImpl;
 
 import java.awt.BorderLayout;
 import java.awt.Point;
@@ -42,7 +43,7 @@ public class AudioPlayerImpl extends JFrame implements AudioPlayerGUI{
 	private Player player;
 	private TrackAdder trackAdder;
 	private PlaylistAdder plAdder;
-	private DataPane scrollPane;
+	private DataPaneImpl scrollPane;
 	
 	private JButton tracksBtn;
 	private JButton playlistBtn;
@@ -60,7 +61,7 @@ public class AudioPlayerImpl extends JFrame implements AudioPlayerGUI{
 		trackAdder = new TrackAdder();
 		plAdder = new PlaylistAdder();
 		
-		this.scrollPane = new DataPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		this.scrollPane = new DataPaneImpl(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 //		scrollPane.setAdapter(new DoubleClickAdapter());
 		tracksBtn = new JButton("Le mie Tracce");
 		optionsPanel.add(tracksBtn);
@@ -133,6 +134,7 @@ public class AudioPlayerImpl extends JFrame implements AudioPlayerGUI{
 		tracksBtn.addActionListener(listeners[0]);
 		playlistBtn.addActionListener(listeners[1]);
 		trkAddBtn.addActionListener(listeners[2]);
+		plAddBtn.addActionListener(listeners[3]);
 	}
 	
 	@Override
@@ -146,29 +148,9 @@ public class AudioPlayerImpl extends JFrame implements AudioPlayerGUI{
 	}
 	
 	@Override
-	public JScrollPane getDataPane() {
+	public DataPane getDataPane() {
 		return this.scrollPane;
 	}
-	
-//	private class DoubleClickAdapter extends MouseAdapter{
-		
-//		@Override
-//		public void mousePressed(MouseEvent me){
-//			JTable table =(JTable) me.getSource();
-//	        Point p = me.getPoint();
-//	        int row = table.rowAtPoint(p);
-//	        if (me.getClickCount() == 2) {
-//	        	String current = scrollPane.getCurrentView();
-//	            String selected = (String) table.getValueAt(row, 0);
-//	            if(current.equals("Playlists")){
-//	            	
-//	            }else{
-//	            	player.openFile(selected, manager.getTrackPath(selected));
-//	            }
-//	            
-//	        }
-//		}
-//	}
 	
 	@Override
 	public void showTrackAdder(){

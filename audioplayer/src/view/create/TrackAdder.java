@@ -146,4 +146,8 @@ public class TrackAdder extends JDialog{
 		this.add.addActionListener(add);
 		this.chooser.addActionListener(chooser);
 	}
+	
+	public void showMessage(String title, String message){
+		JOptionPane.showMessageDialog(this, message, title, JOptionPane.ERROR_MESSAGE);
+	}
 }
