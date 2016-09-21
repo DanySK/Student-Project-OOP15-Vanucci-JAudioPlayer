@@ -12,22 +12,22 @@ import java.util.Set;
 
 public class PlaylistManager {
 
-	private static final String SEPARATOR = System.getProperty("file.separator");
 	private static final String PLAYLISTS_DIR = "Playlists";
 	private static final String EXTENSION = ".dat";
-	private TrackManager trackManager;
+	
+	private String fileSeparator;
 	private FileHandlerImpl handler;
 	private String plPath;
 	
 	public PlaylistManager(String username){
 		
-		this.plPath = FileHandlerImpl.getDir()+SEPARATOR+username+SEPARATOR+PLAYLISTS_DIR;
-		trackManager = new TrackManager(username);
-		handler = new FileHandlerImpl(this.plPath);
+		handler = new FileHandlerImpl();
+		this.fileSeparator = handler.getSysSeparator();
+		this.plPath = username+fileSeparator+PLAYLISTS_DIR;
 	}
 	
 	public Playlist retrieve(String plName) throws FileNotFoundException, IOException, ClassNotFoundException{
-		ObjectInputStream reader = new ObjectInputStream(handler.getFile(plName+EXTENSION));
+		ObjectInputStream reader = new ObjectInputStream(handler.getFile(plPath+fileSeparator+plName+EXTENSION));
 		return (Playlist)reader.readObject();
 	}
 	
@@ -40,19 +40,19 @@ public class PlaylistManager {
 			boolean so = plDir.mkdir();
 			System.out.println(so);
 		}
-		for(File plFile : handler.getFiles()){
+		for(File plFile : handler.getFiles(plPath)){
 			userPlaylists.add(retrieve(plFile.getName().replace(EXTENSION, "")));
 		}
 		return userPlaylists;
 	}
 	
-	public void create(String name, List<String> trackNames) throws FileNotFoundException, ClassNotFoundException, IOException{
-		List<Track> tracksList = new ArrayList<>();
-		for(String track: trackNames){
-			tracksList.add(trackManager.retrieve(track));
-		}
-		Playlist newPlaylist = new PlaylistImpl(name, tracksList);
-		ObjectOutputStream writer = new ObjectOutputStream(handler.toFile(newPlaylist.getName()+EXTENSION));
-		writer.writeObject(newPlaylist);
-	}
+//	public void create(String name, List<String> trackNames) throws FileNotFoundException, ClassNotFoundException, IOException{
+//		List<Track> tracksList = new ArrayList<>();
+//		for(String track: trackNames){
+//			tracksList.add(trackManager.retrieve(track));
+//		}
+//		Playlist newPlaylist = new PlaylistImpl(name, tracksList);
+//		ObjectOutputStream writer = new ObjectOutputStream(handler.toFile(newPlaylist.getName()+EXTENSION));
+//		writer.writeObject(newPlaylist);
+//	}
 }

@@ -1,37 +1,30 @@
 package model;
 
-import java.io.EOFException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 
 public class TrackManager {
 
-	private static final String SEPARATOR = System.getProperty("file.separator");
 	private static final String TRACKS_DIR = "Tracks";
 	private static final String EXTENSION = ".dat";
-	private FileHandlerImpl handler;
+	
+	private List<Track> tracksList;
+	private String fileSeparator;
+	private ObjectHandler handler;
 	private String tracksPath;
 	
 	public TrackManager(String username){
-		
-		this.tracksPath = FileHandlerImpl.getDir()+SEPARATOR+username+SEPARATOR+TRACKS_DIR;
-		handler = new FileHandlerImpl(this.tracksPath);
+		handler = new ObjectHandler();
+		this.fileSeparator = handler.getSysSeparator();
+		this.tracksPath = username+fileSeparator+TRACKS_DIR;
 	}
 	
 	public Track retrieve(String trackName) throws FileNotFoundException, IOException, ClassNotFoundException{
-		ObjectInputStream reader = new ObjectInputStream(handler.getFile(trackName+EXTENSION));
-		return (Track)reader.readObject();
+		return (Track)handler.fileToObject(tracksPath+fileSeparator+trackName+EXTENSION);
 	}
 	
 	public List<Track> retrieveAll() throws FileNotFoundException, ClassNotFoundException, IOException{
@@ -43,28 +36,33 @@ public class TrackManager {
 			boolean so = tracksDir.mkdir();
 			System.out.println(so);
 		}
-		for(File trackFile : handler.getFiles()){
+		for(File trackFile : handler.getFiles(tracksPath)){
 			userTracks.add(retrieve(trackFile.getName().replace(EXTENSION, "")));
 		}
+		this.tracksList = userTracks;
 		return userTracks;
 	}
 	
-	public void addTrack(Track newTrack) throws FileNotFoundException, IOException, ClassNotFoundException{
-		if(handler.trackExists(newTrack.getName()+EXTENSION))
-			throw new IllegalArgumentException();
-		
-		ObjectOutputStream writer = new ObjectOutputStream(handler.toFile(newTrack.getName()+EXTENSION));
-		writer.writeObject(newTrack);
-//		Set<Track> current = new TreeSet<>(new SerializableComparator().compare(arg0, arg1));
-//		if(handler.exists()){
-//			current = retrieve();	
-//		}
-//		current.add(newTrack);
-		
-//		writer.writeObject(current);
+	public List<Track> getTracks(){
+		return new ArrayList<>(this.tracksList);
 	}
 	
-	public void removeTrack(String trackName){
-		handler.deleteFile(trackName+EXTENSION);
+	private boolean trackExists(String trackName){
+		for(Track track: this.tracksList){
+			if(track.getName().equals(trackName))
+				return true;
+		}
+		return false;
 	}
+	
+	public void addTrack(Track newTrack) throws FileNotFoundException, IOException, ClassNotFoundException{
+		if(trackExists(newTrack.getName()))
+			throw new IllegalArgumentException();
+		
+		handler.objectToFile(newTrack, tracksPath+fileSeparator+newTrack.getName()+EXTENSION);
+	}
+	
+//	public void removeTrack(String trackName){
+//		handler.deleteFile(trackName+EXTENSION);
+//	}
 }

@@ -22,7 +22,7 @@ public class FileHandlerImpl implements FileHandler{
 	
 	protected static final String HOME = System.getProperty("user.home");
 	protected static final String SEPARATOR = System.getProperty("file.separator");
-	private static final String MAIN_DIR = HOME+SEPARATOR+"AudioPlayer";
+	protected static final String MAIN_DIR = HOME+SEPARATOR+"AudioPlayer";
 
 	/**
 	 * 
@@ -42,6 +42,12 @@ public class FileHandlerImpl implements FileHandler{
 	}
 	
 	@Override
+	public List<File> getFiles(String dir) {
+		System.out.println(dir);
+		return Arrays.asList(new File(MAIN_DIR+SEPARATOR+dir).listFiles());
+	}
+	
+	@Override
 	public String getMainDir(){
 		return new String(MAIN_DIR+SEPARATOR);
 	}
@@ -53,5 +59,10 @@ public class FileHandlerImpl implements FileHandler{
 			
 			new File(MAIN_DIR).mkdir();
 		}
+	}
+	
+	@Override
+	public String getSysSeparator(){
+		return System.getProperty("file.separator");
 	}
 }

@@ -15,9 +15,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-import controller.DataManager;
+import controller.DataController;
 
-public class DataPane extends JScrollPane{
+public class DataPaneImpl extends JScrollPane{
 
 	/**
 	 * 
@@ -31,20 +31,18 @@ public class DataPane extends JScrollPane{
 	
 	private final JTable tracksTable = new JTable();
 	private final JTable playlistsTable = new JTable();
-	private DataManager manager;
 	private Map<String, Float> tracksData = new HashMap<>();
 	private List<String> plData = new ArrayList<>();
 	private String currView;
 
-	public DataPane(int vsbPolicy, int hsbPolicy, DataManager manager){
+	public DataPaneImpl(int vsbPolicy, int hsbPolicy){
 		super(vsbPolicy, hsbPolicy);
 		tracksTable.setModel(createModel(TRACK_COLUMNS));
 		playlistsTable.setModel(createModel(PLAYLIST_COLUMNS));
-		this.manager = manager;
 	}
 	
-	public void showTracks() throws FileNotFoundException, ClassNotFoundException, IOException{
-		this.tracksData = this.manager.getTracks();
+	public void showTracks(Map<String, Float> tracksInfos) throws FileNotFoundException, ClassNotFoundException, IOException{
+		this.tracksData = tracksInfos;
 		DefaultTableModel model = (DefaultTableModel) tracksTable.getModel();
 		model.getDataVector().removeAllElements();
 		model.fireTableDataChanged();
@@ -59,8 +57,8 @@ public class DataPane extends JScrollPane{
 		setCurrentView(TRACKSTABLE_ID);
 	}
 	
-	public void showPlaylists() throws FileNotFoundException, ClassNotFoundException, IOException{
-		this.plData = this.manager.getPlaylists();
+	public void showPlaylists(List<String> plInfos) throws FileNotFoundException, ClassNotFoundException, IOException{
+		this.plData = plInfos;
 		DefaultTableModel model = (DefaultTableModel) playlistsTable.getModel();
 		model.getDataVector().removeAllElements();
 		model.fireTableDataChanged();

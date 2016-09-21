@@ -13,7 +13,7 @@ import javax.sound.sampled.LineListener;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-import controller.DataManager;
+import controller.DataController;
 import model.Playlist;
 
 public class PlayerController implements LineListener {
@@ -62,7 +62,7 @@ public class PlayerController implements LineListener {
 		audioClip.open(audioStream);
 	}
 	
-	public void setupPlaylist(String plName, DataManager manager){
+	public void setupPlaylist(String plName, DataController manager){
 		this.playing = manager.getPlaylist(plName);
 		this.currentInPL = 0;
 	}

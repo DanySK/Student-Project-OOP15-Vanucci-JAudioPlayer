@@ -1,10 +1,10 @@
 package view;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.BoxLayout;
 
-import controller.DataManager;
-import controller.user.LoginControllerImpl;
+import controller.DataController;
 import view.create.PlaylistAdder;
 import view.create.TrackAdder;
 import view.player.Player;
@@ -15,6 +15,8 @@ import java.awt.Point;
 
 import javax.swing.JPanel;
 import javax.swing.JButton;
+import javax.swing.JDialog;
+
 import java.awt.CardLayout;
 
 import javax.swing.JTable;
@@ -22,6 +24,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
@@ -34,12 +38,16 @@ public class AudioPlayerImpl extends JFrame implements AudioPlayerGUI{
 	private static final long serialVersionUID = -659289932713557676L;
 	
 	private JPanel optionsPanel;
-	
-	private DataManager manager;
+
 	private Player player;
-	private TrackAdder addWindow;
-	private PlaylistAdder createWindow;
+	private TrackAdder trackAdder;
+	private PlaylistAdder plAdder;
 	private DataPane scrollPane;
+	
+	private JButton tracksBtn;
+	private JButton playlistBtn;
+	private JButton trkAddBtn;
+	private JButton plAddBtn;
 	
 	public AudioPlayerImpl(){
 		this.setTitle("AUDIO PLAYER APP");
@@ -49,101 +57,131 @@ public class AudioPlayerImpl extends JFrame implements AudioPlayerGUI{
 		optionsPanel.setBorder(new EmptyBorder(5, 2, 5, 2));
 		getContentPane().add(optionsPanel, BorderLayout.WEST);
 		optionsPanel.setLayout(new BoxLayout(optionsPanel, BoxLayout.Y_AXIS));
+		trackAdder = new TrackAdder();
+		plAdder = new PlaylistAdder();
 		
-		manager = new DataManager(LoginControllerImpl.getUsername());
-		addWindow = new TrackAdder(manager);
-		createWindow= new PlaylistAdder(manager);
-		
-		this.scrollPane = new DataPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED, manager);
-		scrollPane.setAdapter(new DoubleClickAdapter());
-		JButton tracksBtn = new JButton("Le mie Tracce");
-		tracksBtn.addActionListener(e->{
-			try {
-				scrollPane.showTracks();
-			} catch (Exception e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-		});
+		this.scrollPane = new DataPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+//		scrollPane.setAdapter(new DoubleClickAdapter());
+		tracksBtn = new JButton("Le mie Tracce");
 		optionsPanel.add(tracksBtn);
 		
-		JButton playlistBtn = new JButton("Le mie playlist");
-		playlistBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				try {
-					scrollPane.showPlaylists();
-				} catch (ClassNotFoundException | IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		});
+		playlistBtn = new JButton("Le mie playlist");
 		optionsPanel.add(playlistBtn);
 		
-		JButton addBtn = new JButton("Aggiungi brano");
-		addBtn.addActionListener(e-> {
-			
-			addWindow.setVisible(true);
-			try {
-				scrollPane.showTracks();
-			} catch (Exception e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-		});
-		optionsPanel.add(addBtn);
+		trkAddBtn = new JButton("Aggiungi brano");
+//		addBtn.addActionListener(e-> {
+//			
+//			addWindow.setVisible(true);
+//			try {
+//				scrollPane.showTracks();
+//			} catch (Exception e1) {
+//				// TODO Auto-generated catch block
+//				e1.printStackTrace();
+//			}
+//		});
+		optionsPanel.add(trkAddBtn);
 		
-		JButton createBtn = new JButton("Crea playlist");
-		createBtn.addActionListener(e->{
-			createWindow.setVisible(true);
-			try {
-				scrollPane.showPlaylists();
-			} catch (Exception e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-		});
-		optionsPanel.add(createBtn);
+		plAddBtn = new JButton("Crea playlist");
+//		createBtn.addActionListener(e->{
+//			createWindow.setVisible(true);
+//			try {
+//				scrollPane.showPlaylists();
+//			} catch (Exception e1) {
+//				// TODO Auto-generated catch block
+//				e1.printStackTrace();
+//			}
+//		});
+		optionsPanel.add(plAddBtn);
 		
 		JPanel panel = new JPanel();
 		getContentPane().add(panel, BorderLayout.CENTER);
 		panel.setLayout(new CardLayout(0, 0));
-		
-		try {
-			scrollPane.showTracks();
-		} catch (Exception e1){
-			e1.printStackTrace();
-		}
 		panel.add(scrollPane);
 		
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		pack();
-		setLocationRelativeTo(null);
 	}
 
 	@Override
 	public void initialize() {
-		this.setVisible(true);
+		pack();
+		setLocationRelativeTo(null);
+		setVisible(true);
 	}
 	
-	private class DoubleClickAdapter extends MouseAdapter{
-		
-		@Override
-		public void mousePressed(MouseEvent me){
-			JTable table =(JTable) me.getSource();
-	        Point p = me.getPoint();
-	        int row = table.rowAtPoint(p);
-	        if (me.getClickCount() == 2) {
-	        	String current = scrollPane.getCurrentView();
-	            String selected = (String) table.getValueAt(row, 0);
-	            if(current.equals("Playlists")){
-	            	
-	            }else{
-	            	player.openFile(selected, manager.getTrackPath(selected));
-	            }
-	            
-	        }
+	@Override
+	public void showTracks(Map<String, Float> tracksInfos){
+		try {
+			scrollPane.showTracks(tracksInfos);
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
+	}
+	
+	@Override
+	public void showPlaylists(List<String> plInfos){
+		try {
+			scrollPane.showPlaylists(plInfos);
+		} catch (ClassNotFoundException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void addListeners(ActionListener[] listeners){
+		tracksBtn.addActionListener(listeners[0]);
+		playlistBtn.addActionListener(listeners[1]);
+		trkAddBtn.addActionListener(listeners[2]);
+	}
+	
+	@Override
+	public TrackAdder getTrackAdder(){
+		return this.trackAdder;
+	}
+	
+	@Override
+	public PlaylistAdder getPLAdder(){
+		return this.plAdder;
+	}
+	
+	@Override
+	public JScrollPane getDataPane() {
+		return this.scrollPane;
+	}
+	
+//	private class DoubleClickAdapter extends MouseAdapter{
+		
+//		@Override
+//		public void mousePressed(MouseEvent me){
+//			JTable table =(JTable) me.getSource();
+//	        Point p = me.getPoint();
+//	        int row = table.rowAtPoint(p);
+//	        if (me.getClickCount() == 2) {
+//	        	String current = scrollPane.getCurrentView();
+//	            String selected = (String) table.getValueAt(row, 0);
+//	            if(current.equals("Playlists")){
+//	            	
+//	            }else{
+//	            	player.openFile(selected, manager.getTrackPath(selected));
+//	            }
+//	            
+//	        }
+//		}
+//	}
+	
+	@Override
+	public void showTrackAdder(){
+		trackAdder.setVisible(true);
+	}
+	
+	@Override
+	public void showPLAdder(){
+		plAdder.setVisible(true);
+	}
+
+	@Override
+	public void showErrorMessage(String title, String content){
+		JOptionPane.showMessageDialog(this, content, title, JOptionPane.ERROR_MESSAGE);
 	}
 }

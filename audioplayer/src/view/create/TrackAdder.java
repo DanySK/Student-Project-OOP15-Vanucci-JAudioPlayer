@@ -2,6 +2,7 @@ package view.create;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -13,9 +14,13 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import java.awt.Font;
 import javax.swing.border.EmptyBorder;
-import controller.DataManager;
+import javax.swing.filechooser.FileFilter;
+
+import controller.DataController;
 import javax.swing.BoxLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionListener;
+import java.io.File;
 
 public class TrackAdder extends JDialog{
 
@@ -37,8 +42,7 @@ public class TrackAdder extends JDialog{
 	private final JButton add = new JButton("AGGIUNGI");
 	private final JButton chooser = new JButton("Scegli file");
 	
-	public TrackAdder(DataManager manager){
-//		this.setDefaultCloseOperation(JDialog.EXIT_ON_CLOSE);
+	public TrackAdder(){
 		this.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
 		this.setSize(350, 224);
 		body.setBorder(new EmptyBorder(10, 10, 10, 10));
@@ -58,9 +62,6 @@ public class TrackAdder extends JDialog{
 		downPanel.add(chooser);
 		downPanel.add(showFile);
 		chooser.setFont(new Font("Tahoma", Font.BOLD, 14));
-		chooser.addActionListener(e->{
-			showFile.setText(manager.chooser());
-		});
 		chooser.setToolTipText("scegli File");
 		nameLabel.setFont(new Font("Tahoma", Font.BOLD, 14));
 		nameLabel.setHorizontalAlignment(SwingConstants.LEFT);
@@ -68,25 +69,6 @@ public class TrackAdder extends JDialog{
 		getContentPane().add(footer, BorderLayout.SOUTH);
 		footer.setLayout(new BorderLayout(0, 0));
 		add.setFont(new Font("Tahoma", Font.BOLD, 14));
-		add.addActionListener(e-> {
-			String trackName = nameIn.getText();
-			String fileName = showFile.getText();
-			
-			if(trackName.trim().length() > 0 && fileName.trim().length() > 0){
-				try {
-					manager.addTrack(fileName,trackName);
-					JOptionPane.showMessageDialog(this, "Il brano è stato salvato correttamente", "Brano aggiunto", JOptionPane.INFORMATION_MESSAGE);
-					setVisible(false);
-				} catch(IllegalArgumentException se){
-					JOptionPane.showMessageDialog(this, "Esiste già un brano con questo nome", "Aggiunta brano fallita", JOptionPane.ERROR_MESSAGE);
-				}catch (Exception e1) {
-					JOptionPane.showMessageDialog(null, "Controlla i dati inseriti o riprova", "Qualcosa è andato storto", JOptionPane.ERROR_MESSAGE);
-				}
-			}
-			else{
-				JOptionPane.showMessageDialog(null, "Inserisci un nome e seleziona un file", "Dati non validi", JOptionPane.ERROR_MESSAGE);
-			}
-		});
 		footer.add(add, BorderLayout.WEST);
 		JRootPane root = SwingUtilities.getRootPane(add);
 		setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -108,8 +90,60 @@ public class TrackAdder extends JDialog{
 	     return;
 	}
 	
+	public String chooseFile(String lastPath) {
+		System.out.println("FileChooser in avvio");
+		JFileChooser fileChooser = null;
+		
+		if (lastPath != null && !lastPath.equals("")) {
+			fileChooser = new JFileChooser(lastPath);
+		} else {
+			fileChooser = new JFileChooser();
+		}
+		
+		FileFilter wavFilter = new FileFilter() {
+			@Override
+			public String getDescription() {
+				return "Sound file (*.WAV)";
+			}
+
+			@Override
+			public boolean accept(File file) {
+				if (file.isDirectory()) {
+					return true;
+				} else {
+					return file.getName().toLowerCase().endsWith(".wav");
+				}
+			}
+		};
+
+		
+		fileChooser.setFileFilter(wavFilter);
+		fileChooser.setDialogTitle("Seleziona il file da aggiungere");
+		fileChooser.setAcceptAllFileFilterUsed(false);
+
+		int result = fileChooser.showOpenDialog(null);
+		if (result == JFileChooser.APPROVE_OPTION) {
+			lastPath = fileChooser.getSelectedFile().getParent();
+			this.showFile.setText(fileChooser.getSelectedFile().getAbsolutePath());
+		}
+		return lastPath;
+	}
+	
+	public String getInputName(){
+		return nameIn.getText();
+	}
+	
+	public String getChosenFile(){
+		return showFile.getText();
+	}
+	
 	private void reset(){
 		this.nameIn.setText("");
 		this.showFile.setText("");
+	}
+	
+	public void setButtons(ActionListener add, ActionListener chooser){
+		this.add.addActionListener(add);
+		this.chooser.addActionListener(chooser);
 	}
 }

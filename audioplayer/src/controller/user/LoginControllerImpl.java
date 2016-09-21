@@ -4,6 +4,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+
+import controller.audioplayer.APControllerImpl;
 import model.user.User;
 import model.user.UserManager;
 import model.user.UserManagerImpl;
@@ -46,8 +48,8 @@ public class LoginControllerImpl implements LoginController{
 			try {
 				setUserAndPswd(loginView.getLoginName(), loginView.getLoginPswd());
 				System.out.println("Logged as: "+currentUser.getUsername()+" using password "+currentUser.getPassword());
+				new APControllerImpl(currentUser).initializeView();
 				loginView.close();
-//				new AudioPlayerImpl().initialize();
 			} catch (IllegalArgumentException e1) {
 				loginView.showErrorMessage("Login fallito", "Username o password errati");
 			} catch(Exception ex){
