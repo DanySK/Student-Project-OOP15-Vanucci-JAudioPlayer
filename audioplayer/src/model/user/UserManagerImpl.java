@@ -9,21 +9,24 @@ import java.io.InputStreamReader;
 import model.FileHandler;
 import model.FileHandlerImpl;
 
-public class UserManagerImpl implements UserManager{
+public class UserManagerImpl{
 	
-	private final FileHandler handler = new FileHandlerImpl();
-	private User currentUser = new UserImpl();
+	private static User currentUser = new UserImpl();
 	
-	@Override
-	public User setUser(String username, String password){
+	private UserManagerImpl(){}
+	
+	public static void setUser(String username, String password){
 		currentUser.setUsername(username);
 		currentUser.setPassword(password);
+	}
+	
+	public static User getUser(){
 		return currentUser;
 	}
 	
-	@Override
-	public boolean userExists(String username, String password) throws FileNotFoundException, IOException{
+	public static boolean userExists(String username, String password) throws FileNotFoundException, IOException{
 		
+		FileHandler handler = new FileHandlerImpl();
 		try(BufferedReader br = new BufferedReader(new InputStreamReader(handler.getFile("users.txt")))) {
 			for(String line; (line = br.readLine()) != null; ) {
 				if(line.contains("username: "+username) && line.contains("password: "+password)){

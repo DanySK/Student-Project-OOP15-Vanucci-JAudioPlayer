@@ -7,18 +7,8 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.TimeZone;
 
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -27,35 +17,26 @@ import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.border.LineBorder;
 
-import controller.player.PlayerController;
-
-public class Player extends JPanel implements ActionListener {
+public class Player extends JPanel{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -6393401803900949981L;
 	
-	private PlayerController controller = new PlayerController();
-	private Thread playbackThread;
-	private TrackTimer timer;
-
-//	private boolean isPlaying = false;
-//	private boolean isPause = false;
+	private static final String NAMELABEL_MESSAGE = "In riproduzione: ";
 	
-	private String currentTrack;
-	private String audioFilePath;
+	private int queueLength;
 	
-	private JLabel labelFileName = new JLabel("In riproduzione:");
-	private JLabel labelTimeCounter = new JLabel("00:00:00");
-	private JLabel labelDuration = new JLabel("00:00:00");
+	private JLabel nameLabel = new JLabel(NAMELABEL_MESSAGE);
+	private JLabel timeCounterLabel = new JLabel("00:00:00");
+	private JLabel durationLabel = new JLabel("00:00:00");
 	
-	private JButton buttonPause = new JButton("");
-	private JButton buttonPlay = new JButton("");
-	private JButton buttonPrev = new JButton("");
-	private JButton buttonNext = new JButton("");
+	private JButton pauseBtn = new JButton("");
+	private JButton playBtn = new JButton("");
+	private JButton prevBtn = new JButton("");
+	private JButton nextBtn = new JButton("");
 	
-	private JSlider sliderTime = new JSlider();
-	private List<String> plInfos;
+	private JSlider timeSlider = new JSlider();
 	
 	// Icons used for buttons
 	private ImageIcon iconPlay = new ImageIcon(getClass().getResource(
@@ -78,268 +59,120 @@ public class Player extends JPanel implements ActionListener {
 		constraints.insets = new Insets(5, 5, 5, 5);
 		constraints.anchor = GridBagConstraints.WEST;
 		
-		buttonPrev.setIcon(iconPrev);
-		buttonPrev.setEnabled(false);
-		buttonPrev.setFocusPainted(false);
+		prevBtn.setIcon(iconPrev);
+		prevBtn.setEnabled(false);
+		prevBtn.setFocusPainted(false);
 		
-		buttonNext.setIcon(iconNext);
-		buttonNext.setEnabled(false);
-		buttonNext.setFocusPainted(false);
+		nextBtn.setIcon(iconNext);
+		nextBtn.setEnabled(false);
+		nextBtn.setFocusPainted(false);
 		
-		buttonPlay.setIcon(iconPlay);
-		buttonPlay.setEnabled(false);
-		buttonPlay.setFocusPainted(false);
+		playBtn.setIcon(iconPlay);
+		playBtn.setEnabled(false);
+		playBtn.setFocusPainted(false);
 		
-		buttonPause.setIcon(iconPause);
-		buttonPause.setEnabled(false);
-		buttonPause.setFocusPainted(false);
+		pauseBtn.setIcon(iconPause);
+		pauseBtn.setEnabled(false);
+		pauseBtn.setFocusPainted(false);
 		
-		labelTimeCounter.setFont(new Font("Sans", Font.BOLD, 12));
-		labelDuration.setFont(new Font("Sans", Font.BOLD, 12));
+		timeCounterLabel.setFont(new Font("Sans", Font.BOLD, 12));
+		durationLabel.setFont(new Font("Sans", Font.BOLD, 12));
 		
-		sliderTime.setPreferredSize(new Dimension(400, 20));
-		sliderTime.setEnabled(false);
-		sliderTime.setValue(0);
+		timeSlider.setPreferredSize(new Dimension(400, 20));
+		timeSlider.setEnabled(false);
+		timeSlider.setValue(0);
 
 		constraints.gridx = 0;
 		constraints.gridy = 0;
 		constraints.gridwidth = 3;
-		add(labelFileName, constraints);
+		add(nameLabel, constraints);
 		
 		constraints.anchor = GridBagConstraints.CENTER;
 		constraints.gridy = 1;
 		constraints.gridwidth = 1;
-		add(labelTimeCounter, constraints);
+		add(timeCounterLabel, constraints);
 		
 		constraints.gridx = 1;
-		add(sliderTime, constraints);
+		add(timeSlider, constraints);
 		
 		constraints.gridx = 2;
-		add(labelDuration, constraints);
+		add(durationLabel, constraints);
 		
 		JPanel panelButtons = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 5));
-		panelButtons.add(buttonPrev);
-		panelButtons.add(buttonPlay);
-		panelButtons.add(buttonPause);
-		panelButtons.add(buttonNext);
+		panelButtons.add(prevBtn);
+		panelButtons.add(playBtn);
+		panelButtons.add(pauseBtn);
+		panelButtons.add(nextBtn);
 		
 		constraints.gridwidth = 3;
 		constraints.gridx = 0;
 		constraints.gridy = 2;
 		add(panelButtons, constraints);
-		
-		buttonPlay.addActionListener(this);
-		buttonPause.addActionListener(this);
-	}
-
-	/**
-	 * Handle click events on the buttons.
-	 */
-	@Override
-	public void actionPerformed(ActionEvent event) {
-		Object source = event.getSource();
-		if (source instanceof JButton) {
-			JButton button = (JButton) source;
-			if (button == buttonPlay) {
-				if (controller.isStopped()) {
-					playBack();
-				} else {
-					stopPlaying();
-				}
-			} else if (button == buttonPause) {
-				if (!controller.isPaused()) {
-					pausePlaying();
-				} else {
-					resumePlaying();
-				}
-			}
-		}
 	}
 	
-	public void runPlaylist(String plName){
-		
-	}
-
-	public void openFile(String currentTrack, String filePath) {
-		this.currentTrack = currentTrack;
-		this.audioFilePath = filePath;
-		if (!controller.isStopped()) {
-			stopPlaying();
-			while (controller.getAudioClip().isRunning()) {
-				try {
-					controller.getAudioClip().close();
-					Thread.sleep(100);
-				} catch (InterruptedException ex) {
-					ex.printStackTrace();
-				}
-			}
-		}
-		playBack();
-	}
-
-	/**
-	 * Start playing back the sound.
-	 */
-	private void playBack() {
-		timer = new TrackTimer(labelTimeCounter, sliderTime);
-		timer.start();
-		playbackThread = new Thread(new Runnable() {
-
-			@Override
-			public void run() {
-				try {
-
-					if(controller.isStopped()){
-						buttonPlay.setIcon(iconStop);
-						buttonPlay.setEnabled(true);
-						
-						buttonPause.setEnabled(true);
-					}else{
-						resetControls();
-					}
-					
-					if(controller.isPaused()){
-						controller.resume();
-					}
-					controller.load(audioFilePath);
-					timer.setAudioClip(controller.getAudioClip());
-					labelFileName.setText("In riproduzione: " + currentTrack);
-					sliderTime.setMaximum((int) controller.getClipSecondLength());
-					
-					labelDuration.setText(controller.getClipLengthString());
-					controller.play();
-				} catch (UnsupportedAudioFileException ex) {
-					JOptionPane.showMessageDialog(Player.this,  
-							"The audio format is unsupported!", "Error", JOptionPane.ERROR_MESSAGE);
-				} catch (LineUnavailableException ex) {
-					JOptionPane.showMessageDialog(Player.this,  
-							"Could not play the audio file because line is unavailable!", "Error", JOptionPane.ERROR_MESSAGE);
-				} catch (IOException ex) {
-					JOptionPane.showMessageDialog(Player.this,  
-							"I/O error while playing the audio file!", "Error", JOptionPane.ERROR_MESSAGE);
-				} finally{
-					
-				}
-			}
-		});
-
-		playbackThread.start();
-	}
-
-	private void stopPlaying() {
-//		isPause = false;
-		buttonPause.setEnabled(false);
-		buttonPause.setBackground(null);
-		timer.reset();
-		timer.interrupt();
-		controller.stop();
-		playbackThread.interrupt();
-		resetControls();
+	public void setQueueDim(int value){
+		this.queueLength = value;
 	}
 	
-	private void pausePlaying() {
-//		isPause = true;
-		buttonPause.setBackground(Color.BLUE);
-		controller.pause();
-		timer.pauseTimer();
-		playbackThread.interrupt();
+	public void setupButtons(ActionListener prev, ActionListener next, 
+									ActionListener play, ActionListener pause){
+		this.prevBtn.addActionListener(prev);
+		this.nextBtn.addActionListener(next);
+		this.playBtn.addActionListener(play);
+		this.pauseBtn.addActionListener(pause);
 	}
-	
-	private void resumePlaying() {
-//		isPause = false;
-		buttonPause.setBackground(null);
-		controller.resume();
-		timer.resumeTimer();
-		playbackThread.interrupt();		
-	}
-	
-	private void resetControls() {
-		timer.reset();
-		timer.interrupt();
 
-		buttonPlay.setIcon(iconPlay);
-		
-		buttonPause.setEnabled(false);
-		
-//		isPlaying = false;		
+	public void setSliderValue(int value){
+		this.timeSlider.setValue(value);
 	}
 	
-	private class TrackTimer extends Thread {
-		private DateFormat dateFormater = new SimpleDateFormat("HH:mm:ss");	
-		private boolean isRunning = false;
-		private boolean isPause = false;
-		private boolean isReset = false;
-		private long startTime;
-		private long pauseTime;
-		
-		private JLabel labelRecordTime;
-		private JSlider slider;
-		private Clip audioClip;
-		
-		public void setAudioClip(Clip audioClip) {
-			this.audioClip = audioClip;
+	public void setSliderMax(int value){
+		this.timeSlider.setMaximum(value);
+	}
+	
+	public void setTimeLabelValue(String currentTime){
+		this.timeCounterLabel.setText(currentTime);
+	}
+	
+	public void setDurationLabelValue(String duration){
+		this.durationLabel.setText(duration);
+	}
+	
+	public void setNameLabel(String name){
+		this.nameLabel.setText(NAMELABEL_MESSAGE+name);
+	}
+	
+	public void resumePlaying(int position){
+		this.playBtn.setIcon(iconStop);
+		this.pauseBtn.setBackground(null);
+		this.playBtn.setEnabled(true);
+		this.pauseBtn.setEnabled(true);
+		setTrackChange(position);
+	}
+	
+	public void stopPlaying(){
+		this.playBtn.setIcon(iconPlay);
+		this.pauseBtn.setEnabled(false);
+	}
+	
+	public void pausePlaying(){
+		this.pauseBtn.setBackground(Color.BLUE);
+	}
+	
+	public void showErrorMessage(String title, String message){
+		JOptionPane.showMessageDialog(this, message, title, JOptionPane.ERROR_MESSAGE);
+	}
+	
+	private void setTrackChange(int position){
+		if(position <= 0){
+			this.prevBtn.setEnabled(false);
+		}else{
+			this.prevBtn.setEnabled(true);
 		}
-
-		public TrackTimer(JLabel labelRecordTime, JSlider slider) {
-			this.labelRecordTime = labelRecordTime;
-			this.slider = slider;
-		}
-		
-		public void run() {
-			isRunning = true;
-			
-			startTime = System.currentTimeMillis();
-			
-			while (isRunning) {
-				try {
-					Thread.sleep(100);
-					if (!isPause) {
-						if (audioClip != null && audioClip.isRunning()) {
-							labelRecordTime.setText(toTimeString());
-							int currentSecond = (int) audioClip.getMicrosecondPosition() / 1_000_000; 
-							slider.setValue(currentSecond);
-						}
-					} else {
-						pauseTime += 100;
-					}
-				} catch (InterruptedException ex) {
-					if (isReset) {
-						slider.setValue(0);
-						labelRecordTime.setText("00:00:00");
-						isRunning = false;		
-						break;
-					}
-				}
-			}
-		}
-		
-		
-		/**
-		 * Reset counting to "00:00:00"
-		 */
-		public void reset() {
-			isReset = true;
-			isRunning = false;
-		}
-		
-		public void pauseTimer() {
-			isPause = true;
-		}
-		
-		public void resumeTimer() {
-			isPause = false;
-		}
-		
-		/**
-		 * Generate a String for time counter in the format of "HH:mm:ss"
-		 * @return the time counter
-		 */
-		private String toTimeString() {
-			long now = System.currentTimeMillis();
-			Date current = new Date(now - startTime - pauseTime);
-			dateFormater.setTimeZone(TimeZone.getTimeZone("GMT"));
-			String timeCounter = dateFormater.format(current);
-			return timeCounter;
+		if(position >= queueLength){
+			this.nextBtn.setEnabled(false);
+		}else{
+			this.nextBtn.setEnabled(true);
 		}
 	}
 }

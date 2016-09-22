@@ -70,28 +70,9 @@ public class AudioPlayerImpl extends JFrame implements AudioPlayerGUI{
 		optionsPanel.add(playlistBtn);
 		
 		trkAddBtn = new JButton("Aggiungi brano");
-//		addBtn.addActionListener(e-> {
-//			
-//			addWindow.setVisible(true);
-//			try {
-//				scrollPane.showTracks();
-//			} catch (Exception e1) {
-//				// TODO Auto-generated catch block
-//				e1.printStackTrace();
-//			}
-//		});
 		optionsPanel.add(trkAddBtn);
 		
 		plAddBtn = new JButton("Crea playlist");
-//		createBtn.addActionListener(e->{
-//			createWindow.setVisible(true);
-//			try {
-//				scrollPane.showPlaylists();
-//			} catch (Exception e1) {
-//				// TODO Auto-generated catch block
-//				e1.printStackTrace();
-//			}
-//		});
 		optionsPanel.add(plAddBtn);
 		
 		JPanel panel = new JPanel();
@@ -108,26 +89,6 @@ public class AudioPlayerImpl extends JFrame implements AudioPlayerGUI{
 		pack();
 		setLocationRelativeTo(null);
 		setVisible(true);
-	}
-	
-	@Override
-	public void showTracks(Map<String, Float> tracksInfos){
-		try {
-			scrollPane.showTracks(tracksInfos);
-		} catch (Exception e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-	}
-	
-	@Override
-	public void showPlaylists(List<String> plInfos){
-		try {
-			scrollPane.showPlaylists(plInfos);
-		} catch (ClassNotFoundException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 	
 	public void addListeners(ActionListener[] listeners){
@@ -153,13 +114,8 @@ public class AudioPlayerImpl extends JFrame implements AudioPlayerGUI{
 	}
 	
 	@Override
-	public void showTrackAdder(){
-		trackAdder.setVisible(true);
-	}
-	
-	@Override
-	public void showPLAdder(){
-		plAdder.setVisible(true);
+	public Player getPlayer(){
+		return this.player;
 	}
 
 	@Override

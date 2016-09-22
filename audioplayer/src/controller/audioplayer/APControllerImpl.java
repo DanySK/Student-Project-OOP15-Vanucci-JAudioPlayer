@@ -1,60 +1,70 @@
 package controller.audioplayer;
 
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+
+import javax.swing.JTable;
 
 import controller.DataController;
 import controller.adder.*;
 import controller.player.PlayerController;
 import model.PlaylistManager;
+import model.Track;
 import model.TrackManager;
 import model.user.User;
 import view.AudioPlayerGUI;
 import view.AudioPlayerImpl;
-import view.create.PlaylistAdder;
-import view.create.TrackAdder;
-
 public class APControllerImpl {
 
 	private AudioPlayerGUI mainView;
 	private DataController dataController;
 	private AddController addCtrl;
-//	private PlayerController playerCtrl;
+	private PlayerController playerCtrl;
+	private TrackManager trackManager;
+	private PlaylistManager plManager;
 	
 	public APControllerImpl(User logged){
 		this.mainView = new AudioPlayerImpl();
-		TrackManager trackManager = new TrackManager(logged.getUsername());
-		PlaylistManager plManager = new PlaylistManager(logged.getUsername());
-		this.dataController = new DataController(trackManager, plManager, mainView.getDataPane());
+		this.trackManager = new TrackManager(logged.getUsername());
+		this.plManager = new PlaylistManager(logged.getUsername());
+		this.dataController = new DataController(trackManager, plManager, mainView.getDataPane(), new DoubleClickAdapter());
 		this.addCtrl = new AddControllerImpl(trackManager, plManager, mainView.getTrackAdder(), mainView.getPLAdder());
-//		this.playerCtrl = playerCtrl;
+		this.playerCtrl = new PlayerController(trackManager, plManager, mainView.getPlayer());
 	}
 	
 	public void initializeView(){
 		ActionListener[] listeners = new ActionListener[]{new ShowTracksListener(), new ShowPLListener(),
 				new TrackAdderListener(), new PLAdderListener()};
 		this.mainView.addListeners(listeners);
-		resetTracks();
+		showTracks();
 		this.mainView.initialize();
 	}
 	
-	private void resetTracks(){
-		try {
-			this.mainView.showTracks(dataController.getTracks());
-		} catch (ClassNotFoundException | IOException e) {
-			mainView.showErrorMessage("Qualcosa è andato storto", "Impossibile recuperare i brani");
-			e.printStackTrace();
-		}
+	private void showTracks(){
+		dataController.showTracksTable();
+//		try {
+//			this.mainView.showTracks(dataController.getTracks());
+//		} catch (ClassNotFoundException | IOException e) {
+//			mainView.showErrorMessage("Qualcosa è andato storto", "Impossibile recuperare i brani");
+//			e.printStackTrace();
+//		}
+	}
+	
+	private void showPlaylists(){
+		dataController.showPLTable();
 	}
 	
 	private class ShowTracksListener implements ActionListener{
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-				resetTracks();
+				showTracks();
 		}
 	}
 	
@@ -62,12 +72,7 @@ public class APControllerImpl {
 		
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			try {
-				List<String> plInfos = dataController.getPlaylists();
-				mainView.showPlaylists(plInfos);
-			} catch (ClassNotFoundException | IOException e) {
-				mainView.showErrorMessage("Qualcosa è andato storto", "Impossibile recuperare i brani");
-			}
+			showPlaylists();
 		}
 	}
 	
@@ -77,7 +82,7 @@ public class APControllerImpl {
 		public void actionPerformed(ActionEvent arg0) {
 				addCtrl.showTrackAdder();
 				System.out.println("Resetto le tracce");
-				resetTracks();
+				showTracks();
 		}
 	}
 	
@@ -86,6 +91,37 @@ public class APControllerImpl {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 				addCtrl.showPLAdder();
+		}
+	}
+	
+	private class DoubleClickAdapter extends MouseAdapter{
+		
+		@Override
+		public void mousePressed(MouseEvent me){
+			JTable table =(JTable) me.getSource();
+		    Point p = me.getPoint();
+		    int row = table.rowAtPoint(p);
+		    if (me.getClickCount() == 2) {
+		    	String current = dataController.getCurrentView();
+		        String selected = (String) table.getValueAt(row, 0);
+		        if(current.equals(DataController.PLAYLISTSVIEW)){
+		           	try {
+						playerCtrl.setPlayQueue(plManager.retrieve(selected).getTracks());
+					} catch (ClassNotFoundException | IOException e) {
+						dataController.nothingFound("Impossibile riprodurre la playlist");
+					}
+		        }else{
+		        	
+		        	try {
+		        		List<Track> toPlay = new ArrayList<>();
+						toPlay.add(trackManager.retrieve(selected));
+						playerCtrl.setPlayQueue(toPlay);
+					} catch (ClassNotFoundException | IOException e) {
+						dataController.nothingFound("Impossibile riprodurre il brano");
+					}
+		        }
+		        playerCtrl.startQueue();  
+		    }
 		}
 	}
 }

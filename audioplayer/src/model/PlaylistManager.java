@@ -3,10 +3,7 @@ package model;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -37,13 +34,7 @@ public class PlaylistManager {
 			return new ArrayList<Playlist>(playlists);
 		}
 		List<Playlist> userPlaylists = new ArrayList<>();
-		File playlistsDir = new File(plPath);
-		System.out.println("File: "+playlistsDir.getPath()+", Path: "+plPath);
-		if(!playlistsDir.exists()){
-			System.out.println("Non esiste");
-			boolean so = playlistsDir.mkdir();
-			System.out.println(so);
-		}
+		handler.makeDir(plPath);
 		for(File plFile : handler.getFiles(plPath)){
 			userPlaylists.add(retrieve(plFile.getName().replace(EXTENSION, "")));
 		}
@@ -74,14 +65,4 @@ public class PlaylistManager {
 			playlists.add(newPL);
 		}
 	}
-	
-//	public void create(String name, List<String> trackNames) throws FileNotFoundException, ClassNotFoundException, IOException{
-//		List<Track> tracksList = new ArrayList<>();
-//		for(String track: trackNames){
-//			tracksList.add(trackManager.retrieve(track));
-//		}
-//		Playlist newPlaylist = new PlaylistImpl(name, tracksList);
-//		ObjectOutputStream writer = new ObjectOutputStream(handler.toFile(newPlaylist.getName()+EXTENSION));
-//		writer.writeObject(newPlaylist);
-//	}
 }

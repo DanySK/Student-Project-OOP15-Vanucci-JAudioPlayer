@@ -11,6 +11,8 @@ import java.awt.event.MouseAdapter;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -40,7 +42,7 @@ public class DataPaneImpl extends JScrollPane implements DataPane{
 	}
 	
 	@Override
-	public void showTracks(Map<String, Float> tracksInfos) throws FileNotFoundException, ClassNotFoundException, IOException{
+	public void showTracks(Map<String, Float> tracksInfos){
 		DefaultTableModel model = (DefaultTableModel) tracksTable.getModel();
 		model.getDataVector().removeAllElements();
 		model.fireTableDataChanged();
@@ -53,7 +55,7 @@ public class DataPaneImpl extends JScrollPane implements DataPane{
 	}
 	
 	@Override
-	public void showPlaylists(List<String> plInfos) throws FileNotFoundException, ClassNotFoundException, IOException{
+	public void showPlaylists(List<String> plInfos){
 		DefaultTableModel model = (DefaultTableModel) playlistsTable.getModel();
 		model.getDataVector().removeAllElements();
 		model.fireTableDataChanged();
@@ -62,6 +64,11 @@ public class DataPaneImpl extends JScrollPane implements DataPane{
 		}
 //		setViewPort(this.playlistsTable);
 		setCurrentView(PLTABLE_ID);
+	}
+	
+	@Override
+	public void showErrorMessage(String title, String message){
+		JOptionPane.showMessageDialog(this, message, title, JOptionPane.ERROR_MESSAGE);
 	}
 	
 	private String formatDuration(Float duration){

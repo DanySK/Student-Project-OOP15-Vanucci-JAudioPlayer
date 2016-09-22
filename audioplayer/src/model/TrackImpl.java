@@ -43,6 +43,11 @@ public class TrackImpl implements Track, Serializable{
 	public void setName(String name) {
 		this.trackName = name;
 	}
+	
+	@Override
+	public File getFile(){
+		return new File(this.trackFile.getAbsolutePath());
+	}
 
 	@Override
 	public String getFilePath() {

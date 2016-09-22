@@ -7,11 +7,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JDialog;
-
-import controller.DataController;
 import model.PlaylistImpl;
 import model.PlaylistManager;
 import model.Track;
@@ -89,7 +86,6 @@ public class AddControllerImpl implements AddController{
 		public void actionPerformed(ActionEvent arg0) {
 			this.lastPath = trackAdder.chooseFile(lastPath);
 		}
-		
 	}
 	
 	private class TrackAdderListener implements ActionListener{
@@ -112,7 +108,6 @@ public class AddControllerImpl implements AddController{
 				}
 			}
 		}
-		
 	}
 	
 	private class PlaylistAdderListener implements ActionListener{
@@ -135,7 +130,6 @@ public class AddControllerImpl implements AddController{
 					e1.printStackTrace();
 				}
 			}
-		}
-		
+		}	
 	}
 }

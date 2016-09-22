@@ -55,9 +55,15 @@ public class FileHandlerImpl implements FileHandler{
 	@Override
 	public void makeMainDir(){
 		
-		if(Files.notExists(Paths.get(MAIN_DIR), LinkOption.NOFOLLOW_LINKS)){
-			
-			new File(MAIN_DIR).mkdir();
+		makeDir(new String(""));
+	}
+	
+	@Override
+	public void makeDir(String dirPath){
+		String completePath = MAIN_DIR+SEPARATOR+dirPath;
+		if(Files.notExists(Paths.get(completePath), LinkOption.NOFOLLOW_LINKS)){
+			System.out.println("Tentando di creare la cartella a: "+completePath);
+			new File(completePath).mkdir();
 		}
 	}
 	

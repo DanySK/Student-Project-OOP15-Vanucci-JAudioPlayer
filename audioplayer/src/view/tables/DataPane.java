@@ -8,12 +8,14 @@ import java.util.Map;
 
 public interface DataPane {
 
-	void showTracks(Map<String, Float> tracksInfos) throws FileNotFoundException, ClassNotFoundException, IOException;
+	void showTracks(Map<String, Float> tracksInfos);
 
-	void showPlaylists(List<String> plInfos) throws FileNotFoundException, ClassNotFoundException, IOException;
+	void showPlaylists(List<String> plInfos);
 
 	String getCurrentView();
 
 	void setAdapter(MouseAdapter adapter);
+
+	void showErrorMessage(String title, String message);
 
 }

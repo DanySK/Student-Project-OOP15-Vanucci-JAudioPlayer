@@ -15,12 +15,9 @@ import view.login.LoginImpl;
 public class LoginControllerImpl implements LoginController{
 
 	private LoginGUI loginView;
-	private User currentUser;
-	private UserManager manager;
 	
 	public LoginControllerImpl(){
 		this.loginView = new LoginImpl();
-		this.manager = new UserManagerImpl();
 	}
 	
 	@Override
@@ -32,14 +29,14 @@ public class LoginControllerImpl implements LoginController{
 	@Override
 	public void setUserAndPswd(String username, String password) throws FileNotFoundException, IOException{
 		if(checkUser(username, password)){
-			this.currentUser = manager.setUser(username, password);
+			UserManagerImpl.setUser(username, password);
 		}else
 			throw new IllegalArgumentException();
 	}
 	
 	@Override
 	public boolean checkUser(String username, String password) throws FileNotFoundException, IOException{
-		return manager.userExists(username, password);
+		return UserManagerImpl.userExists(username, password);
 	}
 	
 	private class LoginListener implements ActionListener{
@@ -47,6 +44,7 @@ public class LoginControllerImpl implements LoginController{
 		public void actionPerformed(ActionEvent e){
 			try {
 				setUserAndPswd(loginView.getLoginName(), loginView.getLoginPswd());
+				User currentUser = UserManagerImpl.getUser();
 				System.out.println("Logged as: "+currentUser.getUsername()+" using password "+currentUser.getPassword());
 				new APControllerImpl(currentUser).initializeView();
 				loginView.close();

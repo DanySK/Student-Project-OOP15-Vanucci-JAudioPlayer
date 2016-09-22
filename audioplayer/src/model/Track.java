@@ -1,6 +1,7 @@
 package model;
 
 import java.awt.Image;
+import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -20,17 +21,11 @@ public interface Track {
 	 */
 	void setName(String name);
 	
-//	/**
-//	 * 
-//	 * @return the track picture (if present)
-//	 */
-//	Optional<Image> getPic();
-//	/**
-//	 * 
-//	 * @param image
-//	 * Sets the input image as track picture
-//	 */
-//	void setPic(Image image);
+	/**
+	 * 
+	 * @return a protective copy of the track file
+	 */
+	File getFile();
 	
 	/**
 	 * 

@@ -9,6 +9,7 @@ import javax.swing.JScrollPane;
 
 import view.create.PlaylistAdder;
 import view.create.TrackAdder;
+import view.player.Player;
 import view.tables.DataPane;
 import view.tables.DataPaneImpl;
 
@@ -16,21 +17,23 @@ public interface AudioPlayerGUI {
 
 	public void initialize();
 
-	void showTracks(Map<String, Float> tracksInfos);
-
-	void showPlaylists(List<String> plInfos);
+//	void showTracks(Map<String, Float> tracksInfos);
+//
+//	void showPlaylists(List<String> plInfos);
 	
 	void showErrorMessage(String title, String message);
 
 	void addListeners(ActionListener[] listeners);
 
-	void showTrackAdder();
-
-	void showPLAdder();
+//	void showTrackAdder();
+//
+//	void showPLAdder();
 
 	TrackAdder getTrackAdder();
 
 	PlaylistAdder getPLAdder();
 	
 	DataPane getDataPane();
+	
+	Player getPlayer();
 }

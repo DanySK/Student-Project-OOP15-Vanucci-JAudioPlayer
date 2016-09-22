@@ -3,7 +3,6 @@ package model;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -34,13 +33,7 @@ public class TrackManager {
 			return new ArrayList<>(tracksList);
 		}
 		List<Track> userTracks = new ArrayList<>();
-		File tracksDir = new File(tracksPath);
-		System.out.println("File: "+tracksDir.getPath()+", Path: "+tracksPath);
-		if(!tracksDir.exists()){
-			System.out.println("Non esiste");
-			boolean so = tracksDir.mkdir();
-			System.out.println(so);
-		}
+		handler.makeDir(tracksPath);
 		for(File trackFile : handler.getFiles(tracksPath)){
 			userTracks.add(retrieve(trackFile.getName().replace(EXTENSION, "")));
 		}
@@ -71,8 +64,4 @@ public class TrackManager {
 			tracksList.add(newTrack);
 		}
 	}
-	
-//	public void removeTrack(String trackName){
-//		handler.deleteFile(trackName+EXTENSION);
-//	}
 }

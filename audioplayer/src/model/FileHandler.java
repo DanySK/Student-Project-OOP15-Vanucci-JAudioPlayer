@@ -18,6 +18,8 @@ public interface FileHandler {
 	String getMainDir();
 
 	void makeMainDir();
+	
+	void makeDir(String dirPath);
 
 	String getSysSeparator();
 }
