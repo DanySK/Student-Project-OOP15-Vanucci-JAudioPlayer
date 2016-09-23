@@ -48,16 +48,13 @@ public class APControllerImpl {
 	
 	private void showTracks(){
 		dataController.showTracksTable();
-//		try {
-//			this.mainView.showTracks(dataController.getTracks());
-//		} catch (ClassNotFoundException | IOException e) {
-//			mainView.showErrorMessage("Qualcosa è andato storto", "Impossibile recuperare i brani");
-//			e.printStackTrace();
-//		}
+		mainView.setDataTitle("Tracce");
 	}
 	
 	private void showPlaylists(){
 		dataController.showPLTable();
+		System.out.println("Hi, i'm the APController, setting title: "+"Playlists");
+		mainView.setDataTitle("Playlist");
 	}
 	
 	private class ShowTracksListener implements ActionListener{

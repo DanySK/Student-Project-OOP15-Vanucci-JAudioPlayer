@@ -36,4 +36,6 @@ public interface AudioPlayerGUI {
 	DataPane getDataPane();
 	
 	Player getPlayer();
+
+	void setDataTitle(String title);
 }

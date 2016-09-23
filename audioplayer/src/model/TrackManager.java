@@ -42,7 +42,7 @@ public class TrackManager {
 	}
 	
 	public Set<Track> retrieveOrdered() throws FileNotFoundException, ClassNotFoundException, IOException{
-		Set<Track> sorted = new TreeSet<>((e1, e2)->e1.getName().compareTo(e2.getName()));
+		Set<Track> sorted = new TreeSet<>((e1, e2)->e1.getName().toLowerCase().compareTo(e2.getName().toLowerCase()));
 		sorted.addAll(retrieveAll());
 		return sorted;
 	}

@@ -2,6 +2,7 @@ package view;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 
 import controller.DataController;
@@ -29,7 +30,9 @@ import java.util.List;
 import java.util.Map;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
+import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
 
 public class AudioPlayerImpl extends JFrame implements AudioPlayerGUI{
 
@@ -43,6 +46,7 @@ public class AudioPlayerImpl extends JFrame implements AudioPlayerGUI{
 	private Player player;
 	private TrackAdder trackAdder;
 	private PlaylistAdder plAdder;
+	private TitledBorder dataPaneBorder;
 	private DataPaneImpl scrollPane;
 	
 	private JButton tracksBtn;
@@ -75,11 +79,14 @@ public class AudioPlayerImpl extends JFrame implements AudioPlayerGUI{
 		plAddBtn = new JButton("Crea playlist");
 		optionsPanel.add(plAddBtn);
 		
-		JPanel panel = new JPanel();
+		JPanel panel = new JPanel(new BorderLayout());
+		dataPaneBorder = BorderFactory.createTitledBorder (BorderFactory.createEtchedBorder (),
+                "",
+                TitledBorder.LEFT,
+                TitledBorder.TOP);
+		panel.setBorder(dataPaneBorder);
 		getContentPane().add(panel, BorderLayout.CENTER);
-		panel.setLayout(new CardLayout(0, 0));
-		panel.add(scrollPane);
-		
+		panel.add(scrollPane, BorderLayout.CENTER);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
@@ -116,6 +123,14 @@ public class AudioPlayerImpl extends JFrame implements AudioPlayerGUI{
 	@Override
 	public Player getPlayer(){
 		return this.player;
+	}
+	
+	@Override
+	public void setDataTitle(String title){
+		System.out.println("And now setting "+title+" as the border title");
+		this.dataPaneBorder.setTitle(title);
+		this.repaint();
+		System.out.println("the panel title is now"+this.dataPaneBorder.getTitle());
 	}
 
 	@Override

@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JDialog;
@@ -46,8 +47,9 @@ public class AddControllerImpl implements AddController{
 	@Override
 	public void showPLAdder(){
 		try {
-			List<String> sortedNames = new ArrayList<>();
+			List<String> sortedNames = new LinkedList<>();
 			trackManager.retrieveOrdered().forEach(e->sortedNames.add(e.getName()));
+			sortedNames.forEach(System.out::println);
 			plAdder.refreshList(sortedNames);
 			showDialog(plAdder);
 		} catch (ClassNotFoundException | IOException e) {

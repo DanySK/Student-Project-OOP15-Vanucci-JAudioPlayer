@@ -43,7 +43,7 @@ public class PlaylistManager {
 	}
 	
 	public Set<Playlist> retrieveOrdered() throws FileNotFoundException, ClassNotFoundException, IOException{
-		Set<Playlist> sorted = new TreeSet<>((e1, e2)->e1.getName().compareTo(e2.getName()));
+		Set<Playlist> sorted = new TreeSet<>((e1, e2)->e1.getName().toLowerCase().compareTo(e2.getName().toLowerCase()));
 		sorted.addAll(retrieveAll());
 		return sorted;
 	}
