@@ -5,10 +5,12 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class PlaylistManager {
+public class PlaylistManager implements Observer{
 
 	private static final String PLAYLISTS_DIR = "Playlists";
 	private static final String EXTENSION = ".dat";
@@ -39,12 +41,14 @@ public class PlaylistManager {
 			userPlaylists.add(retrieve(plFile.getName().replace(EXTENSION, "")));
 		}
 		this.playlists = userPlaylists;
+		System.out.println("Sono nel PlaylistManager.retrieveAll :"+new File("C:/Users/Francesco/AudioPlayer/user1/Playlists/Funziona.dat").canWrite());
 		return userPlaylists;
 	}
 	
 	public Set<Playlist> retrieveOrdered() throws FileNotFoundException, ClassNotFoundException, IOException{
 		Set<Playlist> sorted = new TreeSet<>((e1, e2)->e1.getName().toLowerCase().compareTo(e2.getName().toLowerCase()));
 		sorted.addAll(retrieveAll());
+		System.out.println("Sono nel PlaylistManager.retrieveOrdered :"+new File("C:/Users/Francesco/AudioPlayer/user1/Playlists/Funziona.dat").canWrite());
 		return sorted;
 	}
 	
@@ -64,5 +68,18 @@ public class PlaylistManager {
 		if(playlists != null){
 			playlists.add(newPL);
 		}
+	}
+	
+	public void deletePlaylist(String toDelete){
+		if(handler.deleteFile(plPath+fileSeparator+toDelete+EXTENSION)){
+			if(playlists != null){
+				playlists.removeIf(e->e.getName().equals(toDelete));
+			}
+		}
+	}
+
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		
 	}
 }

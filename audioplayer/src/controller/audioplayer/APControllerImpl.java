@@ -5,14 +5,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JTable;
 
-import controller.DataController;
 import controller.adder.*;
+import controller.data.DataController;
 import controller.player.PlayerController;
 import model.PlaylistManager;
 import model.Track;
@@ -33,28 +37,51 @@ public class APControllerImpl {
 		this.mainView = new AudioPlayerImpl();
 		this.trackManager = new TrackManager(logged.getUsername());
 		this.plManager = new PlaylistManager(logged.getUsername());
-		this.dataController = new DataController(trackManager, plManager, mainView.getDataPane(), new DoubleClickAdapter());
+		this.dataController = new DataController(mainView.getDataPane(), new DoubleClickAdapter());
 		this.addCtrl = new AddControllerImpl(trackManager, plManager, mainView.getTrackAdder(), mainView.getPLAdder());
-		this.playerCtrl = new PlayerController(trackManager, plManager, mainView.getPlayer());
+		this.playerCtrl = new PlayerController(mainView.getPlayer());
 	}
 	
 	public void initializeView(){
 		ActionListener[] listeners = new ActionListener[]{new ShowTracksListener(), new ShowPLListener(),
-				new TrackAdderListener(), new PLAdderListener()};
+				new TrackAdderListener(), new PLAdderListener(), new DeleteListener()};
 		this.mainView.addListeners(listeners);
 		showTracks();
 		this.mainView.initialize();
 	}
 	
 	private void showTracks(){
-		dataController.showTracksTable();
-		mainView.setDataTitle("Tracce");
+		try {
+			dataController.showTracksTable(getTracksToShow());
+			mainView.setDataTitle("Tracce");
+		} catch (ClassNotFoundException | IOException e) {
+			dataController.showTracksTable(new LinkedHashMap<>());
+			e.printStackTrace();
+		}
 	}
 	
 	private void showPlaylists(){
-		dataController.showPLTable();
-		System.out.println("Hi, i'm the APController, setting title: "+"Playlists");
-		mainView.setDataTitle("Playlist");
+		try{
+			System.out.println("Sono nel APControllerImpl.showPlaylists :"+new File("C:/Users/Francesco/AudioPlayer/user1/Playlists/Funziona.dat").canWrite());
+			dataController.showPLTable(getPlaylistsToShow());
+			mainView.setDataTitle("Playlist");
+		}catch(ClassNotFoundException | IOException e){
+			dataController.showPLTable(new ArrayList<>());
+		}
+		
+	}
+	
+	private Map<String, Float> getTracksToShow() throws FileNotFoundException, ClassNotFoundException, IOException{
+		Map<String, Float> retMap = new LinkedHashMap<>();
+		trackManager.retrieveOrdered().forEach(e-> retMap.put(e.getName(), e.getDuration()));
+		return retMap;
+	}
+	
+	private List<String> getPlaylistsToShow() throws FileNotFoundException, ClassNotFoundException, IOException{
+		List<String> retList = new ArrayList<>();
+		plManager.retrieveOrdered().forEach(e->retList.add(e.getName()));
+		System.out.println("Sono nel APControllerImpl.getPlaylistsToShow :"+new File("C:/Users/Francesco/AudioPlayer/user1/Playlists/Funziona.dat").canWrite());
+		return retList;
 	}
 	
 	private class ShowTracksListener implements ActionListener{
@@ -78,7 +105,6 @@ public class APControllerImpl {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 				addCtrl.showTrackAdder();
-				System.out.println("Resetto le tracce");
 				showTracks();
 		}
 	}
@@ -88,6 +114,23 @@ public class APControllerImpl {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 				addCtrl.showPLAdder();
+		}
+	}
+	
+	private class DeleteListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			String toDelete = dataController.getSelected();
+			String currentlyShown = dataController.getCurrentView();
+			if(currentlyShown.equals(DataController.TRACKSVIEW)){
+				trackManager.deleteTrack(toDelete);
+				showTracks();
+			}
+			else if(currentlyShown.equals(DataController.PLAYLISTSVIEW)){
+				plManager.deletePlaylist(toDelete);
+				showPlaylists();
+			}
 		}
 	}
 	

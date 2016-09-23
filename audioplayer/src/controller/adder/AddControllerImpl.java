@@ -49,14 +49,12 @@ public class AddControllerImpl implements AddController{
 		try {
 			List<String> sortedNames = new LinkedList<>();
 			trackManager.retrieveOrdered().forEach(e->sortedNames.add(e.getName()));
-			sortedNames.forEach(System.out::println);
 			plAdder.refreshList(sortedNames);
 			showDialog(plAdder);
 		} catch (ClassNotFoundException | IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 	}
 	
 	@Override

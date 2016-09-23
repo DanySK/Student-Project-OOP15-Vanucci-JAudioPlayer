@@ -5,12 +5,11 @@ import javax.swing.JOptionPane;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 
-import controller.DataController;
 import view.create.PlaylistAdder;
 import view.create.TrackAdder;
+import view.data.DataPane;
+import view.data.DataPaneImpl;
 import view.player.Player;
-import view.tables.DataPane;
-import view.tables.DataPaneImpl;
 
 import java.awt.BorderLayout;
 import java.awt.Point;
@@ -34,6 +33,9 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
+import controller.data.DataController;
+import javax.swing.SwingConstants;
+
 public class AudioPlayerImpl extends JFrame implements AudioPlayerGUI{
 
 	/**
@@ -53,6 +55,7 @@ public class AudioPlayerImpl extends JFrame implements AudioPlayerGUI{
 	private JButton playlistBtn;
 	private JButton trkAddBtn;
 	private JButton plAddBtn;
+	private JButton deleteBtn;
 	
 	public AudioPlayerImpl(){
 		this.setTitle("AUDIO PLAYER APP");
@@ -66,7 +69,6 @@ public class AudioPlayerImpl extends JFrame implements AudioPlayerGUI{
 		plAdder = new PlaylistAdder();
 		
 		this.scrollPane = new DataPaneImpl(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-//		scrollPane.setAdapter(new DoubleClickAdapter());
 		tracksBtn = new JButton("Le mie Tracce");
 		optionsPanel.add(tracksBtn);
 		
@@ -78,6 +80,9 @@ public class AudioPlayerImpl extends JFrame implements AudioPlayerGUI{
 		
 		plAddBtn = new JButton("Crea playlist");
 		optionsPanel.add(plAddBtn);
+		
+		deleteBtn = new JButton("Elimina");
+		optionsPanel.add(deleteBtn);
 		
 		JPanel panel = new JPanel(new BorderLayout());
 		dataPaneBorder = BorderFactory.createTitledBorder (BorderFactory.createEtchedBorder (),
@@ -103,6 +108,7 @@ public class AudioPlayerImpl extends JFrame implements AudioPlayerGUI{
 		playlistBtn.addActionListener(listeners[1]);
 		trkAddBtn.addActionListener(listeners[2]);
 		plAddBtn.addActionListener(listeners[3]);
+		deleteBtn.addActionListener(listeners[4]);
 	}
 	
 	@Override

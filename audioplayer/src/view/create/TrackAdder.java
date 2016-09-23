@@ -16,7 +16,8 @@ import java.awt.Font;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileFilter;
 
-import controller.DataController;
+import controller.data.DataController;
+
 import javax.swing.BoxLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;

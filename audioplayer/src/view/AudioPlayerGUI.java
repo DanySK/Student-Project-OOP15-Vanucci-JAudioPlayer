@@ -9,9 +9,9 @@ import javax.swing.JScrollPane;
 
 import view.create.PlaylistAdder;
 import view.create.TrackAdder;
+import view.data.DataPane;
+import view.data.DataPaneImpl;
 import view.player.Player;
-import view.tables.DataPane;
-import view.tables.DataPaneImpl;
 
 public interface AudioPlayerGUI {
 

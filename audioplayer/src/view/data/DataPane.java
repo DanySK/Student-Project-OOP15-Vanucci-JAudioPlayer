@@ -1,4 +1,4 @@
-package view.tables;
+package view.data;
 
 import java.awt.event.MouseAdapter;
 import java.io.FileNotFoundException;
@@ -17,5 +17,7 @@ public interface DataPane {
 	void setAdapter(MouseAdapter adapter);
 
 	void showErrorMessage(String title, String message);
+
+	String getSelectedString();
 
 }

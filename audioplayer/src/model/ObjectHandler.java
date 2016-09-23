@@ -14,6 +14,8 @@ public class ObjectHandler extends FileHandlerImpl{
 	
 	public Object fileToObject(String filePath) throws FileNotFoundException, IOException, ClassNotFoundException{
 		ObjectInputStream reader = new ObjectInputStream(super.getFile(filePath));
-		return reader.readObject();
+		Object retrieved = reader.readObject();
+		reader.close();
+		return retrieved;
 	}
 }

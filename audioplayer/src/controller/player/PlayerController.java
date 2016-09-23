@@ -52,7 +52,7 @@ public class PlayerController implements LineListener {
 	private int queueCounter = 0;
 	private Player view;
 	
-	public PlayerController(TrackManager trackManager, PlaylistManager plManager, Player view){
+	public PlayerController(Player view){
 		this.view = view;
 		this.view.setupButtons(new PrevListener(), new NextListener(), 
 									new PlayListener(), new PauseListener());

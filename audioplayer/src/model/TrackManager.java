@@ -8,7 +8,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class TrackManager {
+import model.observer.EObserver;
+import model.observer.ESource;
+
+public class TrackManager implements ESource<Track>{
 
 	private static final String TRACKS_DIR = "Tracks";
 	private static final String EXTENSION = ".dat";
@@ -63,5 +66,30 @@ public class TrackManager {
 		if(tracksList != null){
 			tracksList.add(newTrack);
 		}
+	}
+	
+	public void deleteTrack(String toDelete){
+		if(handler.deleteFile(tracksPath+fileSeparator+toDelete+EXTENSION)){
+			if(tracksList != null){
+				tracksList.removeIf(e->e.getName().equals(toDelete));
+			}
+		}
+	}
+
+	@Override
+	public void addEObserver(EObserver<? super Track> obs) {
+		
+	}
+
+	@Override
+	public void notifyEObservers(Track arg) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void clearObservers() {
+		// TODO Auto-generated method stub
+		
 	}
 }

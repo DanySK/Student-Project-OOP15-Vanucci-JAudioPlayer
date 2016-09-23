@@ -16,7 +16,8 @@ import javax.swing.SwingUtilities;
 import java.awt.Font;
 import javax.swing.border.EmptyBorder;
 
-import controller.DataController;
+import controller.data.DataController;
+
 import javax.swing.DefaultListModel;
 
 import java.awt.GridLayout;

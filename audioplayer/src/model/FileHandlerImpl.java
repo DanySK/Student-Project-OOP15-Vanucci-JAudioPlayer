@@ -47,6 +47,15 @@ public class FileHandlerImpl implements FileHandler{
 		return Arrays.asList(new File(MAIN_DIR+SEPARATOR+dir).listFiles());
 	}
 	
+	public boolean deleteFile(String relPath){
+		System.out.println("Removing: "+MAIN_DIR+SEPARATOR+relPath);
+		File deleting = new File(MAIN_DIR+SEPARATOR+relPath);
+		boolean exist = deleting.exists();
+		boolean result = deleting.delete();
+		System.out.println("Esiste? "+exist+", eliminato? "+result);
+		return result;
+	}
+	
 	@Override
 	public String getMainDir(){
 		return new String(MAIN_DIR+SEPARATOR);

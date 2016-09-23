@@ -1,10 +1,11 @@
-package view.tables;
+package view.data;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.awt.event.MouseAdapter;
+import java.io.File;
 
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -36,26 +37,29 @@ public class DataPaneImpl extends JScrollPane implements DataPane{
 	@Override
 	public void showTracks(Map<String, Float> tracksInfos){
 		DefaultTableModel model = (DefaultTableModel) tracksTable.getModel();
-		model.getDataVector().removeAllElements();
-		model.fireTableDataChanged();
+		prepareModel(model);
 		for(Entry<String, Float> entry: tracksInfos.entrySet()){
 			String[] newRow = {entry.getKey(), formatDuration(entry.getValue())};
 			model.addRow(newRow);
 		}
-//		setViewPort(this.tracksTable);
 		setCurrentView(TRACKSTABLE_ID);
 	}
 	
 	@Override
 	public void showPlaylists(List<String> plInfos){
+		System.out.println("Sono nel DataPaneImpl. showPlaylists, prima di settare il model :"+new File("C:/Users/Francesco/AudioPlayer/user1/Playlists/Funziona.dat").canWrite());
 		DefaultTableModel model = (DefaultTableModel) playlistsTable.getModel();
+		prepareModel(model);
+		for(String playlist: plInfos){
+			model.addRow(new String[]{new String(playlist)});
+		}
+		System.out.println("Sono nel DataPaneImpl.showPlaylists, ho appena popolato il model :"+new File("C:/Users/Francesco/AudioPlayer/user1/Playlists/Funziona.dat").canWrite());
+		setCurrentView(PLTABLE_ID);
+	}
+	
+	private void prepareModel(DefaultTableModel model){
 		model.getDataVector().removeAllElements();
 		model.fireTableDataChanged();
-		for(String playlist: plInfos){
-			model.addRow(new String[]{playlist});
-		}
-//		setViewPort(this.playlistsTable);
-		setCurrentView(PLTABLE_ID);
 	}
 	
 	@Override
@@ -69,9 +73,19 @@ public class DataPaneImpl extends JScrollPane implements DataPane{
 										(lDuration % 3600) / 60, (lDuration % 60));
 	}
 	
-//	private void setViewPort(JTable toView){
-//		this.setViewportView(toView);
-//	}
+	@Override
+	public String getSelectedString(){
+		JTable currentTable = null;
+		int column = 0;
+		if(currView.equals(TRACKSTABLE_ID)){
+			currentTable = tracksTable;
+		}
+		if(currView.equals(PLTABLE_ID)){
+			currentTable = playlistsTable;
+		}
+		int row = currentTable.getSelectedRow();
+		return new String((String)currentTable.getModel().getValueAt(row, column));
+	}
 	
 	private DefaultTableModel createModel(String... strings){
 		DefaultTableModel model = new DefaultTableModel(){
