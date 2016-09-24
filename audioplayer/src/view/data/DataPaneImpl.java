@@ -47,13 +47,11 @@ public class DataPaneImpl extends JScrollPane implements DataPane{
 	
 	@Override
 	public void showPlaylists(List<String> plInfos){
-		System.out.println("Sono nel DataPaneImpl. showPlaylists, prima di settare il model :"+new File("C:/Users/Francesco/AudioPlayer/user1/Playlists/Funziona.dat").canWrite());
 		DefaultTableModel model = (DefaultTableModel) playlistsTable.getModel();
 		prepareModel(model);
 		for(String playlist: plInfos){
 			model.addRow(new String[]{new String(playlist)});
 		}
-		System.out.println("Sono nel DataPaneImpl.showPlaylists, ho appena popolato il model :"+new File("C:/Users/Francesco/AudioPlayer/user1/Playlists/Funziona.dat").canWrite());
 		setCurrentView(PLTABLE_ID);
 	}
 	

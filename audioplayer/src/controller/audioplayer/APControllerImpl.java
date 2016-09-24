@@ -5,7 +5,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -62,7 +61,6 @@ public class APControllerImpl {
 	
 	private void showPlaylists(){
 		try{
-			System.out.println("Sono nel APControllerImpl.showPlaylists :"+new File("C:/Users/Francesco/AudioPlayer/user1/Playlists/Funziona.dat").canWrite());
 			dataController.showPLTable(getPlaylistsToShow());
 			mainView.setDataTitle("Playlist");
 		}catch(ClassNotFoundException | IOException e){
@@ -80,8 +78,7 @@ public class APControllerImpl {
 	private List<String> getPlaylistsToShow() throws FileNotFoundException, ClassNotFoundException, IOException{
 		List<String> retList = new ArrayList<>();
 		plManager.retrieveOrdered().forEach(e->retList.add(e.getName()));
-		System.out.println("Sono nel APControllerImpl.getPlaylistsToShow :"+new File("C:/Users/Francesco/AudioPlayer/user1/Playlists/Funziona.dat").canWrite());
-		return retList;
+		return new ArrayList<>(retList);
 	}
 	
 	private class ShowTracksListener implements ActionListener{
@@ -125,6 +122,12 @@ public class APControllerImpl {
 			String currentlyShown = dataController.getCurrentView();
 			if(currentlyShown.equals(DataController.TRACKSVIEW)){
 				trackManager.deleteTrack(toDelete);
+				try {
+					plManager.removeTrack(toDelete);
+				} catch (ClassNotFoundException | IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				showTracks();
 			}
 			else if(currentlyShown.equals(DataController.PLAYLISTSVIEW)){

@@ -1,7 +1,6 @@
 package controller.data;
 
 import java.awt.event.MouseAdapter;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +29,6 @@ public class DataController {
 	}
 	
 	public void showPLTable(List<String> playlistsInfos){
-			System.out.println("Sono nel DataController.showPLTable:"+new File("C:/Users/Francesco/AudioPlayer/user1/Playlists/Funziona.dat").canWrite());
 			dataPane.showPlaylists(new ArrayList<>(playlistsInfos));
 			currentlyShown = PLAYLISTSVIEW;
 	}

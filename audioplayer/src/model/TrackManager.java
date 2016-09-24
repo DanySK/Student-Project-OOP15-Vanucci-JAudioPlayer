@@ -7,11 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
-import model.observer.EObserver;
-import model.observer.ESource;
-
-public class TrackManager implements ESource<Track>{
+public class TrackManager{
 
 	private static final String TRACKS_DIR = "Tracks";
 	private static final String EXTENSION = ".dat";
@@ -75,21 +73,11 @@ public class TrackManager implements ESource<Track>{
 			}
 		}
 	}
-
-	@Override
-	public void addEObserver(EObserver<? super Track> obs) {
-		
-	}
-
-	@Override
-	public void notifyEObservers(Track arg) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void clearObservers() {
-		// TODO Auto-generated method stub
-		
+	
+	public void updateTrack(final String name, final String file) throws FileNotFoundException, ClassNotFoundException, IOException, UnsupportedAudioFileException{
+		Track updTrack = retrieve(name);
+		deleteTrack(name);
+		updTrack.setFile(file);
+		addTrack(updTrack);
 	}
 }

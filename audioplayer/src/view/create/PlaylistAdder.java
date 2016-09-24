@@ -120,7 +120,11 @@ public class PlaylistAdder extends JDialog{
 		this.nameIn.setText("");
 	}
 
-	public void showMessage(String title, String message) {
+	public void showErrorMessage(String title, String message) {
 		JOptionPane.showMessageDialog(this, message, title, JOptionPane.ERROR_MESSAGE);
+	}
+	
+	public int showConfirmMessage(String title, String message){
+		return JOptionPane.showConfirmDialog(this, message, title, JOptionPane.YES_NO_OPTION);
 	}
 }

@@ -5,12 +5,15 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class PlaylistManager implements Observer{
+import javax.sound.sampled.UnsupportedAudioFileException;
+
+import model.observer.EObserver;
+import model.observer.ESource;
+
+public class PlaylistManager{
 
 	private static final String PLAYLISTS_DIR = "Playlists";
 	private static final String EXTENSION = ".dat";
@@ -32,8 +35,8 @@ public class PlaylistManager implements Observer{
 	}
 	
 	public List<Playlist> retrieveAll() throws FileNotFoundException, ClassNotFoundException, IOException{
-		if(playlists != null){
-			return new ArrayList<Playlist>(playlists);
+		if(this.playlists != null){
+			return this.playlists;
 		}
 		List<Playlist> userPlaylists = new ArrayList<>();
 		handler.makeDir(plPath);
@@ -41,14 +44,12 @@ public class PlaylistManager implements Observer{
 			userPlaylists.add(retrieve(plFile.getName().replace(EXTENSION, "")));
 		}
 		this.playlists = userPlaylists;
-		System.out.println("Sono nel PlaylistManager.retrieveAll :"+new File("C:/Users/Francesco/AudioPlayer/user1/Playlists/Funziona.dat").canWrite());
 		return userPlaylists;
 	}
 	
 	public Set<Playlist> retrieveOrdered() throws FileNotFoundException, ClassNotFoundException, IOException{
 		Set<Playlist> sorted = new TreeSet<>((e1, e2)->e1.getName().toLowerCase().compareTo(e2.getName().toLowerCase()));
 		sorted.addAll(retrieveAll());
-		System.out.println("Sono nel PlaylistManager.retrieveOrdered :"+new File("C:/Users/Francesco/AudioPlayer/user1/Playlists/Funziona.dat").canWrite());
 		return sorted;
 	}
 	
@@ -77,9 +78,45 @@ public class PlaylistManager implements Observer{
 			}
 		}
 	}
-
-	@Override
-	public void update(Observable arg0, Object arg1) {
-		
+	
+	public void removeTrack(String trackName) throws FileNotFoundException, ClassNotFoundException, IOException{
+		List<Playlist> toUpdate = new ArrayList<>();
+		retrieveAll().forEach(pl->{
+			if(pl.removeTrack(trackName)){
+				toUpdate.add(pl);
+			}
+		});
+		toUpdate.forEach(pl->{
+			deletePlaylist(pl.getName());
+			try {
+				addPlaylist(pl);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		});
+	}
+	
+	public void updatePlaylists(String updated, String file) throws FileNotFoundException, ClassNotFoundException, IOException, UnsupportedAudioFileException{
+		List<Playlist> toUpdate = new ArrayList<>();
+		retrieveAll().forEach(pl->{
+			pl.getTracks().forEach(tr->{
+				if(tr.getName().equals(updated))
+					try {
+						tr.setFile(file);
+						toUpdate.add(pl);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+			});
+		});
+		toUpdate.forEach(pl->{
+			deletePlaylist(pl.getName());
+			try {
+				addPlaylist(pl);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		});
 	}
 }

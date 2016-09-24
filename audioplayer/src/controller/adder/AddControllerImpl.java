@@ -10,6 +10,8 @@ import java.util.LinkedList;
 import java.util.List;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
+
 import model.PlaylistImpl;
 import model.PlaylistManager;
 import model.Track;
@@ -95,16 +97,25 @@ public class AddControllerImpl implements AddController{
 			String trackName = trackAdder.getInputName();
 			String trackFile = trackAdder.getChosenFile();
 			if(checkString(trackName) || checkString(trackFile)){
-				trackAdder.showMessage("Dati errati", "E' necessario scegliere un nome e un file");
+				trackAdder.showErrorMessage("Dati errati", "E' necessario scegliere un nome e un file");
 			}
 			else{
 				try {
 					saveTrack(trackName, trackFile);
-					trackAdder.setVisible(false);
 				} catch (ClassNotFoundException | IOException | UnsupportedAudioFileException e1) {
-					trackAdder.showMessage("Qualcosa non va", "Controlla i dati inseriti");
+					trackAdder.showErrorMessage("Qualcosa non va", "Controlla i dati inseriti");
 				} catch (IllegalArgumentException ex){
-					trackAdder.showMessage("Impossibile aggiungere il brano", "Esiste già un brano con questo nome");
+					int result = trackAdder.showConfirmMessage("Il brano esiste già", "Vuoi sovrascrivere il brano esistente?");
+					if(result == JOptionPane.YES_OPTION){
+						try {
+							trackManager.updateTrack(trackName, trackFile);
+							plManager.updatePlaylists(trackName, trackFile);
+						} catch (ClassNotFoundException | IOException | UnsupportedAudioFileException e1) {
+							trackAdder.showErrorMessage("Qualcosa è andato storto...", "Impossibile sostituire il brano");
+						}
+					}
+				}finally{
+					trackAdder.setVisible(false);
 				}
 			}
 		}
@@ -117,7 +128,7 @@ public class AddControllerImpl implements AddController{
 			String plName = plAdder.getInputName();
 			List<String> selected = plAdder.getSelected();
 			if(checkString(plName) || selected.isEmpty()){
-				plAdder.showMessage("Dati errati", "E' necessario scegliere un nome e almeno un brano");
+				plAdder.showErrorMessage("Dati errati", "E' necessario scegliere un nome e almeno un brano");
 			}else{
 				List<Track> plTracks = new ArrayList<>();
 				try{

@@ -10,6 +10,7 @@ public class ObjectHandler extends FileHandlerImpl{
 	public void objectToFile(Object toWrite, String objPath) throws FileNotFoundException, IOException{
 		ObjectOutputStream writer = new ObjectOutputStream(super.toFile(objPath));
 		writer.writeObject(toWrite);
+		writer.close();
 	}
 	
 	public Object fileToObject(String filePath) throws FileNotFoundException, IOException, ClassNotFoundException{

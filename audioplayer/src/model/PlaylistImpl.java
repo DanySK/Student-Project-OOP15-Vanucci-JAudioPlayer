@@ -27,6 +27,7 @@ public class PlaylistImpl implements Playlist, Serializable{
 
 	@Override
 	public boolean removeTrack(String trackName) {
+		System.out.println("Voglio eliminare "+trackName);
 		return this.tracks.removeIf(e->e.getName().equals(trackName));
 	}
 
