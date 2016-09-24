@@ -1,9 +1,7 @@
 package controller.player;
 
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -20,27 +18,18 @@ import javax.sound.sampled.LineEvent;
 import javax.sound.sampled.LineListener;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JSlider;
-
-import model.Playlist;
-import model.PlaylistManager;
-import model.Track;
-import model.TrackManager;
+import model.track.Track;
 import view.player.Player;
 
-public class PlayerController implements LineListener {
+/**
+ * This is the controller for the PlayerView, it handles the loading and playback for the track,
+ * together with the timer thread which handles the slider and the display
+ *
+ */
+public class PlayerControllerImpl implements PlayerController, LineListener {
 	
-	/**
-	 * this flag indicates whether the playback completes or not.
-	 */
 	private boolean playCompleted;
 
-	/**
-	 * this flag indicates whether the playback is stopped or not.
-	 */
 	private boolean isStopped = true, isPaused = false;
 
 	private Clip audioClip;
@@ -52,24 +41,34 @@ public class PlayerController implements LineListener {
 	private int queueCounter = 0;
 	private Player view;
 	
-	public PlayerController(Player view){
+	public PlayerControllerImpl(Player view){
 		this.view = view;
 		this.view.setupButtons(new PrevListener(), new NextListener(), 
 									new PlayListener(), new PauseListener());
 	}
 	
+	/**
+	 * Sets the tracks to be played in a queue and resets the counter
+	 */
+	@Override
 	public void setPlayQueue(List<Track> queue){
 		this.queueCounter = 0;
 		this.playQueue = queue;
 		view.setQueueDim(queue.size()-1);
 	}
 	
+	/**
+	 * This method is called by the main controller and starts playing back the queue
+	 */
+	@Override
 	public void startQueue(){
 		openTrack();
 	}
 	
-	
-	public void openTrack() {
+	/**
+	 * Opens the track corresponding to the current index in the queue
+	 */
+	private void openTrack() {
 		
 		this.currentTrack = playQueue.get(queueCounter);
 		if (!isStopped()) {
@@ -86,12 +85,17 @@ public class PlayerController implements LineListener {
 		playBack();
 	}
 	
+	/**
+	 * Tells the player to display a error message dialog if occurred
+	 * @param title the message title
+	 * @param message the content of the message
+	 */
 	private void displayError(String title, String message){
 		view.showErrorMessage(title, message);
 	}
 	
 	/**
-	 * Start playing back the sound.
+	 * Plays back the sound and set a timer
 	 */
 	private void playBack() {
 		timer = new TrackTimer();
@@ -129,15 +133,12 @@ public class PlayerController implements LineListener {
 	}
 
 	/**
-	 * Load audio file before playing back
-	 * 
-	 * @param audioFilePath
-	 *            Path of the audio file.
-	 * @throws IOException
+	 * Loads the audiofile required
 	 * @throws UnsupportedAudioFileException
+	 * @throws IOException
 	 * @throws LineUnavailableException
 	 */
-	public void load() throws UnsupportedAudioFileException, 
+	private void load() throws UnsupportedAudioFileException, 
 														IOException, LineUnavailableException {
 		
 		AudioInputStream audioStream = AudioSystem.getAudioInputStream(currentTrack.getFile());
@@ -148,23 +149,27 @@ public class PlayerController implements LineListener {
 		audioClip.open(audioStream);
 	}
 	
-	public long getClipSecondLength() {
+	/**
+	 * Gets the duration of the current audioClip in seconds
+	 * @return a long value for the clip duration
+	 */
+	private long getClipSecondLength() {
 		return audioClip.getMicrosecondLength() / 1_000_000;
 	}
 	
-	public String getClipLengthString() {
-		String length = "";
+	/**
+	 * Creates a string to represent the track duration in a HH:mm:ss format
+	 * @return a formatted string of the track duration
+	 */
+	private String getClipLengthString() {
 		long seconds = getClipSecondLength();
 		return String.format("%d:%02d:%02d", seconds / 3600,
 				(seconds % 3600) / 60, (seconds % 60));
 	}
-
+	
 	/**
-	 * Play a given audio file.
-	 * 
+	 * Handles the starting and closing of the current audioClip
 	 * @throws IOException
-	 * @throws UnsupportedAudioFileException
-	 * @throws LineUnavailableException
 	 */
 	public void play() throws IOException {
 		System.out.println("isStopped: "+isStopped+", isPaused: "+isPaused);
@@ -174,11 +179,9 @@ public class PlayerController implements LineListener {
 		isStopped = false;
 
 		while (!playCompleted) {
-			// wait for the playback completes
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException ex) {
-//				ex.printStackTrace();
 				if (isStopped) {
 					audioClip.stop();
 					break;
@@ -186,7 +189,6 @@ public class PlayerController implements LineListener {
 				if (isPaused) {
 					audioClip.stop();
 				} else {
-					System.out.println("Resuming");
 					audioClip.start();
 				}
 			}
@@ -195,9 +197,9 @@ public class PlayerController implements LineListener {
 		audioClip.close();
 
 	}
-
+	
 	/**
-	 * Stop playing back.
+	 * Stops the track and reset the controls in the view
 	 */
 	private void stop() {
 		isStopped = true;
@@ -205,6 +207,9 @@ public class PlayerController implements LineListener {
 		resetControls();
 	}
 
+	/**
+	 * Pauses the track, calling the view to visually show the status
+	 */
 	private void pause() {
 		isPaused = true;
 		timer.pauseTimer();
@@ -212,6 +217,9 @@ public class PlayerController implements LineListener {
 		view.pausePlaying();
 	}
 
+	/**
+	 * Resumes the playback calling the view to set the buttons
+	 */
 	private void resume() {
 		isPaused = false;
 		timer.resumeTimer();
@@ -219,28 +227,38 @@ public class PlayerController implements LineListener {
 		view.resumePlaying(queueCounter);
 	}
 
-	/**
-	 * Listens to the audio line events to know when the playback completes.
-	 */
 	@Override
 	public void update(LineEvent event) {
 		LineEvent.Type type = event.getType();
 		if (type == LineEvent.Type.STOP) {
-			System.out.println("Completed!");
 			if (isStopped || !isPaused) {
 				playCompleted = true;
 			}
 		}
 	}
 	
+	/**
+	 * Checks if the player is currently paused
+	 * @return
+	 */
 	private boolean isPaused(){
 		return isPaused;
 	}
 	
+	
+	/**
+	 * Checks if the player is currently stopped
+	 * @return
+	 */
 	private boolean isStopped(){
 		return isStopped;
 	}
 	
+	/**
+	 * This thread handles the visual timer and the slider for the player view
+	 * @author Francesco
+	 *
+	 */
 	private class TrackTimer extends Thread {
 		private DateFormat dateFormater = new SimpleDateFormat("HH:mm:ss");	
 		private boolean isRunning = false;
@@ -279,18 +297,24 @@ public class PlayerController implements LineListener {
 		
 		
 		/**
-		 * Reset counting to "00:00:00"
+		 * Resets the timer
 		 */
-		public void reset() {
+		private void reset() {
 			isReset = true;
 			isRunning = false;
 		}
 		
-		public void pauseTimer() {
+		/**
+		 * Pauses the timer
+		 */
+		private void pauseTimer() {
 			isPause = true;
 		}
 		
-		public void resumeTimer() {
+		/**
+		 * Resumes the timer
+		 */
+		private void resumeTimer() {
 			isPause = false;
 		}
 		
@@ -317,6 +341,11 @@ public class PlayerController implements LineListener {
 		view.stopPlaying();
 	}
 	
+	/**
+	 * This listener handles the play button, checking the current status to act
+	 * @author Francesco
+	 *
+	 */
 	private class PlayListener implements ActionListener{
 
 		@Override
@@ -329,6 +358,11 @@ public class PlayerController implements LineListener {
 		}
 	}
 	
+	/**
+	 * This listener handles the pause button
+	 * @author Francesco
+	 *
+	 */
 	private class PauseListener implements ActionListener{
 
 		@Override
@@ -341,6 +375,11 @@ public class PlayerController implements LineListener {
 		}
 	}
 	
+	/**
+	 * This listener handles the Prev Button and decreases the queue counter
+	 * @author Francesco
+	 *
+	 */
 	private class PrevListener implements ActionListener{
 
 		@Override
@@ -352,6 +391,11 @@ public class PlayerController implements LineListener {
 		}
 	}
 	
+	/**
+	 * This listener handles the Next Button increasing the queue counter
+	 * @author Francesco
+	 *
+	 */
 	private class NextListener implements ActionListener{
 
 		@Override

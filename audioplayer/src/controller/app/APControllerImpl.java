@@ -1,5 +1,9 @@
-package controller.audioplayer;
+package controller.app;
 
+/**
+ * This is the main controller for the app and handles all the interactions between the components
+ * of the view and the components controllers
+ */
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,20 +20,21 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JTable;
 
 import controller.adder.*;
-import controller.data.DataController;
+import controller.data.DataControllerImpl;
 import controller.player.PlayerController;
+import controller.player.PlayerControllerImpl;
 import model.DataManager;
-import model.Playlist;
-import model.PlaylistManager;
-import model.Track;
-import model.TrackManager;
+import model.playlist.Playlist;
+import model.playlist.PlaylistManager;
+import model.track.Track;
+import model.track.TrackManager;
 import model.user.User;
 import view.AudioPlayerGUI;
 import view.AudioPlayerImpl;
-public class APControllerImpl {
+public class APControllerImpl implements APController{
 
 	private AudioPlayerGUI mainView;
-	private DataController dataController;
+	private DataControllerImpl dataController;
 	private AddController addCtrl;
 	private PlayerController playerCtrl;
 	private DataManager<Track> trackManager;
@@ -39,11 +44,15 @@ public class APControllerImpl {
 		this.mainView = new AudioPlayerImpl();
 		this.trackManager = new TrackManager(logged.getUsername());
 		this.plManager = new PlaylistManager(logged.getUsername());
-		this.dataController = new DataController(mainView.getDataPane(), new DoubleClickAdapter());
+		this.dataController = new DataControllerImpl(mainView.getDataPane(), new DoubleClickAdapter());
 		this.addCtrl = new AddControllerImpl(trackManager, plManager, mainView.getTrackAdder(), mainView.getPLAdder());
-		this.playerCtrl = new PlayerController(mainView.getPlayer());
+		this.playerCtrl = new PlayerControllerImpl(mainView.getPlayer());
 	}
 	
+	/**
+	 * Initializes the main view setting it visible and preparing the options buttons
+	 */
+	@Override
 	public void initializeView(){
 		ActionListener[] listeners = new ActionListener[]{new ShowTracksListener(), new ShowPLListener(),
 				new TrackAdderListener(), new PLAdderListener(), new DeleteListener()};
@@ -52,6 +61,9 @@ public class APControllerImpl {
 		this.mainView.initialize();
 	}
 	
+	/**
+	 * tells the DataController to show the tracks table delivering the required infos
+	 */
 	private void showTracks(){
 		try {
 			dataController.showTracksTable(getTracksToShow());
@@ -62,6 +74,9 @@ public class APControllerImpl {
 		}
 	}
 	
+	/**
+	 * tells the DataController to show the playlists table delivering the required infos
+	 */
 	private void showPlaylists(){
 		try{
 			dataController.showPLTable(getPlaylistsToShow());
@@ -72,18 +87,38 @@ public class APControllerImpl {
 		
 	}
 	
+	/**
+	 * retieves a Map from the manager containing the correct track infos to show
+	 * @return
+	 * @throws FileNotFoundException
+	 * @throws ClassNotFoundException
+	 * @throws IOException
+	 */
 	private Map<String, Float> getTracksToShow() throws FileNotFoundException, ClassNotFoundException, IOException{
 		Map<String, Float> retMap = new LinkedHashMap<>();
 		trackManager.retrieveOrdered().forEach(e-> retMap.put(e.getName(), e.getDuration()));
 		return retMap;
 	}
 	
+	/**
+	 * retrieves a List from the manager containing the correct playlists info to show
+	 * @return
+	 * @throws FileNotFoundException
+	 * @throws ClassNotFoundException
+	 * @throws IOException
+	 */
 	private List<String> getPlaylistsToShow() throws FileNotFoundException, ClassNotFoundException, IOException{
 		List<String> retList = new ArrayList<>();
 		plManager.retrieveOrdered().forEach(e->retList.add(e.getName()));
 		return new ArrayList<>(retList);
 	}
 	
+	/**
+	 * This listener handles the button "Le mie tracce" showing the user tracks throught
+	 * a DataController call
+	 * @author Francesco
+	 *
+	 */
 	private class ShowTracksListener implements ActionListener{
 
 		@Override
@@ -92,6 +127,12 @@ public class APControllerImpl {
 		}
 	}
 	
+	/**
+	 * This listener handles the button "Le mie Playlists" showing the user playlists throght
+	 * a DataController call
+	 * @author Francesco
+	 *
+	 */
 	private class ShowPLListener implements ActionListener{
 		
 		@Override
@@ -100,6 +141,11 @@ public class APControllerImpl {
 		}
 	}
 	
+	/**
+	 * This listener calls the AddController to show a dialog to save a new track
+	 * @author Francesco
+	 *
+	 */
 	private class TrackAdderListener implements ActionListener{
 		
 		@Override
@@ -109,6 +155,11 @@ public class APControllerImpl {
 		}
 	}
 	
+	/**
+	 * This listener calls the AddController to show a dialog to save a new playlist
+	 * @author Francesco
+	 *
+	 */
 	private class PLAdderListener implements ActionListener{
 		
 		@Override
@@ -117,29 +168,38 @@ public class APControllerImpl {
 		}
 	}
 	
+	/**
+	 * This listener handles the deletion of the currently selected element
+	 * @author Francesco
+	 *
+	 */
 	private class DeleteListener implements ActionListener{
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			String toDelete = dataController.getSelected();
 			String currentlyShown = dataController.getCurrentView();
-			if(currentlyShown.equals(DataController.TRACKSVIEW)){
+			if(currentlyShown.equals(DataControllerImpl.TRACKSVIEW)){
 				trackManager.delete(toDelete);
 				try {
 					plManager.update(toDelete, null);
 				} catch (ClassNotFoundException | IOException | UnsupportedAudioFileException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					mainView.showErrorMessage("Qualcosa non va..", "Non è stato possibile aggiornare le playlist");
 				}
 				showTracks();
 			}
-			else if(currentlyShown.equals(DataController.PLAYLISTSVIEW)){
+			else if(currentlyShown.equals(DataControllerImpl.PLAYLISTSVIEW)){
 				plManager.delete(toDelete);
 				showPlaylists();
 			}
 		}
 	}
 	
+	/**
+	 * This Adapter handles the double click of an element to play it
+	 * @author Francesco
+	 *
+	 */
 	private class DoubleClickAdapter extends MouseAdapter{
 		
 		@Override
@@ -150,7 +210,7 @@ public class APControllerImpl {
 		    if (me.getClickCount() == 2) {
 		    	String current = dataController.getCurrentView();
 		        String selected = (String) table.getValueAt(row, 0);
-		        if(current.equals(DataController.PLAYLISTSVIEW)){
+		        if(current.equals(DataControllerImpl.PLAYLISTSVIEW)){
 		           	try {
 						playerCtrl.setPlayQueue(plManager.retrieve(selected).getTracks());
 					} catch (ClassNotFoundException | IOException e) {

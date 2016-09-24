@@ -1,5 +1,10 @@
 package model.user;
 
+/**
+ * This is the User class handled by the UserManager
+ * @author Francesco
+ *
+ */
 public class UserImpl implements User{
 
 	private String username = null, password = null;

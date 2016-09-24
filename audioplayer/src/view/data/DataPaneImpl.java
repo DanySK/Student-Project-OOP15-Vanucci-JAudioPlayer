@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.awt.event.MouseAdapter;
-import java.io.File;
 
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;

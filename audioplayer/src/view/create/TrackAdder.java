@@ -16,8 +16,6 @@ import java.awt.Font;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileFilter;
 
-import controller.data.DataController;
-
 import javax.swing.BoxLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
@@ -47,10 +45,8 @@ public class TrackAdder extends JDialog{
 		this.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
 		this.setSize(350, 224);
 		body.setBorder(new EmptyBorder(10, 10, 10, 10));
-		
 		getContentPane().add(body, BorderLayout.CENTER);
 		body.setLayout(new GridLayout(0, 1, 0, 20));
-		
 		body.add(upPanel);
 		upPanel.setLayout(new GridLayout(2, 0, 0, 0));
 		upPanel.add(nameLabel);
@@ -63,7 +59,7 @@ public class TrackAdder extends JDialog{
 		downPanel.add(chooser);
 		downPanel.add(showFile);
 		chooser.setFont(new Font("Tahoma", Font.BOLD, 14));
-		chooser.setToolTipText("scegli File");
+		chooser.setToolTipText("Seleziona un file");
 		nameLabel.setFont(new Font("Tahoma", Font.BOLD, 14));
 		nameLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		footer.setBorder(new EmptyBorder(10, 40, 10, 40));

@@ -16,18 +16,17 @@ import javax.swing.SwingUtilities;
 import java.awt.Font;
 import javax.swing.border.EmptyBorder;
 
-import controller.data.DataController;
-
 import javax.swing.DefaultListModel;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
 public class PlaylistAdder extends JDialog{
 
@@ -51,23 +50,38 @@ public class PlaylistAdder extends JDialog{
 	
 	public PlaylistAdder(){
 		this.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
-		this.setSize(350, 224);
+		this.setSize(232, 285);
 		body.setBorder(new EmptyBorder(10, 10, 10, 10));
 		
 		getContentPane().add(body, BorderLayout.CENTER);
 		body.setLayout(new GridLayout(0, 1, 0, 20));
 		
 		body.add(upPanel);
-		upPanel.setLayout(new GridLayout(2, 0, 0, 0));
-		upPanel.add(nameLabel);
 		nameLabel.setFont(new Font("Tahoma", Font.BOLD, 14));
-		upPanel.add(nameIn);
 		nameIn.setColumns(10);
 		
 		body.add(downPanel);
 		
 		nameLabel.setFont(new Font("Tahoma", Font.BOLD, 14));
 		nameLabel.setHorizontalAlignment(SwingConstants.LEFT);
+		GroupLayout gl_upPanel = new GroupLayout(upPanel);
+		gl_upPanel.setHorizontalGroup(
+			gl_upPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_upPanel.createSequentialGroup()
+					.addComponent(nameLabel)
+					.addContainerGap(98, Short.MAX_VALUE))
+				.addComponent(nameIn, GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE)
+		);
+		gl_upPanel.setVerticalGroup(
+			gl_upPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_upPanel.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(nameLabel)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(nameIn, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addGap(10))
+		);
+		upPanel.setLayout(gl_upPanel);
 		footer.setBorder(new EmptyBorder(10, 40, 10, 40));
 		getContentPane().add(footer, BorderLayout.SOUTH);
 		footer.setLayout(new BorderLayout(0, 0));
@@ -75,7 +89,9 @@ public class PlaylistAdder extends JDialog{
 		listModel = new DefaultListModel<>();
 		downPanel.setLayout(new BorderLayout());
 		tracks = new JList<String>(listModel);
-		downPanel.add(new JScrollPane(tracks));
+		JScrollPane scroller = new JScrollPane(tracks);
+		scroller.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		downPanel.add(scroller);
 		footer.add(add, BorderLayout.WEST);
 		JRootPane root = SwingUtilities.getRootPane(add);
 		setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -93,13 +109,11 @@ public class PlaylistAdder extends JDialog{
 	
 	@Override
 	public void setVisible(boolean show){
-
 		if(show == false)
 	     {
 	         super.setVisible(show);
 	         return;
 	     }
-
 	     reset();
 	     super.setVisible(show);
 	     return;

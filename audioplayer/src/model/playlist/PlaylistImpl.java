@@ -1,8 +1,10 @@
-package model;
+package model.playlist;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import model.track.Track;
 
 public class PlaylistImpl implements Playlist, Serializable{
 	

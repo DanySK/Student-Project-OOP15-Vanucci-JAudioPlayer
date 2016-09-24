@@ -13,19 +13,19 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
+/**
+ * This static class handles the informations regarding the main directory, the file separator used
+ * by the system and the principal methods to access and retrieve a file
+ * @author Francesco
+ *
+ */
 public class FileHandler{
 	
 	protected static final String HOME = System.getProperty("user.home");
 	protected static final String SEPARATOR = System.getProperty("file.separator");
 	protected static final String MAIN_DIR = HOME+SEPARATOR+"AudioPlayer";
 
-	/**
-	 * 
-	 * @param fileAbsPath the file's path
-	 * 
-	 * @return An InputStream for the required file
-	 * @throws FileNotFoundException
-	 */
+	
 	public static InputStream getFile(String fileName) throws FileNotFoundException{
 		return new BufferedInputStream(new FileInputStream(MAIN_DIR+SEPARATOR+fileName));
 	}
@@ -60,7 +60,6 @@ public class FileHandler{
 	public static void makeDir(String dirPath){
 		String completePath = MAIN_DIR+SEPARATOR+dirPath;
 		if(Files.notExists(Paths.get(completePath), LinkOption.NOFOLLOW_LINKS)){
-			System.out.println("Tentando di creare la cartella a: "+completePath);
 			new File(completePath).mkdir();
 		}
 	}

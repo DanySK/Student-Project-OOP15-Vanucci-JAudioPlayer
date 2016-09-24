@@ -12,29 +12,16 @@ import view.data.DataPaneImpl;
 import view.player.Player;
 
 import java.awt.BorderLayout;
-import java.awt.Point;
 
 import javax.swing.JPanel;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 
-import java.awt.CardLayout;
-
-import javax.swing.JTable;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
-import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
-
-import controller.data.DataController;
-import javax.swing.SwingConstants;
 
 public class AudioPlayerImpl extends JFrame implements AudioPlayerGUI{
 
@@ -67,23 +54,18 @@ public class AudioPlayerImpl extends JFrame implements AudioPlayerGUI{
 		optionsPanel.setLayout(new BoxLayout(optionsPanel, BoxLayout.Y_AXIS));
 		trackAdder = new TrackAdder();
 		plAdder = new PlaylistAdder();
-		
 		this.scrollPane = new DataPaneImpl(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		tracksBtn = new JButton("Le mie Tracce");
 		optionsPanel.add(tracksBtn);
-		
 		playlistBtn = new JButton("Le mie playlist");
 		optionsPanel.add(playlistBtn);
-		
 		trkAddBtn = new JButton("Aggiungi brano");
 		optionsPanel.add(trkAddBtn);
-		
 		plAddBtn = new JButton("Crea playlist");
 		optionsPanel.add(plAddBtn);
-		
 		deleteBtn = new JButton("Elimina");
 		optionsPanel.add(deleteBtn);
-		
+		resizeButtons();
 		JPanel panel = new JPanel(new BorderLayout());
 		dataPaneBorder = BorderFactory.createTitledBorder (BorderFactory.createEtchedBorder (),
                 "",
@@ -142,5 +124,13 @@ public class AudioPlayerImpl extends JFrame implements AudioPlayerGUI{
 	@Override
 	public void showErrorMessage(String title, String content){
 		JOptionPane.showMessageDialog(this, content, title, JOptionPane.ERROR_MESSAGE);
+	}
+	
+	private void resizeButtons(){
+		for(Component component: optionsPanel.getComponents()){
+			if(component instanceof JButton){
+				component.setMaximumSize(new Dimension(200, 30));
+			}
+		}
 	}
 }

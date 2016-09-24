@@ -7,8 +7,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import model.FileHandler;
-import model.FileHandler;
-
+/**
+ * This manager handles the user, it uses the Singleton pattern to admit only one user
+ * @author Francesco
+ *
+ */
 public class UserManagerImpl{
 	
 	private static User currentUser = new UserImpl();
@@ -25,16 +28,16 @@ public class UserManagerImpl{
 	}
 	
 	public static boolean userExists(String username, String password) throws FileNotFoundException, IOException{
-		
-		FileHandler handler = new FileHandler();
-		try(BufferedReader br = new BufferedReader(new InputStreamReader(handler.getFile("users.txt")))) {
-			for(String line; (line = br.readLine()) != null; ) {
-				if(line.contains("username: "+username) && line.contains("password: "+password)){
-					String userDir = handler.getMainDir();
-					if(!new File(userDir+username).exists()){
-						new File(userDir+username).mkdir();
+		try(BufferedReader br = new BufferedReader(new InputStreamReader(FileHandler.getFile("users.txt")))) {
+			if(!username.trim().equals("") || !password.trim().equals("")){
+				for(String line; (line = br.readLine()) != null; ) {
+					if(line.contains("username: "+username) && line.contains("password: "+password)){
+						String userDir = FileHandler.getMainDir();
+						if(!new File(userDir+username).exists()){
+							new File(userDir+username).mkdir();
+						}
+						return true;
 					}
-					return true;
 				}
 			}
 			return false;

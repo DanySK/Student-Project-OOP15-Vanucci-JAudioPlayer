@@ -1,4 +1,4 @@
-package model;
+package model.playlist;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -8,6 +8,10 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import javax.sound.sampled.UnsupportedAudioFileException;
+
+import model.AbstractDataManager;
+import model.FileHandler;
+import model.ObjectHandler;
 
 public class PlaylistManager extends AbstractDataManager<Playlist>{
 

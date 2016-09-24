@@ -1,6 +1,8 @@
-package model;
+package model.playlist;
 
 import java.util.List;
+
+import model.track.Track;
 
 public interface Playlist {
 

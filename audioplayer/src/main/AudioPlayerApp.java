@@ -6,11 +6,17 @@ import javax.swing.UIManager;
 import controller.user.LoginControllerImpl;
 import model.FileHandler;
 
+/**
+ * This is the main class, it launches the login Controller creating, in case it's necessary, the
+ * main directory for the app's datas
+ * @author Francesco
+ *
+ */
 public class AudioPlayerApp {
 
 	public static void main(String[] args){
 		
-		new FileHandler().makeMainDir();
+		FileHandler.makeMainDir();
 		
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -22,7 +28,6 @@ public class AudioPlayerApp {
 			
 			@Override
 			public void run() {
-//				new LoginImpl().initializeGUI();
 				new LoginControllerImpl().initializeView();
 			}
 		});

@@ -5,9 +5,8 @@ import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import controller.audioplayer.APControllerImpl;
+import controller.app.APControllerImpl;
 import model.user.User;
-import model.user.UserManager;
 import model.user.UserManagerImpl;
 import view.login.LoginGUI;
 import view.login.LoginImpl;
@@ -45,7 +44,6 @@ public class LoginControllerImpl implements LoginController{
 			try {
 				setUserAndPswd(loginView.getLoginName(), loginView.getLoginPswd());
 				User currentUser = UserManagerImpl.getUser();
-				System.out.println("Logged as: "+currentUser.getUsername()+" using password "+currentUser.getPassword());
 				new APControllerImpl(currentUser).initializeView();
 				loginView.close();
 			} catch (IllegalArgumentException e1) {

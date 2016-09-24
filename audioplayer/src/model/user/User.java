@@ -1,5 +1,10 @@
 package model.user;
 
+/**
+ * This is the interface for the User Class
+ * @author Francesco
+ *
+ */
 public interface User {
 
 	String getUsername();

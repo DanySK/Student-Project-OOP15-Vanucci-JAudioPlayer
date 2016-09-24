@@ -1,8 +1,6 @@
 package view.data;
 
 import java.awt.event.MouseAdapter;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 

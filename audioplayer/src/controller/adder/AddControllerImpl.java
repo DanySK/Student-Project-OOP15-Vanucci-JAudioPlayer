@@ -13,10 +13,10 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
 import model.DataManager;
-import model.Playlist;
-import model.PlaylistImpl;
-import model.Track;
-import model.TrackImpl;
+import model.playlist.Playlist;
+import model.playlist.PlaylistImpl;
+import model.track.Track;
+import model.track.TrackImpl;
 import view.create.PlaylistAdder;
 import view.create.TrackAdder;
 
@@ -139,6 +139,8 @@ public class AddControllerImpl implements AddController{
 					plAdder.setVisible(false);
 				}catch (ClassNotFoundException | IOException e1) {
 					e1.printStackTrace();
+				}catch (IllegalArgumentException ex){
+					plAdder.showErrorMessage("La playlist esiste già", "Esiste già una playlist con questo nome");
 				}
 			}
 		}	
