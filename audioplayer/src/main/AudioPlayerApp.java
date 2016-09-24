@@ -4,13 +4,13 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import controller.user.LoginControllerImpl;
-import model.FileHandlerImpl;
+import model.FileHandler;
 
 public class AudioPlayerApp {
 
 	public static void main(String[] args){
 		
-		new FileHandlerImpl().makeMainDir();
+		new FileHandler().makeMainDir();
 		
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());

@@ -1,6 +1,5 @@
 package model;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,41 +9,12 @@ import java.util.TreeSet;
 
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-import model.observer.EObserver;
-import model.observer.ESource;
-
-public class PlaylistManager{
+public class PlaylistManager extends AbstractDataManager<Playlist>{
 
 	private static final String PLAYLISTS_DIR = "Playlists";
-	private static final String EXTENSION = ".dat";
-	
-	private List<Playlist> playlists = null;
-	private String fileSeparator;
-	private ObjectHandler handler;
-	private String plPath;
 	
 	public PlaylistManager(String username){
-		
-		handler = new ObjectHandler();
-		this.fileSeparator = handler.getSysSeparator();
-		this.plPath = username+fileSeparator+PLAYLISTS_DIR;
-	}
-	
-	public Playlist retrieve(String plName) throws FileNotFoundException, IOException, ClassNotFoundException{
-		return (Playlist)handler.fileToObject(plPath+fileSeparator+plName+EXTENSION);
-	}
-	
-	public List<Playlist> retrieveAll() throws FileNotFoundException, ClassNotFoundException, IOException{
-		if(this.playlists != null){
-			return this.playlists;
-		}
-		List<Playlist> userPlaylists = new ArrayList<>();
-		handler.makeDir(plPath);
-		for(File plFile : handler.getFiles(plPath)){
-			userPlaylists.add(retrieve(plFile.getName().replace(EXTENSION, "")));
-		}
-		this.playlists = userPlaylists;
-		return userPlaylists;
+		super(username, PLAYLISTS_DIR);
 	}
 	
 	public Set<Playlist> retrieveOrdered() throws FileNotFoundException, ClassNotFoundException, IOException{
@@ -61,25 +31,25 @@ public class PlaylistManager{
 		return false;
 	}
 	
-	public void addPlaylist(Playlist newPL) throws FileNotFoundException, IOException, ClassNotFoundException{
+	public void addNew(Playlist newPL) throws FileNotFoundException, IOException, ClassNotFoundException{
 		if(playlistExists(newPL.getName()))
 			throw new IllegalArgumentException();
 		
-		handler.objectToFile(newPL, plPath+fileSeparator+newPL.getName()+EXTENSION);
-		if(playlists != null){
-			playlists.add(newPL);
+		ObjectHandler.objectToFile(newPL, dirPath+fileSeparator+newPL.getName()+EXTENSION);
+		if(stored != null){
+			stored.add(newPL);
 		}
 	}
 	
-	public void deletePlaylist(String toDelete){
-		if(handler.deleteFile(plPath+fileSeparator+toDelete+EXTENSION)){
-			if(playlists != null){
-				playlists.removeIf(e->e.getName().equals(toDelete));
+	public void delete(String toDelete){
+		if(FileHandler.deleteFile(dirPath+fileSeparator+toDelete+EXTENSION)){
+			if(stored != null){
+				stored.removeIf(e->e.getName().equals(toDelete));
 			}
 		}
 	}
 	
-	public void removeTrack(String trackName) throws FileNotFoundException, ClassNotFoundException, IOException{
+	private void removeTrack(String trackName) throws FileNotFoundException, ClassNotFoundException, IOException{
 		List<Playlist> toUpdate = new ArrayList<>();
 		retrieveAll().forEach(pl->{
 			if(pl.removeTrack(trackName)){
@@ -87,36 +57,40 @@ public class PlaylistManager{
 			}
 		});
 		toUpdate.forEach(pl->{
-			deletePlaylist(pl.getName());
+			delete(pl.getName());
 			try {
-				addPlaylist(pl);
+				addNew(pl);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		});
 	}
 	
-	public void updatePlaylists(String updated, String file) throws FileNotFoundException, ClassNotFoundException, IOException, UnsupportedAudioFileException{
+	public void update(String updated, String file) throws FileNotFoundException, ClassNotFoundException, IOException, UnsupportedAudioFileException{
 		List<Playlist> toUpdate = new ArrayList<>();
-		retrieveAll().forEach(pl->{
-			pl.getTracks().forEach(tr->{
-				if(tr.getName().equals(updated))
-					try {
-						tr.setFile(file);
-						toUpdate.add(pl);
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+		if(file == null){
+			removeTrack(updated);
+		}
+		else{
+			retrieveAll().forEach(pl->{
+				pl.getTracks().forEach(tr->{
+					if(tr.getName().equals(updated))
+						try {
+							tr.setFile(file);
+							toUpdate.add(pl);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+				});
 			});
-		});
-		toUpdate.forEach(pl->{
-			deletePlaylist(pl.getName());
-			try {
-				addPlaylist(pl);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		});
+			toUpdate.forEach(pl->{
+				delete(pl.getName());
+				try {
+					addNew(pl);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			});
+		}
 	}
 }

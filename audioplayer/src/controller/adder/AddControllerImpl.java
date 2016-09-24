@@ -12,11 +12,11 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
+import model.DataManager;
+import model.Playlist;
 import model.PlaylistImpl;
-import model.PlaylistManager;
 import model.Track;
 import model.TrackImpl;
-import model.TrackManager;
 import view.create.PlaylistAdder;
 import view.create.TrackAdder;
 
@@ -25,10 +25,10 @@ public class AddControllerImpl implements AddController{
 	private TrackAdder trackAdder;
 	private PlaylistAdder plAdder;
 	
-	private TrackManager trackManager;
-	private PlaylistManager plManager;
+	private DataManager<Track> trackManager;
+	private DataManager<Playlist> plManager;
 	
-	public AddControllerImpl(TrackManager trackManager, PlaylistManager plManager, final TrackAdder trackAdder, final PlaylistAdder plAdder){
+	public AddControllerImpl(DataManager<Track> trackManager, DataManager<Playlist> plManager, final TrackAdder trackAdder, final PlaylistAdder plAdder){
 		this.trackAdder = trackAdder;
 		this.plAdder = plAdder;
 		this.trackManager = trackManager;
@@ -67,12 +67,12 @@ public class AddControllerImpl implements AddController{
 	@Override
 	public void saveTrack(String trackName, String trackFile) throws FileNotFoundException, ClassNotFoundException, IOException, UnsupportedAudioFileException{
 		System.out.println("Voglio salvare: "+trackName+", assegnata al file: "+trackFile);
-		trackManager.addTrack(new TrackImpl(new File(trackFile), trackName));
+		trackManager.addNew(new TrackImpl(new File(trackFile), trackName));
 	}
 	
 	@Override
 	public void savePlaylist(String plName, List<Track> plTracks) throws FileNotFoundException, ClassNotFoundException, IOException {
-		plManager.addPlaylist(new PlaylistImpl(plName, plTracks));
+		plManager.addNew(new PlaylistImpl(plName, plTracks));
 	}
 	
 	@Override
@@ -108,8 +108,8 @@ public class AddControllerImpl implements AddController{
 					int result = trackAdder.showConfirmMessage("Il brano esiste già", "Vuoi sovrascrivere il brano esistente?");
 					if(result == JOptionPane.YES_OPTION){
 						try {
-							trackManager.updateTrack(trackName, trackFile);
-							plManager.updatePlaylists(trackName, trackFile);
+							trackManager.update(trackName, trackFile);
+							plManager.update(trackName, trackFile);
 						} catch (ClassNotFoundException | IOException | UnsupportedAudioFileException e1) {
 							trackAdder.showErrorMessage("Qualcosa è andato storto...", "Impossibile sostituire il brano");
 						}

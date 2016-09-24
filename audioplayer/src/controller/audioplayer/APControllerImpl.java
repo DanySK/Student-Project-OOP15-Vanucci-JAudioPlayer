@@ -12,11 +12,14 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JTable;
 
 import controller.adder.*;
 import controller.data.DataController;
 import controller.player.PlayerController;
+import model.DataManager;
+import model.Playlist;
 import model.PlaylistManager;
 import model.Track;
 import model.TrackManager;
@@ -29,8 +32,8 @@ public class APControllerImpl {
 	private DataController dataController;
 	private AddController addCtrl;
 	private PlayerController playerCtrl;
-	private TrackManager trackManager;
-	private PlaylistManager plManager;
+	private DataManager<Track> trackManager;
+	private DataManager<Playlist> plManager;
 	
 	public APControllerImpl(User logged){
 		this.mainView = new AudioPlayerImpl();
@@ -121,17 +124,17 @@ public class APControllerImpl {
 			String toDelete = dataController.getSelected();
 			String currentlyShown = dataController.getCurrentView();
 			if(currentlyShown.equals(DataController.TRACKSVIEW)){
-				trackManager.deleteTrack(toDelete);
+				trackManager.delete(toDelete);
 				try {
-					plManager.removeTrack(toDelete);
-				} catch (ClassNotFoundException | IOException e) {
+					plManager.update(toDelete, null);
+				} catch (ClassNotFoundException | IOException | UnsupportedAudioFileException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				showTracks();
 			}
 			else if(currentlyShown.equals(DataController.PLAYLISTSVIEW)){
-				plManager.deletePlaylist(toDelete);
+				plManager.delete(toDelete);
 				showPlaylists();
 			}
 		}

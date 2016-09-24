@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import model.FileHandler;
-import model.FileHandlerImpl;
+import model.FileHandler;
 
 public class UserManagerImpl{
 	
@@ -26,7 +26,7 @@ public class UserManagerImpl{
 	
 	public static boolean userExists(String username, String password) throws FileNotFoundException, IOException{
 		
-		FileHandler handler = new FileHandlerImpl();
+		FileHandler handler = new FileHandler();
 		try(BufferedReader br = new BufferedReader(new InputStreamReader(handler.getFile("users.txt")))) {
 			for(String line; (line = br.readLine()) != null; ) {
 				if(line.contains("username: "+username) && line.contains("password: "+password)){

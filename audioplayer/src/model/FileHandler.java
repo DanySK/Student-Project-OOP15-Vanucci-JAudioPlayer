@@ -13,7 +13,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
-public class FileHandlerImpl implements FileHandler{
+public class FileHandler{
 	
 	protected static final String HOME = System.getProperty("user.home");
 	protected static final String SEPARATOR = System.getProperty("file.separator");
@@ -26,23 +26,20 @@ public class FileHandlerImpl implements FileHandler{
 	 * @return An InputStream for the required file
 	 * @throws FileNotFoundException
 	 */
-	@Override
-	public InputStream getFile(String fileName) throws FileNotFoundException{
+	public static InputStream getFile(String fileName) throws FileNotFoundException{
 		return new BufferedInputStream(new FileInputStream(MAIN_DIR+SEPARATOR+fileName));
 	}
 	
-	@Override
-	public OutputStream toFile(String fileName) throws FileNotFoundException{
+	public static OutputStream toFile(String fileName) throws FileNotFoundException{
 		return new FileOutputStream(MAIN_DIR+SEPARATOR+fileName);
 	}
 	
-	@Override
-	public List<File> getFiles(String dir) {
+	public static List<File> getFiles(String dir) {
 		System.out.println(dir);
 		return Arrays.asList(new File(MAIN_DIR+SEPARATOR+dir).listFiles());
 	}
 	
-	public boolean deleteFile(String relPath){
+	public static boolean deleteFile(String relPath){
 		System.out.println("Removing: "+MAIN_DIR+SEPARATOR+relPath);
 		File deleting = new File(MAIN_DIR+SEPARATOR+relPath);
 		boolean exist = deleting.exists();
@@ -51,19 +48,16 @@ public class FileHandlerImpl implements FileHandler{
 		return result;
 	}
 	
-	@Override
-	public String getMainDir(){
+	public static String getMainDir(){
 		return new String(MAIN_DIR+SEPARATOR);
 	}
 	
-	@Override
-	public void makeMainDir(){
+	public static void makeMainDir(){
 		
 		makeDir(new String(""));
 	}
 	
-	@Override
-	public void makeDir(String dirPath){
+	public static void makeDir(String dirPath){
 		String completePath = MAIN_DIR+SEPARATOR+dirPath;
 		if(Files.notExists(Paths.get(completePath), LinkOption.NOFOLLOW_LINKS)){
 			System.out.println("Tentando di creare la cartella a: "+completePath);
@@ -71,8 +65,7 @@ public class FileHandlerImpl implements FileHandler{
 		}
 	}
 	
-	@Override
-	public String getSysSeparator(){
+	public static String getSysSeparator(){
 		return System.getProperty("file.separator");
 	}
 }
