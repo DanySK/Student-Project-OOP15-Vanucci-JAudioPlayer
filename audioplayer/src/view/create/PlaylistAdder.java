@@ -99,14 +99,25 @@ public class PlaylistAdder extends JDialog{
 		this.setLocationRelativeTo(null);
 	}
 	
+	/**
+	 * Returns the written for the playlist
+	 * @return
+	 */
 	public String getInputName(){
 		return nameIn.getText();
 	}
 	
+	/**
+	 * Returns a list containing the selected tracks' names
+	 * @return
+	 */
 	public List<String> getSelected(){
 		return new ArrayList<>(tracks.getSelectedValuesList());
 	}
 	
+	/**
+	 * Sets the visibility of the Dialog
+	 */
 	@Override
 	public void setVisible(boolean show){
 		if(show == false)
@@ -119,6 +130,10 @@ public class PlaylistAdder extends JDialog{
 	     return;
 	}
 	
+	/**
+	 * Refreshes the tracks list
+	 * @param trackNames
+	 */
 	public void refreshList(List<String> trackNames){
 		listModel.clear();
 		for(String name: trackNames){
@@ -126,18 +141,36 @@ public class PlaylistAdder extends JDialog{
 		}
 	}
 	
+	/**
+	 * Sets the buttons for the Dialog
+	 * @param add
+	 */
 	public void setButtons(ActionListener add){
 		this.add.addActionListener(add);
 	}
 	
+	/**
+	 * Resets the input fields
+	 */
 	private void reset(){
 		this.nameIn.setText("");
 	}
 
+	/**
+	 * Shows a dialog with the input content
+	 * @param title
+	 * @param message
+	 */
 	public void showErrorMessage(String title, String message) {
 		JOptionPane.showMessageDialog(this, message, title, JOptionPane.ERROR_MESSAGE);
 	}
 	
+	/**
+	 * Shows a confim message with the input content
+	 * @param title
+	 * @param message
+	 * @return
+	 */
 	public int showConfirmMessage(String title, String message){
 		return JOptionPane.showConfirmDialog(this, message, title, JOptionPane.YES_NO_OPTION);
 	}

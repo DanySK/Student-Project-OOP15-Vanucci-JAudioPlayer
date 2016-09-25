@@ -67,32 +67,49 @@ public class LoginImpl extends JFrame implements LoginGUI{
 		this.setLocationRelativeTo(null);
 	}
 	
+	/**
+	 * Initializes the view setting it visible
+	 */
 	@Override
 	public void initializeGUI(){
 		this.setVisible(true);
 	}
 	
+	/**
+	 * Adds the login action listener
+	 */
 	@Override
 	public void addActionListener(ActionListener buttonListener) {
 		login.addActionListener(buttonListener);
 		
 	}
-	
+	/**
+	 * Returns the name used for the login attempt
+	 */
 	@Override
 	public String getLoginName(){
 		return new String(nameIn.getText());
 	}
 	
+	/**
+	 * Returns the password used for the login attempt
+	 */
 	@Override
 	public String getLoginPswd(){
 		return new String(pswdIn.getText());
 	}
 	
+	/**
+	 * Closes the login window
+	 */
 	@Override
 	public void close(){
 		this.dispose();
 	}
 	
+	/**
+	 * Shows a message dialog with the input content
+	 */
 	@Override
 	public void showErrorMessage(String title, String content){
 		JOptionPane.showMessageDialog(this, content, title, JOptionPane.ERROR_MESSAGE);

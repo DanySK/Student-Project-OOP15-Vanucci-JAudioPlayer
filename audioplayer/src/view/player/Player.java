@@ -119,10 +119,21 @@ public class Player extends JPanel{
 		add(panelButtons, constraints);
 	}
 	
+	/**
+	 * Sets the dimension of the tracks queue
+	 * @param value
+	 */
 	public void setQueueDim(int value){
 		this.queueLength = value;
 	}
 	
+	/**
+	 * Sets up the button listeners
+	 * @param prev
+	 * @param next
+	 * @param play
+	 * @param pause
+	 */
 	public void setupButtons(ActionListener prev, ActionListener next, 
 									ActionListener play, ActionListener pause){
 		this.prevBtn.addActionListener(prev);
@@ -131,26 +142,50 @@ public class Player extends JPanel{
 		this.pauseBtn.addActionListener(pause);
 	}
 
+	/**
+	 * Sets the current of the duration JSlider
+	 * @param value
+	 */
 	public void setSliderValue(int value){
 		this.timeSlider.setValue(value);
 	}
 	
+	/**
+	 * Sets the maximum value for the duration JSlider
+	 * @param value
+	 */
 	public void setSliderMax(int value){
 		this.timeSlider.setMaximum(value);
 	}
 	
+	/**
+	 * Sets the current duration on the timeCounterLabel
+	 * @param currentTime
+	 */
 	public void setTimeLabelValue(String currentTime){
 		this.timeCounterLabel.setText(currentTime);
 	}
 	
+	/**
+	 * Sets the max duration time on the durationLabel
+	 * @param duration
+	 */
 	public void setDurationLabelValue(String duration){
 		this.durationLabel.setText(duration);
 	}
 	
+	/**
+	 * Sets the name of the track to show
+	 * @param name
+	 */
 	public void setNameLabel(String name){
 		this.nameLabel.setText(NAMELABEL_MESSAGE+name);
 	}
 	
+	/**
+	 * Sets the buttons for a "Playing" status
+	 * @param position
+	 */
 	public void resumePlaying(int position){
 		this.playBtn.setIcon(iconStop);
 		this.pauseBtn.setBackground(null);
@@ -159,19 +194,34 @@ public class Player extends JPanel{
 		setTrackChange(position);
 	}
 	
+	/**
+	 * Sets the buttons for a "Stopped" status
+	 */
 	public void stopPlaying(){
 		this.playBtn.setIcon(iconPlay);
 		this.pauseBtn.setEnabled(false);
 	}
 	
+	/**
+	 * Sets the buttons for a "Paused" status
+	 */
 	public void pausePlaying(){
 		this.pauseBtn.setBackground(Color.BLUE);
 	}
 	
+	/**
+	 * Shows a message dialog with the input content
+	 * @param title
+	 * @param message
+	 */
 	public void showErrorMessage(String title, String message){
 		JOptionPane.showMessageDialog(this, message, title, JOptionPane.ERROR_MESSAGE);
 	}
 	
+	/**
+	 * Updates the Prev and Next Buttons disabling/enabling in case it's needed
+	 * @param position
+	 */
 	private void setTrackChange(int position){
 		if(position <= 0){
 			this.prevBtn.setEnabled(false);

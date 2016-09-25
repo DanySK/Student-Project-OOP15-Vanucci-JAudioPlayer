@@ -33,6 +33,10 @@ public class DataPane extends JScrollPane{
 		playlistsTable.setModel(createModel(PLAYLIST_COLUMNS));
 	}
 	
+	/**
+	 * Sets the currentView for the tracks and shows the track infos
+	 * @param tracksInfos
+	 */
 	public void showTracks(Map<String, Float> tracksInfos){
 		DefaultTableModel model = (DefaultTableModel) tracksTable.getModel();
 		prepareModel(model);
@@ -44,6 +48,10 @@ public class DataPane extends JScrollPane{
 	}
 	
 
+	/**
+	 * Sets the currentView for the playlists and show the playlists infos
+	 * @param plInfos
+	 */
 	public void showPlaylists(List<String> plInfos){
 		DefaultTableModel model = (DefaultTableModel) playlistsTable.getModel();
 		prepareModel(model);
@@ -53,21 +61,39 @@ public class DataPane extends JScrollPane{
 		setCurrentView(PLTABLE_ID);
 	}
 	
+	/**
+	 * Prepares a Table Model
+	 * @param model
+	 */
 	private void prepareModel(DefaultTableModel model){
 		model.getDataVector().removeAllElements();
 		model.fireTableDataChanged();
 	}
 	
+	/**
+	 * Shows a messageDialog with the input content
+	 * @param title
+	 * @param message
+	 */
 	public void showErrorMessage(String title, String message){
 		JOptionPane.showMessageDialog(this, message, title, JOptionPane.ERROR_MESSAGE);
 	}
 	
+	/**
+	 * Format the tracks duration to a HH:mm:ss format
+	 * @param duration
+	 * @return
+	 */
 	private String formatDuration(Float duration){
 		Long lDuration = duration.longValue();
 		return String.format("%d:%02d:%02d", lDuration / 3600,
 										(lDuration % 3600) / 60, (lDuration % 60));
 	}
 	
+	/**
+	 * Return the selected table
+	 * @return
+	 */
 	public String getSelectedString(){
 		JTable currentTable = null;
 		int column = 0;
@@ -81,6 +107,11 @@ public class DataPane extends JScrollPane{
 		return new String((String)currentTable.getModel().getValueAt(row, column));
 	}
 	
+	/**
+	 * Creates a model
+	 * @param strings
+	 * @return
+	 */
 	private DefaultTableModel createModel(String... strings){
 		DefaultTableModel model = new DefaultTableModel(){
 			
@@ -100,10 +131,18 @@ public class DataPane extends JScrollPane{
 		return model;
 	}
 	
+	/**
+	 * Returns the current view
+	 * @return
+	 */
 	public String getCurrentView(){
 		return new String(this.currView);
 	}
 	
+	/**
+	 * Sets the current view
+	 * @param viewID
+	 */
 	private void setCurrentView(String viewID){
 		this.currView = viewID;
 		switch (viewID){
@@ -116,6 +155,10 @@ public class DataPane extends JScrollPane{
 		}
 	}
 	
+	/**
+	 * Sets the mouse adapters
+	 * @param adapter
+	 */
 	public void setAdapter(MouseAdapter adapter){
 		this.tracksTable.addMouseListener(adapter);
 		this.playlistsTable.addMouseListener(adapter);

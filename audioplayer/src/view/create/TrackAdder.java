@@ -75,6 +75,9 @@ public class TrackAdder extends JDialog{
 		this.setLocationRelativeTo(null);
 	}
 	
+	/**
+	 * Sets visible the JDialog
+	 */
 	@Override
 	public void setVisible(boolean show){
 
@@ -89,6 +92,11 @@ public class TrackAdder extends JDialog{
 	     return;
 	}
 	
+	/**
+	 * Opens the JFileChooser and sets the result
+	 * @param lastPath
+	 * @return
+	 */
 	public String chooseFile(String lastPath) {
 		JFileChooser fileChooser = null;
 		
@@ -127,28 +135,55 @@ public class TrackAdder extends JDialog{
 		return lastPath;
 	}
 	
+	/**
+	 * Return the name written for the track
+	 * @return
+	 */
 	public String getInputName(){
 		return nameIn.getText();
 	}
 	
+	/**
+	 * Return the file URL
+	 * @return
+	 */
 	public String getChosenFile(){
 		return showFile.getText();
 	}
 	
+	/**
+	 * Resets the Dialog fields
+	 */
 	private void reset(){
 		this.nameIn.setText("");
 		this.showFile.setText("");
 	}
 	
+	/**
+	 * Sets the dialog buttons
+	 * @param add
+	 * @param chooser
+	 */
 	public void setButtons(ActionListener add, ActionListener chooser){
 		this.add.addActionListener(add);
 		this.chooser.addActionListener(chooser);
 	}
 	
+	/**
+	 * Shows an messageDialog with the content in input
+	 * @param title
+	 * @param message
+	 */
 	public void showErrorMessage(String title, String message){
 		JOptionPane.showMessageDialog(this, message, title, JOptionPane.ERROR_MESSAGE);
 	}
 	
+	/**
+	 * Shows a confirm message for overwriting the track
+	 * @param title
+	 * @param message
+	 * @return
+	 */
 	public int showConfirmMessage(String title, String message){
 		return JOptionPane.showConfirmDialog(this, message, title, JOptionPane.YES_NO_OPTION);
 	}
