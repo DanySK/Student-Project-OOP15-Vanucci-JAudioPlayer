@@ -115,10 +115,8 @@ public class AudioPlayerImpl extends JFrame implements AudioPlayerGUI{
 	
 	@Override
 	public void setDataTitle(String title){
-		System.out.println("And now setting "+title+" as the border title");
 		this.dataPaneBorder.setTitle(title);
 		this.repaint();
-		System.out.println("the panel title is now"+this.dataPaneBorder.getTitle());
 	}
 
 	@Override

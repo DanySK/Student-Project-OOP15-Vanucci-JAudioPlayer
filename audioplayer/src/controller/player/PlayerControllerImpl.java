@@ -8,7 +8,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
-
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -24,7 +23,9 @@ import view.player.Player;
 /**
  * This is the controller for the PlayerView, it handles the loading and playback for the track,
  * together with the timer thread which handles the slider and the display
- *
+ * This class in based on the Swing AudioPlayer sample found here:
+ * <a href="http://www.codejava.net/coding/java-audio-player-sample-application-in-swing">
+ *				http://www.codejava.net/coding/java-audio-player-sample-application-in-swing</a>
  */
 public class PlayerControllerImpl implements PlayerController, LineListener {
 	
@@ -95,7 +96,7 @@ public class PlayerControllerImpl implements PlayerController, LineListener {
 	}
 	
 	/**
-	 * Plays back the sound and set a timer
+	 * Plays back the sound and sets a timer
 	 */
 	private void playBack() {
 		timer = new TrackTimer();
@@ -172,7 +173,6 @@ public class PlayerControllerImpl implements PlayerController, LineListener {
 	 * @throws IOException
 	 */
 	public void play() throws IOException {
-		System.out.println("isStopped: "+isStopped+", isPaused: "+isPaused);
 		audioClip.start();
 
 		playCompleted = false;
@@ -256,8 +256,7 @@ public class PlayerControllerImpl implements PlayerController, LineListener {
 	
 	/**
 	 * This thread handles the visual timer and the slider for the player view
-	 * @author Francesco
-	 *
+	 * This code can be found in the link in the PlayerControllerImpl class description
 	 */
 	private class TrackTimer extends Thread {
 		private DateFormat dateFormater = new SimpleDateFormat("HH:mm:ss");	

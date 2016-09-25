@@ -17,6 +17,15 @@ import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.border.LineBorder;
 
+/**
+ * This is the player view, it handles only the showing of the player's buttons and the visual infos for the
+ * running track. This class, as it's controller, is based on the Swing Audio Player Sample, with a great deal
+ * of modifications in order to transform part of the layout and remove every logic aspect.
+ * The original Swing Audio Player Sample can be found here 
+ * <a href="http://www.codejava.net/coding/java-audio-player-sample-application-in-swing">
+ * http://www.codejava.net/coding/java-audio-player-sample-application-in-swing</a>
+ *
+ */
 public class Player extends JPanel{
 	/**
 	 * 

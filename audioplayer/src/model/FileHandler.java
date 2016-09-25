@@ -40,11 +40,8 @@ public class FileHandler{
 	}
 	
 	public static boolean deleteFile(String relPath){
-		System.out.println("Removing: "+MAIN_DIR+SEPARATOR+relPath);
 		File deleting = new File(MAIN_DIR+SEPARATOR+relPath);
-		boolean exist = deleting.exists();
 		boolean result = deleting.delete();
-		System.out.println("Esiste? "+exist+", eliminato? "+result);
 		return result;
 	}
 	

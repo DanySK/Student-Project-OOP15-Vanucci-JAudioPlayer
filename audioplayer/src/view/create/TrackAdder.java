@@ -16,6 +16,8 @@ import java.awt.Font;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileFilter;
 
+import model.FileHandler;
+
 import javax.swing.BoxLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
@@ -88,19 +90,18 @@ public class TrackAdder extends JDialog{
 	}
 	
 	public String chooseFile(String lastPath) {
-		System.out.println("FileChooser in avvio");
 		JFileChooser fileChooser = null;
 		
 		if (lastPath != null && !lastPath.equals("")) {
 			fileChooser = new JFileChooser(lastPath);
 		} else {
-			fileChooser = new JFileChooser();
+			fileChooser = new JFileChooser(FileHandler.getMainDir());
 		}
 		
 		FileFilter wavFilter = new FileFilter() {
 			@Override
 			public String getDescription() {
-				return "Sound file (*.WAV)";
+				return "File audio (*.WAV)";
 			}
 
 			@Override
