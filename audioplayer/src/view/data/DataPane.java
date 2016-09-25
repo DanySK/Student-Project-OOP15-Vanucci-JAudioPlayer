@@ -9,6 +9,7 @@ import java.awt.event.MouseAdapter;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
 public class DataPane extends JScrollPane{
@@ -29,6 +30,8 @@ public class DataPane extends JScrollPane{
 
 	public DataPane(int vsbPolicy, int hsbPolicy){
 		super(vsbPolicy, hsbPolicy);
+		tracksTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		playlistsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		tracksTable.setModel(createModel(TRACK_COLUMNS));
 		playlistsTable.setModel(createModel(PLAYLIST_COLUMNS));
 	}
