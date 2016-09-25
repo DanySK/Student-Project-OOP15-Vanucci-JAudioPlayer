@@ -12,11 +12,11 @@ import model.FileHandler;
  * @author Francesco
  *
  */
-public class UserManagerImpl{
+public class UserManager{
 	
 	private static User currentUser = new UserImpl();
 	
-	private UserManagerImpl(){}
+	private UserManager(){}
 	
 	public static void setUser(String username, String password){
 		currentUser.setUsername(username);
