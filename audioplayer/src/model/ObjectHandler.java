@@ -12,12 +12,27 @@ import java.io.ObjectOutputStream;
  */
 public class ObjectHandler extends FileHandler{
 
+	/**
+	 * Extends the FileHandler.toFile() method writing an object to file
+	 * @param toWrite
+	 * @param objPath
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 */
 	public static void objectToFile(Object toWrite, String objPath) throws FileNotFoundException, IOException{
 		ObjectOutputStream writer = new ObjectOutputStream(toFile(objPath));
 		writer.writeObject(toWrite);
 		writer.close();
 	}
 	
+	/**
+	 * Extends the FileHandler.getFile() method reading an object from a file
+	 * @param filePath
+	 * @return
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
 	public static Object fileToObject(String filePath) throws FileNotFoundException, IOException, ClassNotFoundException{
 		ObjectInputStream reader = new ObjectInputStream(getFile(filePath));
 		Object retrieved = reader.readObject();

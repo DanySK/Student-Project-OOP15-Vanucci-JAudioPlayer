@@ -3,6 +3,11 @@ package controller.user;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+/**
+ * This is the interface for the LoginCotrollerImpl class
+ * @author Francesco
+ *
+ */
 public interface LoginController {
 
 	void initializeView();

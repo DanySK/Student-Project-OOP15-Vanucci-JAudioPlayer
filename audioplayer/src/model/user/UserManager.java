@@ -27,6 +27,14 @@ public class UserManager{
 		return currentUser;
 	}
 	
+	/**
+	 * Checks if the user exists in the users.txt file
+	 * @param username
+	 * @param password
+	 * @return
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 */
 	public static boolean userExists(String username, String password) throws FileNotFoundException, IOException{
 		try(BufferedReader br = new BufferedReader(new InputStreamReader(FileHandler.getFile("users.txt")))) {
 			if(!username.trim().equals("") || !password.trim().equals("")){

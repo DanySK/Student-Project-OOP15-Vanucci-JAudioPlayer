@@ -19,12 +19,18 @@ public class LoginControllerImpl implements LoginController{
 		this.loginView = new LoginImpl();
 	}
 	
+	/**
+	 * Initializes the login view
+	 */
 	@Override
 	public void initializeView(){
 		this.loginView.initializeGUI();
 		loginView.addActionListener(new LoginListener());
 	}
 	
+	/**
+	 * calls a check for the existence of the user and then sets it
+	 */
 	@Override
 	public void setUserAndPswd(String username, String password) throws FileNotFoundException, IOException{
 		if(checkUser(username, password)){
@@ -33,6 +39,9 @@ public class LoginControllerImpl implements LoginController{
 			throw new IllegalArgumentException();
 	}
 	
+	/**
+	 * Checks if the user exists in the userFile calling the UserManager
+	 */
 	@Override
 	public boolean checkUser(String username, String password) throws FileNotFoundException, IOException{
 		return UserManager.userExists(username, password);

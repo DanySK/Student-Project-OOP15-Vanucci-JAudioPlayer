@@ -10,6 +10,11 @@ import model.AbstractDataManager;
 import model.FileHandler;
 import model.ObjectHandler;
 
+/**
+ * This class handles the user tracks
+ * @author Francesco
+ *
+ */
 public class TrackManager extends AbstractDataManager<Track>{
 
 	private static final String TRACKS_DIR = "Tracks";
@@ -18,12 +23,20 @@ public class TrackManager extends AbstractDataManager<Track>{
 		super(username, TRACKS_DIR);
 	}
 	
+	/**
+	 * Retrieves all the tracks sorting them by name
+	 */
 	public Set<Track> retrieveOrdered() throws FileNotFoundException, ClassNotFoundException, IOException{
 		Set<Track> sorted = new TreeSet<>((e1, e2)->e1.getName().toLowerCase().compareTo(e2.getName().toLowerCase()));
 		sorted.addAll(retrieveAll());
 		return sorted;
 	}
 	
+	/**
+	 * checks if a track with the same name already exists for the user
+	 * @param trackName
+	 * @return
+	 */
 	private boolean trackExists(String trackName){
 		for(Track track: this.stored){
 			if(track.getName().equals(trackName))
@@ -32,6 +45,9 @@ public class TrackManager extends AbstractDataManager<Track>{
 		return false;
 	}
 	
+	/**
+	 * Adds a new track
+	 */
 	public void addNew(Track newTrack) throws FileNotFoundException, IOException, ClassNotFoundException{
 		if(trackExists(newTrack.getName()))
 			throw new IllegalArgumentException();
@@ -42,6 +58,9 @@ public class TrackManager extends AbstractDataManager<Track>{
 		}
 	}
 	
+	/**
+	 * Deletes a track
+	 */
 	public void delete(String toDelete){
 		if(FileHandler.deleteFile(dirPath+fileSeparator+toDelete+EXTENSION)){
 			if(stored != null){
@@ -50,6 +69,9 @@ public class TrackManager extends AbstractDataManager<Track>{
 		}
 	}
 	
+	/**
+	 * Updates an existing track
+	 */
 	public void update(final String name, final String file) throws FileNotFoundException, ClassNotFoundException, IOException, UnsupportedAudioFileException{
 		Track updTrack = retrieve(name);
 		delete(name);

@@ -4,6 +4,7 @@ import java.awt.event.MouseAdapter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
 import view.data.DataPane;
 
 public class DataControllerImpl implements DataController{

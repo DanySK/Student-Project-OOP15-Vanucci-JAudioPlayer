@@ -8,30 +8,30 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 public interface Track {
 
 	/**
-	 * 
+	 * returns the name of this track
 	 * @return the track name
 	 */
 	String getName();
 	/**
-	 * 
-	 * @param name
 	 * Sets the input name as track name
+	 * @param name
+	 * 
 	 */
 	void setName(String name);
 	
 	/**
-	 * 
+	 * returns the file contained in this track
 	 * @return a protective copy of the track file
 	 */
 	File getFile();
 	
 	/**
-	 * 
+	 * returns the path of the file in this track
 	 * @return the track's filepath
 	 */
 	String getFilePath();
 	/**
-	 * 
+	 * Sets the passed file for this track
 	 * @param path
 	 * Sets the file for the track
 	 * @throws IOException 
@@ -41,7 +41,7 @@ public interface Track {
 	void setFile(String path) throws UnsupportedAudioFileException, IOException;
 	
 	/**
-	 * 
+	 * returns the duration of the sound file in this Track
 	 * @return the track duration in float
 	 */
 	Float getDuration();

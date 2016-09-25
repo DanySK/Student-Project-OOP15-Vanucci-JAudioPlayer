@@ -21,12 +21,23 @@ public class PlaylistManager extends AbstractDataManager<Playlist>{
 		super(username, PLAYLISTS_DIR);
 	}
 	
+	/**
+	 * Retrieves all the playlists sorting them by name
+	 */
 	public Set<Playlist> retrieveOrdered() throws FileNotFoundException, ClassNotFoundException, IOException{
 		Set<Playlist> sorted = new TreeSet<>((e1, e2)->e1.getName().toLowerCase().compareTo(e2.getName().toLowerCase()));
 		sorted.addAll(retrieveAll());
 		return sorted;
 	}
 	
+	/**
+	 * Checks if a playlist with the same name already exists
+	 * @param plName
+	 * @return
+	 * @throws FileNotFoundException
+	 * @throws ClassNotFoundException
+	 * @throws IOException
+	 */
 	private boolean playlistExists(String plName) throws FileNotFoundException, ClassNotFoundException, IOException{
 		for(Playlist pl: retrieveAll()){
 			if(pl.getName().equals(plName))
@@ -35,6 +46,9 @@ public class PlaylistManager extends AbstractDataManager<Playlist>{
 		return false;
 	}
 	
+	/**
+	 * Adds a new playlist
+	 */
 	public void addNew(Playlist newPL) throws FileNotFoundException, IOException, ClassNotFoundException{
 		if(playlistExists(newPL.getName()))
 			throw new IllegalArgumentException();
@@ -45,6 +59,9 @@ public class PlaylistManager extends AbstractDataManager<Playlist>{
 		}
 	}
 	
+	/**
+	 * Deletes a playlist
+	 */
 	public void delete(String toDelete){
 		if(FileHandler.deleteFile(dirPath+fileSeparator+toDelete+EXTENSION)){
 			if(stored != null){
@@ -53,6 +70,13 @@ public class PlaylistManager extends AbstractDataManager<Playlist>{
 		}
 	}
 	
+	/**
+	 * Removes a track from the playlists containing it
+	 * @param trackName
+	 * @throws FileNotFoundException
+	 * @throws ClassNotFoundException
+	 * @throws IOException
+	 */
 	private void removeTrack(String trackName) throws FileNotFoundException, ClassNotFoundException, IOException{
 		List<Playlist> toUpdate = new ArrayList<>();
 		retrieveAll().forEach(pl->{
@@ -70,6 +94,9 @@ public class PlaylistManager extends AbstractDataManager<Playlist>{
 		});
 	}
 	
+	/**
+	 * Updates the playlists with new track infos
+	 */
 	public void update(String updated, String file) throws FileNotFoundException, ClassNotFoundException, IOException, UnsupportedAudioFileException{
 		List<Playlist> toUpdate = new ArrayList<>();
 		if(file == null){

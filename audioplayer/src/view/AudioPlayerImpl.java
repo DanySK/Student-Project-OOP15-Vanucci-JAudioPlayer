@@ -8,7 +8,6 @@ import javax.swing.BoxLayout;
 import view.create.PlaylistAdder;
 import view.create.TrackAdder;
 import view.data.DataPane;
-import view.data.DataPaneImpl;
 import view.player.Player;
 
 import java.awt.BorderLayout;
@@ -36,7 +35,7 @@ public class AudioPlayerImpl extends JFrame implements AudioPlayerGUI{
 	private TrackAdder trackAdder;
 	private PlaylistAdder plAdder;
 	private TitledBorder dataPaneBorder;
-	private DataPaneImpl scrollPane;
+	private DataPane scrollPane;
 	
 	private JButton tracksBtn;
 	private JButton playlistBtn;
@@ -54,7 +53,7 @@ public class AudioPlayerImpl extends JFrame implements AudioPlayerGUI{
 		optionsPanel.setLayout(new BoxLayout(optionsPanel, BoxLayout.Y_AXIS));
 		trackAdder = new TrackAdder();
 		plAdder = new PlaylistAdder();
-		this.scrollPane = new DataPaneImpl(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		this.scrollPane = new DataPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		tracksBtn = new JButton("Le mie Tracce");
 		optionsPanel.add(tracksBtn);
 		playlistBtn = new JButton("Le mie playlist");

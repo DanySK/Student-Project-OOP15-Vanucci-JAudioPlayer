@@ -7,22 +7,22 @@ import model.track.Track;
 public interface Playlist {
 
 	/**
-	 * 
-	 * @param track
 	 * adds a track to this playlist
+	 * @param track
+	 * 
 	 */
 	void addTrack(Track track);
 	
 	/**
-	 * 
+	 * removes a track from this playlist
 	 * @param trackName
 	 * @return a boolean flag
-	 * removes a track from this playlist
+	 * 
 	 */
 	boolean removeTrack(String trackName);
 	
 	/**
-	 * 
+	 * returns all the tracks in the playlist
 	 * @return a list with all the track in this playlist
 	 *
 	 */
@@ -30,14 +30,14 @@ public interface Playlist {
 	
 	
 	/**
-	 * 
+	 * returns the name of this playlist
 	 * @return the playlist name
 	 */
 	String getName();
 	
 	
 	/**
-	 * 
+	 * return the track in the defined position
 	 * @param index
 	 * @return a track from the playlist
 	 */
