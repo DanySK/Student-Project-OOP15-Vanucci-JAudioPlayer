@@ -14,6 +14,9 @@ import model.FileHandler;
  */
 public class UserManager{
 	
+	private static final String USER_PREFIX = "username: ";
+	private static final String PSW_PREFIX = "password: ";
+	private static final String SEPARATOR = ", ";
 	private static User currentUser = new UserImpl();
 	
 	private UserManager(){}
@@ -37,9 +40,10 @@ public class UserManager{
 	 */
 	public static boolean userExists(String username, String password) throws FileNotFoundException, IOException{
 		try(BufferedReader br = new BufferedReader(new InputStreamReader(FileHandler.getFile("users.txt")))) {
+			String login = USER_PREFIX+username+SEPARATOR+PSW_PREFIX+password;
 			if(!username.trim().equals("") || !password.trim().equals("")){
 				for(String line; (line = br.readLine()) != null; ) {
-					if(line.contains("username: "+username) && line.contains("password: "+password)){
+					if(line.contains(login)){
 						String userDir = FileHandler.getMainDir();
 						if(!new File(userDir+username).exists()){
 							new File(userDir+username).mkdir();
