@@ -37,6 +37,7 @@ public class LoginImpl extends JFrame implements LoginGUI{
 	public LoginImpl(){
 		
 		super("Login");
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		body.setBorder(new EmptyBorder(10, 10, 10, 10));
 		
 		getContentPane().add(body, BorderLayout.CENTER);

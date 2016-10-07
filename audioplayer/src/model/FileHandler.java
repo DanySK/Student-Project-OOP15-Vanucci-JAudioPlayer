@@ -7,11 +7,13 @@ import java.nio.file.LinkOption;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 
 /**
  * This static class handles the informations regarding the main directory, the file separator used
@@ -67,7 +69,7 @@ public class FileHandler{
 	}
 	
 	/**
-	 * returns the main directory for the applicaziont
+	 * returns the main directory for the application
 	 * @return
 	 */
 	public static String getMainDir(){
@@ -76,8 +78,10 @@ public class FileHandler{
 	
 	/**
 	 * Creates a main directory for the application if not already present
+	 * @throws IOException 
+	 * @throws FileNotFoundException 
 	 */
-	public static void makeMainDir(){
+	public static void makeMainDir() throws FileNotFoundException, IOException{
 		
 		makeDir(new String(""));
 	}
