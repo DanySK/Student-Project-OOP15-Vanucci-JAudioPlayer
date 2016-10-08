@@ -2,16 +2,21 @@ package controller.user;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import controller.app.APControllerImpl;
+import model.FileHandler;
 import model.user.User;
 import model.user.UserManager;
 import view.login.LoginGUI;
 import view.login.LoginImpl;
 
 public class LoginControllerImpl implements LoginController{
+	
+	private static final String USERS_FILE = "users.txt";
 
 	private LoginGUI loginView;
 	
@@ -24,6 +29,14 @@ public class LoginControllerImpl implements LoginController{
 	 */
 	@Override
 	public void initializeView(){
+		String usersPath = FileHandler.getMainDir()+USERS_FILE;
+		if(!new File(usersPath).exists()){
+			try {
+				Files.copy(getClass().getResourceAsStream("/users/users.txt"), Paths.get(usersPath));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 		this.loginView.initializeGUI();
 		loginView.addActionListener(new LoginListener());
 	}
