@@ -43,7 +43,7 @@ public class UserManager{
 			String login = USER_PREFIX+username+SEPARATOR+PSW_PREFIX+password;
 			if(!username.trim().equals("") || !password.trim().equals("")){
 				for(String line; (line = br.readLine()) != null; ) {
-					if(line.contains(login)){
+					if(line.equals(login)){
 						String userDir = FileHandler.getMainDir();
 						if(!new File(userDir+username).exists()){
 							new File(userDir+username).mkdir();
