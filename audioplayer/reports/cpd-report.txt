@@ -1,0 +1,128 @@
+Found a 5 line (57 tokens) duplication in the following files: 
+Starting at line 84 of /home/danysk/Dropbox/Didattica/2015-16/Programmazione ad Oggetti/Progetti/oop15-vanucci-francesco-jaudioplayer/audioplayer/src/view/create/PlaylistAdder.java
+Starting at line 66 of /home/danysk/Dropbox/Didattica/2015-16/Programmazione ad Oggetti/Progetti/oop15-vanucci-francesco-jaudioplayer/audioplayer/src/view/create/TrackAdder.java
+
+		upPanel.setLayout(gl_upPanel);
+		footer.setBorder(new EmptyBorder(10, 40, 10, 40));
+		getContentPane().add(footer, BorderLayout.SOUTH);
+		footer.setLayout(new BorderLayout(0, 0));
+		add.setFont(new Font("Tahoma", Font.BOLD, 14));
+=====================================================================
+Found a 22 line (56 tokens) duplication in the following files: 
+Starting at line 156 of /home/danysk/Dropbox/Didattica/2015-16/Programmazione ad Oggetti/Progetti/oop15-vanucci-francesco-jaudioplayer/audioplayer/src/view/create/PlaylistAdder.java
+Starting at line 169 of /home/danysk/Dropbox/Didattica/2015-16/Programmazione ad Oggetti/Progetti/oop15-vanucci-francesco-jaudioplayer/audioplayer/src/view/create/TrackAdder.java
+
+		this.nameIn.setText("");
+	}
+
+	/**
+	 * Shows a dialog with the input content
+	 * @param title
+	 * @param message
+	 */
+	public void showErrorMessage(String title, String message) {
+		JOptionPane.showMessageDialog(this, message, title, JOptionPane.ERROR_MESSAGE);
+	}
+	
+	/**
+	 * Shows a confim message with the input content
+	 * @param title
+	 * @param message
+	 * @return
+	 */
+	public int showConfirmMessage(String title, String message){
+		return JOptionPane.showConfirmDialog(this, message, title, JOptionPane.YES_NO_OPTION);
+	}
+}
+=====================================================================
+Found a 6 line (56 tokens) duplication in the following files: 
+Starting at line 48 of /home/danysk/Dropbox/Didattica/2015-16/Programmazione ad Oggetti/Progetti/oop15-vanucci-francesco-jaudioplayer/audioplayer/src/view/create/TrackAdder.java
+Starting at line 40 of /home/danysk/Dropbox/Didattica/2015-16/Programmazione ad Oggetti/Progetti/oop15-vanucci-francesco-jaudioplayer/audioplayer/src/view/login/LoginImpl.java
+
+		this.setSize(350, 224);
+		body.setBorder(new EmptyBorder(10, 10, 10, 10));
+		getContentPane().add(body, BorderLayout.CENTER);
+		body.setLayout(new GridLayout(0, 1, 0, 20));
+		body.add(upPanel);
+		upPanel.setLayout(new GridLayout(2, 0, 0, 0));
+=====================================================================
+Found a 13 line (55 tokens) duplication in the following files: 
+Starting at line 31 of /home/danysk/Dropbox/Didattica/2015-16/Programmazione ad Oggetti/Progetti/oop15-vanucci-francesco-jaudioplayer/audioplayer/src/view/create/PlaylistAdder.java
+Starting at line 26 of /home/danysk/Dropbox/Didattica/2015-16/Programmazione ad Oggetti/Progetti/oop15-vanucci-francesco-jaudioplayer/audioplayer/src/view/create/TrackAdder.java
+
+public class PlaylistAdder extends JDialog{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7303346759639884086L;
+	
+	private final JPanel body = new JPanel();
+	private final JPanel footer = new JPanel();
+	private final JPanel upPanel = new JPanel();
+	private final JPanel downPanel = new JPanel();
+	
+	private final JLabel nameLabel = new JLabel("Nome Playlist: ");
+=====================================================================
+Found a 14 line (54 tokens) duplication in the following files: 
+Starting at line 58 of /home/danysk/Dropbox/Didattica/2015-16/Programmazione ad Oggetti/Progetti/oop15-vanucci-francesco-jaudioplayer/audioplayer/src/model/playlist/PlaylistManager.java
+Starting at line 57 of /home/danysk/Dropbox/Didattica/2015-16/Programmazione ad Oggetti/Progetti/oop15-vanucci-francesco-jaudioplayer/audioplayer/src/model/track/TrackManager.java
+
+			stored.add(newPL);
+		}
+	}
+	
+	/**
+	 * Deletes a playlist
+	 */
+	public void delete(String toDelete){
+		if(FileHandler.deleteFile(dirPath+fileSeparator+toDelete+EXTENSION)){
+			if(stored != null){
+				stored.removeIf(e->e.getName().equals(toDelete));
+			}
+		}
+	}
+=====================================================================
+Found a 7 line (53 tokens) duplication in the following files: 
+Starting at line 53 of /home/danysk/Dropbox/Didattica/2015-16/Programmazione ad Oggetti/Progetti/oop15-vanucci-francesco-jaudioplayer/audioplayer/src/view/create/TrackAdder.java
+Starting at line 47 of /home/danysk/Dropbox/Didattica/2015-16/Programmazione ad Oggetti/Progetti/oop15-vanucci-francesco-jaudioplayer/audioplayer/src/view/login/LoginImpl.java
+
+		upPanel.setLayout(new GridLayout(2, 0, 0, 0));
+		upPanel.add(nameLabel);
+		nameLabel.setFont(new Font("Tahoma", Font.BOLD, 14));
+		upPanel.add(nameIn);
+		nameIn.setColumns(10);
+		body.add(downPanel);
+		downPanel.setLayout(new BoxLayout(downPanel, BoxLayout.X_AXIS));
+=====================================================================
+Found a 7 line (51 tokens) duplication in the following files: 
+Starting at line 53 of /home/danysk/Dropbox/Didattica/2015-16/Programmazione ad Oggetti/Progetti/oop15-vanucci-francesco-jaudioplayer/audioplayer/src/view/create/PlaylistAdder.java
+Starting at line 48 of /home/danysk/Dropbox/Didattica/2015-16/Programmazione ad Oggetti/Progetti/oop15-vanucci-francesco-jaudioplayer/audioplayer/src/view/create/TrackAdder.java
+Starting at line 40 of /home/danysk/Dropbox/Didattica/2015-16/Programmazione ad Oggetti/Progetti/oop15-vanucci-francesco-jaudioplayer/audioplayer/src/view/login/LoginImpl.java
+
+		this.setSize(232, 285);
+		body.setBorder(new EmptyBorder(10, 10, 10, 10));
+		
+		getContentPane().add(body, BorderLayout.CENTER);
+		body.setLayout(new GridLayout(0, 1, 0, 20));
+		
+		body.add(upPanel);
+=====================================================================
+Found a 14 line (50 tokens) duplication in the following files: 
+Starting at line 28 of /home/danysk/Dropbox/Didattica/2015-16/Programmazione ad Oggetti/Progetti/oop15-vanucci-francesco-jaudioplayer/audioplayer/src/model/playlist/PlaylistManager.java
+Starting at line 30 of /home/danysk/Dropbox/Didattica/2015-16/Programmazione ad Oggetti/Progetti/oop15-vanucci-francesco-jaudioplayer/audioplayer/src/model/track/TrackManager.java
+
+		Set<Playlist> sorted = new TreeSet<>((e1, e2)->e1.getName().toLowerCase().compareTo(e2.getName().toLowerCase()));
+		sorted.addAll(retrieveAll());
+		return sorted;
+	}
+	
+	/**
+	 * Checks if a playlist with the same name already exists
+	 * @param plName
+	 * @return
+	 * @throws FileNotFoundException
+	 * @throws ClassNotFoundException
+	 * @throws IOException
+	 */
+	private boolean playlistExists(String plName) throws FileNotFoundException, ClassNotFoundException, IOException{

@@ -1,0 +1,330 @@
+Violated encapsulation: 0
+
+Poor design: 6
+src/main/AudioPlayerApp.java:20:	All methods are static.  Consider using a utility class instead. Alternatively, you could add a private constructor or make the class abstract to silence this warning.
+src/model/FileHandler.java:24:	All methods are static.  Consider using a utility class instead. Alternatively, you could add a private constructor or make the class abstract to silence this warning.
+src/model/ObjectHandler.java:13:	All methods are static.  Consider using a utility class instead. Alternatively, you could add a private constructor or make the class abstract to silence this warning.
+src/model/user/UserManager.java:15:	A class which only has private constructors should be final
+src/view/create/PlaylistAdder.java:60:	The String literal "Tahoma" appears 4 times in this file; the first occurrence is on line 60
+src/view/create/TrackAdder.java:55:	The String literal "Tahoma" appears 5 times in this file; the first occurrence is on line 55
+
+Very bad code practices and potential bugs: 0
+
+Bad exception handling: 0
+
+Portability issues: 0
+
+Bad naming: 3
+src/controller/player/PlayerControllerImpl.java:34:	Field isStopped has the same name as a method
+src/view/AudioPlayerGUI.java:11:	Avoid modifiers which are implied by the context
+src/view/create/PlaylistAdder.java:67:	Only variables that are final should contain underscores (except for underscores in standard prefix/suffix), 'gl_upPanel' is not final.
+
+Bad code practices: 17
+src/controller/player/PlayerControllerImpl.java:234:	These nested if statements could be combined
+src/controller/player/PlayerControllerImpl.java:262:	When instantiating a SimpleDateFormat object, specify a Locale
+src/controller/user/LoginControllerImpl.java:38:	Avoid using if...else statements without curly braces
+src/model/playlist/PlaylistManager.java:43:	Avoid using if statements without curly braces
+src/model/playlist/PlaylistManager.java:53:	Avoid using if statements without curly braces
+src/model/playlist/PlaylistManager.java:67:	These nested if statements could be combined
+src/model/playlist/PlaylistManager.java:108:	Avoid using if statements without curly braces
+src/model/track/TrackManager.java:42:	Avoid using if statements without curly braces
+src/model/track/TrackManager.java:52:	Avoid using if statements without curly braces
+src/model/track/TrackManager.java:66:	These nested if statements could be combined
+src/model/user/UserManager.java:45:	Avoid assignments in operands
+src/view/create/PlaylistAdder.java:123:	Avoid unnecessary comparisons in boolean expressions
+src/view/create/PlaylistAdder.java:130:	Avoid unnecessary return statements
+src/view/create/TrackAdder.java:84:	Avoid unnecessary comparisons in boolean expressions
+src/view/create/TrackAdder.java:92:	Avoid unnecessary return statements
+src/view/create/TrackAdder.java:100:	Avoid reassigning parameters such as 'lastPath'
+src/view/data/DataPane.java:151:	Switch statements should have a default label
+
+Use modern Java: 0
+
+Performance and resource waste: 19
+src/controller/adder/AddControllerImpl.java:85:	Avoid using redundant field initializer for 'lastPath'
+src/controller/data/DataControllerImpl.java:25:	Avoid instantiating String objects; this is usually unnecessary.
+src/controller/player/PlayerControllerImpl.java:34:	Avoid using redundant field initializer for 'isPaused'
+src/controller/player/PlayerControllerImpl.java:42:	Avoid using redundant field initializer for 'queueCounter'
+src/controller/player/PlayerControllerImpl.java:263:	Avoid using redundant field initializer for 'isRunning'
+src/controller/player/PlayerControllerImpl.java:264:	Avoid using redundant field initializer for 'isPause'
+src/controller/player/PlayerControllerImpl.java:265:	Avoid using redundant field initializer for 'isReset'
+src/controller/player/PlayerControllerImpl.java:329:	Consider simply returning the value vs storing it in local variable 'timeCounter'
+src/model/AbstractDataManager.java:23:	Avoid using redundant field initializer for 'stored'
+src/model/FileHandler.java:68:	Consider simply returning the value vs storing it in local variable 'result'
+src/model/FileHandler.java:86:	Avoid instantiating String objects; this is usually unnecessary.
+src/model/playlist/PlaylistImpl.java:44:	Avoid instantiating String objects; this is usually unnecessary.
+src/model/track/TrackImpl.java:31:	Avoid instantiating String objects; this is usually unnecessary.
+src/model/user/UserImpl.java:10:	Avoid using redundant field initializer for 'password'
+src/model/user/UserImpl.java:10:	Avoid using redundant field initializer for 'username'
+src/model/user/UserImpl.java:14:	Avoid instantiating String objects; this is usually unnecessary.
+src/model/user/UserImpl.java:18:	Avoid instantiating String objects; this is usually unnecessary.
+src/view/data/DataPane.java:142:	Avoid instantiating String objects; this is usually unnecessary.
+src/view/data/DataPane.java:151:	A switch with less than three branches is inefficient, use a if statement instead.
+
+Potentially dangerous side effects: 0
+
+Use final: 245
+src/controller/adder/AddControllerImpl.java:25:	Private field 'trackAdder' could be made final; it is only initialized in the declaration or constructor.
+src/controller/adder/AddControllerImpl.java:26:	Private field 'plAdder' could be made final; it is only initialized in the declaration or constructor.
+src/controller/adder/AddControllerImpl.java:28:	Private field 'trackManager' could be made final; it is only initialized in the declaration or constructor.
+src/controller/adder/AddControllerImpl.java:29:	Private field 'plManager' could be made final; it is only initialized in the declaration or constructor.
+src/controller/adder/AddControllerImpl.java:31:	Parameter 'plManager' is not assigned and could be declared final
+src/controller/adder/AddControllerImpl.java:31:	Parameter 'trackManager' is not assigned and could be declared final
+src/controller/adder/AddControllerImpl.java:52:	Local variable 'sortedNames' could be declared final
+src/controller/adder/AddControllerImpl.java:63:	Parameter 'toShow' is not assigned and could be declared final
+src/controller/adder/AddControllerImpl.java:68:	Parameter 'trackFile' is not assigned and could be declared final
+src/controller/adder/AddControllerImpl.java:68:	Parameter 'trackName' is not assigned and could be declared final
+src/controller/adder/AddControllerImpl.java:74:	Parameter 'plName' is not assigned and could be declared final
+src/controller/adder/AddControllerImpl.java:74:	Parameter 'plTracks' is not assigned and could be declared final
+src/controller/adder/AddControllerImpl.java:79:	Parameter 'toCheck' is not assigned and could be declared final
+src/controller/adder/AddControllerImpl.java:88:	Parameter 'arg0' is not assigned and could be declared final
+src/controller/adder/AddControllerImpl.java:96:	Parameter 'e' is not assigned and could be declared final
+src/controller/adder/AddControllerImpl.java:97:	Local variable 'trackName' could be declared final
+src/controller/adder/AddControllerImpl.java:98:	Local variable 'trackFile' could be declared final
+src/controller/adder/AddControllerImpl.java:108:	Local variable 'result' could be declared final
+src/controller/adder/AddControllerImpl.java:127:	Parameter 'e' is not assigned and could be declared final
+src/controller/adder/AddControllerImpl.java:128:	Local variable 'plName' could be declared final
+src/controller/adder/AddControllerImpl.java:129:	Local variable 'selected' could be declared final
+src/controller/adder/AddControllerImpl.java:133:	Local variable 'plTracks' could be declared final
+src/controller/adder/AddControllerImpl.java:135:	Local variable 'name' could be declared final
+src/controller/app/APControllerImpl.java:36:	Private field 'mainView' could be made final; it is only initialized in the declaration or constructor.
+src/controller/app/APControllerImpl.java:37:	Private field 'dataController' could be made final; it is only initialized in the declaration or constructor.
+src/controller/app/APControllerImpl.java:38:	Private field 'addCtrl' could be made final; it is only initialized in the declaration or constructor.
+src/controller/app/APControllerImpl.java:39:	Private field 'playerCtrl' could be made final; it is only initialized in the declaration or constructor.
+src/controller/app/APControllerImpl.java:40:	Private field 'trackManager' could be made final; it is only initialized in the declaration or constructor.
+src/controller/app/APControllerImpl.java:41:	Private field 'plManager' could be made final; it is only initialized in the declaration or constructor.
+src/controller/app/APControllerImpl.java:43:	Parameter 'logged' is not assigned and could be declared final
+src/controller/app/APControllerImpl.java:57:	Local variable 'listeners' could be declared final
+src/controller/app/APControllerImpl.java:98:	Local variable 'retMap' could be declared final
+src/controller/app/APControllerImpl.java:111:	Local variable 'retList' could be declared final
+src/controller/app/APControllerImpl.java:125:	Parameter 'arg0' is not assigned and could be declared final
+src/controller/app/APControllerImpl.java:139:	Parameter 'arg0' is not assigned and could be declared final
+src/controller/app/APControllerImpl.java:152:	Parameter 'arg0' is not assigned and could be declared final
+src/controller/app/APControllerImpl.java:166:	Parameter 'arg0' is not assigned and could be declared final
+src/controller/app/APControllerImpl.java:179:	Parameter 'arg0' is not assigned and could be declared final
+src/controller/app/APControllerImpl.java:180:	Local variable 'toDelete' could be declared final
+src/controller/app/APControllerImpl.java:181:	Local variable 'currentlyShown' could be declared final
+src/controller/app/APControllerImpl.java:206:	Parameter 'me' is not assigned and could be declared final
+src/controller/app/APControllerImpl.java:207:	Local variable 'table' could be declared final
+src/controller/app/APControllerImpl.java:208:	Local variable 'p' could be declared final
+src/controller/app/APControllerImpl.java:209:	Local variable 'row' could be declared final
+src/controller/app/APControllerImpl.java:211:	Local variable 'current' could be declared final
+src/controller/app/APControllerImpl.java:212:	Local variable 'selected' could be declared final
+src/controller/app/APControllerImpl.java:222:	Local variable 'toPlay' could be declared final
+src/controller/data/DataControllerImpl.java:16:	Private field 'dataPane' could be made final; it is only initialized in the declaration or constructor.
+src/controller/data/DataControllerImpl.java:18:	Parameter 'adapter' is not assigned and could be declared final
+src/controller/data/DataControllerImpl.java:18:	Parameter 'dataPane' is not assigned and could be declared final
+src/controller/data/DataControllerImpl.java:29:	Parameter 'tracksInfos' is not assigned and could be declared final
+src/controller/data/DataControllerImpl.java:35:	Parameter 'playlistsInfos' is not assigned and could be declared final
+src/controller/data/DataControllerImpl.java:46:	Parameter 'message' is not assigned and could be declared final
+src/controller/player/PlayerControllerImpl.java:43:	Private field 'view' could be made final; it is only initialized in the declaration or constructor.
+src/controller/player/PlayerControllerImpl.java:45:	Parameter 'view' is not assigned and could be declared final
+src/controller/player/PlayerControllerImpl.java:55:	Parameter 'queue' is not assigned and could be declared final
+src/controller/player/PlayerControllerImpl.java:94:	Parameter 'message' is not assigned and could be declared final
+src/controller/player/PlayerControllerImpl.java:94:	Parameter 'title' is not assigned and could be declared final
+src/controller/player/PlayerControllerImpl.java:145:	Local variable 'audioStream' could be declared final
+src/controller/player/PlayerControllerImpl.java:146:	Local variable 'format' could be declared final
+src/controller/player/PlayerControllerImpl.java:147:	Local variable 'info' could be declared final
+src/controller/player/PlayerControllerImpl.java:166:	Local variable 'seconds' could be declared final
+src/controller/player/PlayerControllerImpl.java:231:	Parameter 'event' is not assigned and could be declared final
+src/controller/player/PlayerControllerImpl.java:232:	Local variable 'type' could be declared final
+src/controller/player/PlayerControllerImpl.java:262:	Private field 'dateFormater' could be made final; it is only initialized in the declaration or constructor.
+src/controller/player/PlayerControllerImpl.java:280:	Local variable 'currentSecond' could be declared final
+src/controller/player/PlayerControllerImpl.java:325:	Local variable 'now' could be declared final
+src/controller/player/PlayerControllerImpl.java:326:	Local variable 'current' could be declared final
+src/controller/player/PlayerControllerImpl.java:328:	Local variable 'timeCounter' could be declared final
+src/controller/player/PlayerControllerImpl.java:333:	Parameter 'step' is not assigned and could be declared final
+src/controller/player/PlayerControllerImpl.java:351:	Parameter 'arg0' is not assigned and could be declared final
+src/controller/player/PlayerControllerImpl.java:368:	Parameter 'e' is not assigned and could be declared final
+src/controller/player/PlayerControllerImpl.java:385:	Parameter 'e' is not assigned and could be declared final
+src/controller/player/PlayerControllerImpl.java:401:	Parameter 'e' is not assigned and could be declared final
+src/controller/user/LoginControllerImpl.java:15:	Private field 'loginView' could be made final; it is only initialized in the declaration or constructor.
+src/controller/user/LoginControllerImpl.java:34:	Parameter 'password' is not assigned and could be declared final
+src/controller/user/LoginControllerImpl.java:34:	Parameter 'username' is not assigned and could be declared final
+src/controller/user/LoginControllerImpl.java:45:	Parameter 'password' is not assigned and could be declared final
+src/controller/user/LoginControllerImpl.java:45:	Parameter 'username' is not assigned and could be declared final
+src/controller/user/LoginControllerImpl.java:51:	Parameter 'e' is not assigned and could be declared final
+src/controller/user/LoginControllerImpl.java:54:	Local variable 'currentUser' could be declared final
+src/main/AudioPlayerApp.java:24:	Parameter 'args' is not assigned and could be declared final
+src/main/AudioPlayerApp.java:34:	Local variable 'usersPath' could be declared final
+src/model/AbstractDataManager.java:27:	Parameter 'thisDir' is not assigned and could be declared final
+src/model/AbstractDataManager.java:27:	Parameter 'username' is not assigned and could be declared final
+src/model/AbstractDataManager.java:38:	Parameter 'name' is not assigned and could be declared final
+src/model/AbstractDataManager.java:50:	Local variable 'results' could be declared final
+src/model/AbstractDataManager.java:52:	Local variable 'file' could be declared final
+src/model/FileHandler.java:36:	Parameter 'fileName' is not assigned and could be declared final
+src/model/FileHandler.java:46:	Parameter 'fileName' is not assigned and could be declared final
+src/model/FileHandler.java:55:	Parameter 'dir' is not assigned and could be declared final
+src/model/FileHandler.java:65:	Parameter 'relPath' is not assigned and could be declared final
+src/model/FileHandler.java:66:	Local variable 'deleting' could be declared final
+src/model/FileHandler.java:67:	Local variable 'result' could be declared final
+src/model/FileHandler.java:93:	Parameter 'dirPath' is not assigned and could be declared final
+src/model/FileHandler.java:94:	Local variable 'completePath' could be declared final
+src/model/ObjectHandler.java:22:	Parameter 'objPath' is not assigned and could be declared final
+src/model/ObjectHandler.java:22:	Parameter 'toWrite' is not assigned and could be declared final
+src/model/ObjectHandler.java:23:	Local variable 'writer' could be declared final
+src/model/ObjectHandler.java:36:	Parameter 'filePath' is not assigned and could be declared final
+src/model/ObjectHandler.java:37:	Local variable 'reader' could be declared final
+src/model/ObjectHandler.java:38:	Local variable 'retrieved' could be declared final
+src/model/playlist/PlaylistImpl.java:16:	Private field 'name' could be made final; it is only initialized in the declaration or constructor.
+src/model/playlist/PlaylistImpl.java:17:	Private field 'tracks' could be made final; it is only initialized in the declaration or constructor.
+src/model/playlist/PlaylistImpl.java:19:	Parameter 'name' is not assigned and could be declared final
+src/model/playlist/PlaylistImpl.java:19:	Parameter 'tracks' is not assigned and could be declared final
+src/model/playlist/PlaylistImpl.java:31:	Parameter 'trackName' is not assigned and could be declared final
+src/model/playlist/PlaylistImpl.java:48:	Parameter 'index' is not assigned and could be declared final
+src/model/playlist/PlaylistManager.java:20:	Parameter 'username' is not assigned and could be declared final
+src/model/playlist/PlaylistManager.java:28:	Local variable 'sorted' could be declared final
+src/model/playlist/PlaylistManager.java:41:	Parameter 'plName' is not assigned and could be declared final
+src/model/playlist/PlaylistManager.java:42:	Local variable 'pl' could be declared final
+src/model/playlist/PlaylistManager.java:52:	Parameter 'newPL' is not assigned and could be declared final
+src/model/playlist/PlaylistManager.java:65:	Parameter 'toDelete' is not assigned and could be declared final
+src/model/playlist/PlaylistManager.java:80:	Parameter 'trackName' is not assigned and could be declared final
+src/model/playlist/PlaylistManager.java:81:	Local variable 'toUpdate' could be declared final
+src/model/playlist/PlaylistManager.java:100:	Parameter 'file' is not assigned and could be declared final
+src/model/playlist/PlaylistManager.java:100:	Parameter 'updated' is not assigned and could be declared final
+src/model/playlist/PlaylistManager.java:101:	Local variable 'toUpdate' could be declared final
+src/model/track/TrackImpl.java:23:	Parameter 'trackFile' is not assigned and could be declared final
+src/model/track/TrackImpl.java:23:	Parameter 'trackName' is not assigned and could be declared final
+src/model/track/TrackImpl.java:35:	Parameter 'name' is not assigned and could be declared final
+src/model/track/TrackImpl.java:50:	Parameter 'path' is not assigned and could be declared final
+src/model/track/TrackImpl.java:61:	Local variable 'audioInputStream' could be declared final
+src/model/track/TrackImpl.java:62:	Local variable 'format' could be declared final
+src/model/track/TrackImpl.java:63:	Local variable 'audioFileLength' could be declared final
+src/model/track/TrackImpl.java:64:	Local variable 'frameSize' could be declared final
+src/model/track/TrackImpl.java:65:	Local variable 'frameRate' could be declared final
+src/model/track/TrackManager.java:22:	Parameter 'username' is not assigned and could be declared final
+src/model/track/TrackManager.java:30:	Local variable 'sorted' could be declared final
+src/model/track/TrackManager.java:40:	Parameter 'trackName' is not assigned and could be declared final
+src/model/track/TrackManager.java:41:	Local variable 'track' could be declared final
+src/model/track/TrackManager.java:51:	Parameter 'newTrack' is not assigned and could be declared final
+src/model/track/TrackManager.java:64:	Parameter 'toDelete' is not assigned and could be declared final
+src/model/track/TrackManager.java:76:	Local variable 'updTrack' could be declared final
+src/model/user/UserImpl.java:22:	Parameter 'username' is not assigned and could be declared final
+src/model/user/UserImpl.java:28:	Parameter 'password' is not assigned and could be declared final
+src/model/user/UserManager.java:24:	Parameter 'password' is not assigned and could be declared final
+src/model/user/UserManager.java:24:	Parameter 'username' is not assigned and could be declared final
+src/model/user/UserManager.java:41:	Parameter 'password' is not assigned and could be declared final
+src/model/user/UserManager.java:41:	Parameter 'username' is not assigned and could be declared final
+src/model/user/UserManager.java:43:	Local variable 'login' could be declared final
+src/model/user/UserManager.java:47:	Local variable 'userDir' could be declared final
+src/view/AudioPlayerImpl.java:32:	Private field 'optionsPanel' could be made final; it is only initialized in the declaration or constructor.
+src/view/AudioPlayerImpl.java:34:	Private field 'player' could be made final; it is only initialized in the declaration or constructor.
+src/view/AudioPlayerImpl.java:35:	Private field 'trackAdder' could be made final; it is only initialized in the declaration or constructor.
+src/view/AudioPlayerImpl.java:36:	Private field 'plAdder' could be made final; it is only initialized in the declaration or constructor.
+src/view/AudioPlayerImpl.java:37:	Private field 'dataPaneBorder' could be made final; it is only initialized in the declaration or constructor.
+src/view/AudioPlayerImpl.java:38:	Private field 'scrollPane' could be made final; it is only initialized in the declaration or constructor.
+src/view/AudioPlayerImpl.java:40:	Private field 'tracksBtn' could be made final; it is only initialized in the declaration or constructor.
+src/view/AudioPlayerImpl.java:41:	Private field 'playlistBtn' could be made final; it is only initialized in the declaration or constructor.
+src/view/AudioPlayerImpl.java:42:	Private field 'trkAddBtn' could be made final; it is only initialized in the declaration or constructor.
+src/view/AudioPlayerImpl.java:43:	Private field 'plAddBtn' could be made final; it is only initialized in the declaration or constructor.
+src/view/AudioPlayerImpl.java:44:	Private field 'deleteBtn' could be made final; it is only initialized in the declaration or constructor.
+src/view/AudioPlayerImpl.java:68:	Local variable 'panel' could be declared final
+src/view/AudioPlayerImpl.java:87:	Parameter 'listeners' is not assigned and could be declared final
+src/view/AudioPlayerImpl.java:116:	Parameter 'title' is not assigned and could be declared final
+src/view/AudioPlayerImpl.java:122:	Parameter 'content' is not assigned and could be declared final
+src/view/AudioPlayerImpl.java:122:	Parameter 'title' is not assigned and could be declared final
+src/view/AudioPlayerImpl.java:127:	Local variable 'component' could be declared final
+src/view/create/PlaylistAdder.java:45:	Private field 'listModel' could be made final; it is only initialized in the declaration or constructor.
+src/view/create/PlaylistAdder.java:47:	Private field 'nameIn' could be made final; it is only initialized in the declaration or constructor.
+src/view/create/PlaylistAdder.java:48:	Private field 'tracks' could be made final; it is only initialized in the declaration or constructor.
+src/view/create/PlaylistAdder.java:67:	Local variable 'gl_upPanel' could be declared final
+src/view/create/PlaylistAdder.java:92:	Local variable 'scroller' could be declared final
+src/view/create/PlaylistAdder.java:96:	Local variable 'root' could be declared final
+src/view/create/PlaylistAdder.java:122:	Parameter 'show' is not assigned and could be declared final
+src/view/create/PlaylistAdder.java:137:	Parameter 'trackNames' is not assigned and could be declared final
+src/view/create/PlaylistAdder.java:139:	Local variable 'name' could be declared final
+src/view/create/PlaylistAdder.java:148:	Parameter 'add' is not assigned and could be declared final
+src/view/create/PlaylistAdder.java:164:	Parameter 'message' is not assigned and could be declared final
+src/view/create/PlaylistAdder.java:164:	Parameter 'title' is not assigned and could be declared final
+src/view/create/PlaylistAdder.java:174:	Parameter 'message' is not assigned and could be declared final
+src/view/create/PlaylistAdder.java:174:	Parameter 'title' is not assigned and could be declared final
+src/view/create/TrackAdder.java:40:	Private field 'nameIn' could be made final; it is only initialized in the declaration or constructor.
+src/view/create/TrackAdder.java:41:	Private field 'showFile' could be made final; it is only initialized in the declaration or constructor.
+src/view/create/TrackAdder.java:72:	Local variable 'root' could be declared final
+src/view/create/TrackAdder.java:82:	Parameter 'show' is not assigned and could be declared final
+src/view/create/TrackAdder.java:109:	Local variable 'wavFilter' could be declared final
+src/view/create/TrackAdder.java:116:	Parameter 'file' is not assigned and could be declared final
+src/view/create/TrackAdder.java:130:	Local variable 'result' could be declared final
+src/view/create/TrackAdder.java:167:	Parameter 'add' is not assigned and could be declared final
+src/view/create/TrackAdder.java:167:	Parameter 'chooser' is not assigned and could be declared final
+src/view/create/TrackAdder.java:177:	Parameter 'message' is not assigned and could be declared final
+src/view/create/TrackAdder.java:177:	Parameter 'title' is not assigned and could be declared final
+src/view/create/TrackAdder.java:187:	Parameter 'message' is not assigned and could be declared final
+src/view/create/TrackAdder.java:187:	Parameter 'title' is not assigned and could be declared final
+src/view/data/DataPane.java:31:	Parameter 'hsbPolicy' is not assigned and could be declared final
+src/view/data/DataPane.java:31:	Parameter 'vsbPolicy' is not assigned and could be declared final
+src/view/data/DataPane.java:43:	Parameter 'tracksInfos' is not assigned and could be declared final
+src/view/data/DataPane.java:44:	Local variable 'model' could be declared final
+src/view/data/DataPane.java:46:	Local variable 'entry' could be declared final
+src/view/data/DataPane.java:47:	Local variable 'newRow' could be declared final
+src/view/data/DataPane.java:58:	Parameter 'plInfos' is not assigned and could be declared final
+src/view/data/DataPane.java:59:	Local variable 'model' could be declared final
+src/view/data/DataPane.java:61:	Local variable 'playlist' could be declared final
+src/view/data/DataPane.java:71:	Parameter 'model' is not assigned and could be declared final
+src/view/data/DataPane.java:81:	Parameter 'message' is not assigned and could be declared final
+src/view/data/DataPane.java:81:	Parameter 'title' is not assigned and could be declared final
+src/view/data/DataPane.java:90:	Parameter 'duration' is not assigned and could be declared final
+src/view/data/DataPane.java:91:	Local variable 'lDuration' could be declared final
+src/view/data/DataPane.java:102:	Local variable 'column' could be declared final
+src/view/data/DataPane.java:109:	Local variable 'row' could be declared final
+src/view/data/DataPane.java:118:	Parameter 'strings' is not assigned and could be declared final
+src/view/data/DataPane.java:119:	Local variable 'model' could be declared final
+src/view/data/DataPane.java:127:	Parameter 'col' is not assigned and could be declared final
+src/view/data/DataPane.java:127:	Parameter 'row' is not assigned and could be declared final
+src/view/data/DataPane.java:131:	Local variable 'columnList' could be declared final
+src/view/data/DataPane.java:149:	Parameter 'viewID' is not assigned and could be declared final
+src/view/data/DataPane.java:165:	Parameter 'adapter' is not assigned and could be declared final
+src/view/login/LoginImpl.java:32:	Private field 'nameIn' could be made final; it is only initialized in the declaration or constructor.
+src/view/login/LoginImpl.java:33:	Private field 'pswdIn' could be made final; it is only initialized in the declaration or constructor.
+src/view/login/LoginImpl.java:65:	Local variable 'root' could be declared final
+src/view/login/LoginImpl.java:83:	Parameter 'buttonListener' is not assigned and could be declared final
+src/view/login/LoginImpl.java:115:	Parameter 'content' is not assigned and could be declared final
+src/view/login/LoginImpl.java:115:	Parameter 'title' is not assigned and could be declared final
+src/view/player/Player.java:39:	Private field 'nameLabel' could be made final; it is only initialized in the declaration or constructor.
+src/view/player/Player.java:40:	Private field 'timeCounterLabel' could be made final; it is only initialized in the declaration or constructor.
+src/view/player/Player.java:41:	Private field 'durationLabel' could be made final; it is only initialized in the declaration or constructor.
+src/view/player/Player.java:43:	Private field 'pauseBtn' could be made final; it is only initialized in the declaration or constructor.
+src/view/player/Player.java:44:	Private field 'playBtn' could be made final; it is only initialized in the declaration or constructor.
+src/view/player/Player.java:45:	Private field 'prevBtn' could be made final; it is only initialized in the declaration or constructor.
+src/view/player/Player.java:46:	Private field 'nextBtn' could be made final; it is only initialized in the declaration or constructor.
+src/view/player/Player.java:48:	Private field 'timeSlider' could be made final; it is only initialized in the declaration or constructor.
+src/view/player/Player.java:51:	Private field 'iconPlay' could be made final; it is only initialized in the declaration or constructor.
+src/view/player/Player.java:53:	Private field 'iconStop' could be made final; it is only initialized in the declaration or constructor.
+src/view/player/Player.java:55:	Private field 'iconPause' could be made final; it is only initialized in the declaration or constructor.
+src/view/player/Player.java:57:	Private field 'iconPrev' could be made final; it is only initialized in the declaration or constructor.
+src/view/player/Player.java:59:	Private field 'iconNext' could be made final; it is only initialized in the declaration or constructor.
+src/view/player/Player.java:67:	Local variable 'constraints' could be declared final
+src/view/player/Player.java:110:	Local variable 'panelButtons' could be declared final
+src/view/player/Player.java:126:	Parameter 'value' is not assigned and could be declared final
+src/view/player/Player.java:137:	Parameter 'next' is not assigned and could be declared final
+src/view/player/Player.java:137:	Parameter 'prev' is not assigned and could be declared final
+src/view/player/Player.java:138:	Parameter 'pause' is not assigned and could be declared final
+src/view/player/Player.java:138:	Parameter 'play' is not assigned and could be declared final
+src/view/player/Player.java:149:	Parameter 'value' is not assigned and could be declared final
+src/view/player/Player.java:157:	Parameter 'value' is not assigned and could be declared final
+src/view/player/Player.java:165:	Parameter 'currentTime' is not assigned and could be declared final
+src/view/player/Player.java:173:	Parameter 'duration' is not assigned and could be declared final
+src/view/player/Player.java:181:	Parameter 'name' is not assigned and could be declared final
+src/view/player/Player.java:189:	Parameter 'position' is not assigned and could be declared final
+src/view/player/Player.java:217:	Parameter 'message' is not assigned and could be declared final
+src/view/player/Player.java:217:	Parameter 'title' is not assigned and could be declared final
+src/view/player/Player.java:225:	Parameter 'position' is not assigned and could be declared final
+
+Complex code: 0
+
+Concurrency issues: 0
+
+Testing issues: 0
+
+Android-specific issues: 0
+
+Minor issues: 6
+src/view/AudioPlayerGUI.java:15:	Consider using varargs for methods or constructors which take an array the last parameter.
+src/view/AudioPlayerImpl.java:46:	It is a good practice to call super() in a constructor
+src/view/AudioPlayerImpl.java:87:	Consider using varargs for methods or constructors which take an array the last parameter.
+src/view/create/PlaylistAdder.java:51:	It is a good practice to call super() in a constructor
+src/view/create/TrackAdder.java:46:	It is a good practice to call super() in a constructor
+src/view/player/Player.java:63:	It is a good practice to call super() in a constructor
+
+Other errors: 0
+
